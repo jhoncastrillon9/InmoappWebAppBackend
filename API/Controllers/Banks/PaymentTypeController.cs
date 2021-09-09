@@ -56,7 +56,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetPaymentType(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -82,7 +82,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListPaymentType(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -106,7 +106,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetPaymentType(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -136,7 +136,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostPaymentType(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -166,8 +166,8 @@ namespace API.Controllers
 				{"PaymentTypeName", model.PaymentTypeName },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutPaymentType(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -188,7 +188,7 @@ namespace API.Controllers
 				{"PaymentTypeId", PaymentTypeId }
             };
 
-            var result = await business.DeletePaymentType(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

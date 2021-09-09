@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly TenantService business;
+        private string spForRead = "Properties.Tenant_READ";
+        private string spForList = "Properties.Tenant_LIST";
+        private string spForCreate = "Properties.Tenant_CREATE";
+        private string spForUpdate = "Properties.Tenant_UPDATE";
+        private string spForDelete = "Properties.Tenant_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantController"/> class.
@@ -57,7 +62,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetTenant(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -89,7 +94,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListTenant(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -119,7 +124,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetTenant(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -155,7 +160,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostTenant(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -191,70 +196,15 @@ namespace API.Controllers
 				{"Observation", model.Observation },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutTenant(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
             }
             return new OkObjectResult(result);
         }
-
-        /// <summary>
-        /// The EnableTenant.
-        /// </summary>
-        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableTenant(TenantEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TenantId", model.TenantId }
-            };
-            
-            var result = await business.EnableTenant(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableTenant.
-        /// </summary>
-        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableTenant(TenantEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TenantId", model.TenantId }
-            };
-            
-            var result = await business.DisableTenant(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
+       
 
         /// <summary>
         /// The DeleteTenant.
@@ -269,7 +219,7 @@ namespace API.Controllers
 				{"TenantId", TenantId }
             };
 
-            var result = await business.DeleteTenant(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

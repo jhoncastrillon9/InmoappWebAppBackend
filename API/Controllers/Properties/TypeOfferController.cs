@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly TypeOfferService business;
+        private string spForRead = "Properties.TypeOffer_READ";
+        private string spForList = "Properties.TypeOffer_LIST";
+        private string spForCreate = "Properties.TypeOffer_CREATE";
+        private string spForUpdate = "Properties.TypeOffers_UPDATE";
+        private string spForDelete = "Properties.TypeOffer_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeOfferController"/> class.
@@ -50,7 +55,7 @@ namespace API.Controllers
 				{"TypeOfferName", TypeOfferName }
             };
 
-            var result = await business.GetTypeOffer(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -75,7 +80,7 @@ namespace API.Controllers
 				{"TypeOfferName", TypeOfferName }
             };
 
-            var result = await business.GetListTypeOffer(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -98,7 +103,7 @@ namespace API.Controllers
 				{"TypeOfferName", null }
             };
 
-            var result = await business.GetTypeOffer(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -127,7 +132,7 @@ namespace API.Controllers
 				{"TypeOfferName", model.TypeOfferName }
             };
 
-            var result = await business.PostTypeOffer(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -156,8 +161,8 @@ namespace API.Controllers
 				{"TypeOfferId", model.TypeOfferId },
 				{"TypeOfferName", model.TypeOfferName }
             };
-            
-            var result = await business.PutTypeOffer(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -165,61 +170,6 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-        /// <summary>
-        /// The EnableTypeOffer.
-        /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableTypeOffer(TypeOfferEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TypeOfferId", model.TypeOfferId }
-            };
-            
-            var result = await business.EnableTypeOffer(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableTypeOffer.
-        /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableTypeOffer(TypeOfferEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TypeOfferId", model.TypeOfferId }
-            };
-            
-            var result = await business.DisableTypeOffer(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
         /// <summary>
         /// The DeleteTypeOffer.
@@ -234,7 +184,7 @@ namespace API.Controllers
 				{"TypeOfferId", TypeOfferId }
             };
 
-            var result = await business.DeleteTypeOffer(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

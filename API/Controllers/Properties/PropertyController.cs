@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly PropertyService business;
+        private string spForRead = "Properties.Property_READ";
+        private string spForList = "Properties.Property_LIST";
+        private string spForCreate = "Properties.Property_CREATE";
+        private string spForUpdate = "Properties.Property_UPDATE";
+        private string spForDelete = "Properties.Property_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyController"/> class.
@@ -64,7 +69,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetProperty(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -103,7 +108,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListProperty(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -140,7 +145,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetProperty(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -191,7 +196,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostProperty(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -242,8 +247,8 @@ namespace API.Controllers
 				{"TypeOfferId", model.TypeOfferId },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutProperty(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -251,61 +256,6 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-        /// <summary>
-        /// The EnableProperty.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableProperty(PropertyEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyId", model.PropertyId }
-            };
-            
-            var result = await business.EnableProperty(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableProperty.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableProperty(PropertyEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyId", model.PropertyId }
-            };
-            
-            var result = await business.DisableProperty(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
         /// <summary>
         /// The DeleteProperty.
@@ -320,7 +270,7 @@ namespace API.Controllers
 				{"PropertyId", PropertyId }
             };
 
-            var result = await business.DeleteProperty(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

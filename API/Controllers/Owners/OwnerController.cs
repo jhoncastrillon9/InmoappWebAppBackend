@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly OwnerService business;
+        private string spForRead = "Owners.Owner_READ";
+        private string spForList = "Owners.Owner_LIST";
+        private string spForCreate = "Owners.Owner_CREATE";
+        private string spForUpdate = "Owners.Owner_UPDATE";
+        private string spForDelete = "Owners.Owner_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerController"/> class.
@@ -57,7 +62,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -89,7 +94,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -119,7 +124,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -155,7 +160,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -191,64 +196,8 @@ namespace API.Controllers
 				{"Observation", model.Observation },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutOwner(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableOwner.
-        /// </summary>
-        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableOwner(OwnerEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"OwnerId", model.OwnerId }
-            };
-            
-            var result = await business.EnableOwner(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableOwner.
-        /// </summary>
-        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableOwner(OwnerEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"OwnerId", model.OwnerId }
-            };
-            
-            var result = await business.DisableOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -269,7 +218,7 @@ namespace API.Controllers
 				{"OwnerId", OwnerId }
             };
 
-            var result = await business.DeleteOwner(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly IvaService business;
+        private string spForRead = "Properties.Iva_READ";
+        private string spForList = "Properties.Iva_LIST";
+        private string spForCreate = "Properties.Iva_CREATE";
+        private string spForUpdate = "Properties.Iva_UPDATE";
+        private string spForDelete = "Properties.Iva_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IvaController"/> class.
@@ -49,7 +54,7 @@ namespace API.Controllers
 				{"IvaId", IvaId }
             };
 
-            var result = await business.GetIva(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -73,7 +78,7 @@ namespace API.Controllers
 				{"IvaId", IvaId }
             };
 
-            var result = await business.GetListIva(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -95,7 +100,7 @@ namespace API.Controllers
 				{"IvaId", IvaId }
             };
 
-            var result = await business.GetIva(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -124,7 +129,7 @@ namespace API.Controllers
 				{"Valor", model.Valor }
             };
 
-            var result = await business.PostIva(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -153,8 +158,8 @@ namespace API.Controllers
 				{"IvaId", model.IvaId },
 				{"Valor", model.Valor }
             };
-            
-            var result = await business.PutIva(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -162,61 +167,6 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-        /// <summary>
-        /// The EnableIva.
-        /// </summary>
-        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableIva(IvaEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"IvaId", model.IvaId }
-            };
-            
-            var result = await business.EnableIva(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableIva.
-        /// </summary>
-        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableIva(IvaEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"IvaId", model.IvaId }
-            };
-            
-            var result = await business.DisableIva(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
         /// <summary>
         /// The DeleteIva.
@@ -231,7 +181,7 @@ namespace API.Controllers
 				{"IvaId", IvaId }
             };
 
-            var result = await business.DeleteIva(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

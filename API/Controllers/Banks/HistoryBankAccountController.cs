@@ -60,7 +60,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -90,7 +90,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -118,7 +118,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -153,7 +153,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -188,64 +188,8 @@ namespace API.Controllers
 				{"Obervation", model.Obervation },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutHistoryBankAccount(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableHistoryBankAccount.
-        /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableHistoryBankAccount(HistoryBankAccountEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"HistoryBankAccountId", model.HistoryBankAccountId }
-            };
-            
-            var result = await business.EnableHistoryBankAccount(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableHistoryBankAccount.
-        /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableHistoryBankAccount(HistoryBankAccountEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"HistoryBankAccountId", model.HistoryBankAccountId }
-            };
-            
-            var result = await business.DisableHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -266,7 +210,7 @@ namespace API.Controllers
 				{"HistoryBankAccountId", HistoryBankAccountId }
             };
 
-            var result = await business.DeleteHistoryBankAccount(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

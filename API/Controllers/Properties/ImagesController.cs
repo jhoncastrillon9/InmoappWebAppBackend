@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly ImagesService business;
+        private string spForRead = "Properties.Images_READ";
+        private string spForList = "Properties.Images_LIST";
+        private string spForCreate = "Properties.Images_CREATE";
+        private string spForUpdate = "Properties.Images_UPDATE";
+        private string spForDelete = "Properties.Images_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
@@ -53,7 +58,7 @@ namespace API.Controllers
 				{"PropertyId", PropertyId }
             };
 
-            var result = await business.GetImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -81,7 +86,7 @@ namespace API.Controllers
 				{"PropertyId", PropertyId }
             };
 
-            var result = await business.GetListImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -107,7 +112,7 @@ namespace API.Controllers
 				{"PropertyId", null }
             };
 
-            var result = await business.GetImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -139,7 +144,7 @@ namespace API.Controllers
 				{"PropertyId", model.PropertyId }
             };
 
-            var result = await business.PostImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -171,64 +176,8 @@ namespace API.Controllers
 				{"IsMain", model.IsMain },
 				{"PropertyId", model.PropertyId }
             };
-            
-            var result = await business.PutImages(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableImages.
-        /// </summary>
-        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableImages(ImagesEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"ImageId", model.ImageId }
-            };
-            
-            var result = await business.EnableImages(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableImages.
-        /// </summary>
-        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableImages(ImagesEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"ImageId", model.ImageId }
-            };
-            
-            var result = await business.DisableImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -249,7 +198,7 @@ namespace API.Controllers
 				{"ImageId", ImageId }
             };
 
-            var result = await business.DeleteImages(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly CompanyService business;
+        private string spForRead = "Companies.Company_READ";
+        private string spForList = "Companies.Company_LIST";
+        private string spForCreate = "Companies.Company_CREATE";
+        private string spForUpdate = "Companies.Company_UPDATE";
+        private string spForDelete = "Companies.Company_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompanyController"/> class.
@@ -56,7 +61,7 @@ namespace API.Controllers
 				{"Observation", Observation }
             };
 
-            var result = await business.GetCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -87,7 +92,7 @@ namespace API.Controllers
 				{"Observation", Observation }
             };
 
-            var result = await business.GetListCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -116,7 +121,7 @@ namespace API.Controllers
 				{"Observation", null }
             };
 
-            var result = await business.GetCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -151,7 +156,7 @@ namespace API.Controllers
 				{"Observation", model.Observation }
             };
 
-            var result = await business.PostCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -186,64 +191,8 @@ namespace API.Controllers
 				{"Address", model.Address },
 				{"Observation", model.Observation }
             };
-            
-            var result = await business.PutCompany(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableCompany.
-        /// </summary>
-        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableCompany(CompanyEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"CompayId", model.CompayId }
-            };
-            
-            var result = await business.EnableCompany(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableCompany.
-        /// </summary>
-        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableCompany(CompanyEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"CompayId", model.CompayId }
-            };
-            
-            var result = await business.DisableCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -264,7 +213,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.DeleteCompany(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

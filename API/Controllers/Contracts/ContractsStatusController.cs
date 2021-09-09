@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly ContractsStatusService business;
+        private string spForRead = "Contracts.ContractsStatus_READ";
+        private string spForList = "Contracts.ContractsStatus_LIST";
+        private string spForCreate = "Contracts.ContractsStatus_CREATE";
+        private string spForUpdate = "Contracts.ContractsStatus_UPDATE";
+        private string spForDelete = "Contracts.ContractsStatus_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContractsStatusController"/> class.
@@ -50,7 +55,7 @@ namespace API.Controllers
 				{"ContractsStatusName", ContractsStatusName }
             };
 
-            var result = await business.GetContractsStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -75,7 +80,7 @@ namespace API.Controllers
 				{"ContractsStatusName", ContractsStatusName }
             };
 
-            var result = await business.GetListContractsStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -98,7 +103,7 @@ namespace API.Controllers
 				{"ContractsStatusName", null }
             };
 
-            var result = await business.GetContractsStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -127,7 +132,7 @@ namespace API.Controllers
 				{"ContractsStatusName", model.ContractsStatusName }
             };
 
-            var result = await business.PostContractsStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -156,8 +161,8 @@ namespace API.Controllers
 				{"ContractsStatusId", model.ContractsStatusId },
 				{"ContractsStatusName", model.ContractsStatusName }
             };
-            
-            var result = await business.PutContractsStatus(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -165,61 +170,6 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-        /// <summary>
-        /// The EnableContractsStatus.
-        /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableContractsStatus(ContractsStatusEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"ContractsStatusId", model.ContractsStatusId }
-            };
-            
-            var result = await business.EnableContractsStatus(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableContractsStatus.
-        /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableContractsStatus(ContractsStatusEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"ContractsStatusId", model.ContractsStatusId }
-            };
-            
-            var result = await business.DisableContractsStatus(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
         /// <summary>
         /// The DeleteContractsStatus.
@@ -234,7 +184,7 @@ namespace API.Controllers
 				{"ContractsStatusId", ContractsStatusId }
             };
 
-            var result = await business.DeleteContractsStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

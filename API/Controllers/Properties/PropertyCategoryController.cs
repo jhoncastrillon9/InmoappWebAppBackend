@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly PropertyCategoryService business;
+        private string spForRead = "Properties.PropertyCategory_READ";
+        private string spForList = "Properties.PropertyCategory_LIST";
+        private string spForCreate = "Properties.PropertyCategory_CREATE";
+        private string spForUpdate = "Properties.PropertyCategory_UPDATE";
+        private string spForDelete = "Properties.PropertyCategory_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyCategoryController"/> class.
@@ -50,7 +55,7 @@ namespace API.Controllers
 				{"CategoryName", CategoryName }
             };
 
-            var result = await business.GetPropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -75,7 +80,7 @@ namespace API.Controllers
 				{"CategoryName", CategoryName }
             };
 
-            var result = await business.GetListPropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -98,7 +103,7 @@ namespace API.Controllers
 				{"CategoryName", null }
             };
 
-            var result = await business.GetPropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -127,7 +132,7 @@ namespace API.Controllers
 				{"CategoryName", model.CategoryName }
             };
 
-            var result = await business.PostPropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -156,64 +161,8 @@ namespace API.Controllers
 				{"PropertyCategoryId", model.PropertyCategoryId },
 				{"CategoryName", model.CategoryName }
             };
-            
-            var result = await business.PutPropertyCategory(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnablePropertyCategory.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnablePropertyCategory(PropertyCategoryEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyCategoryId", model.PropertyCategoryId }
-            };
-            
-            var result = await business.EnablePropertyCategory(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisablePropertyCategory.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisablePropertyCategory(PropertyCategoryEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyCategoryId", model.PropertyCategoryId }
-            };
-            
-            var result = await business.DisablePropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -234,7 +183,7 @@ namespace API.Controllers
 				{"PropertyCategoryId", PropertyCategoryId }
             };
 
-            var result = await business.DeletePropertyCategory(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly TenantsByContractService business;
+        private string spForRead = "Contracts.TenantsByContract_READ";
+        private string spForList = "Contracts.TenantsByContract_LIST";
+        private string spForCreate = "Contracts.TenantsByContract_CREATE";
+        private string spForUpdate = "Contracts.TenantsByContract_UPDATE";
+        private string spForDelete = "Contracts.TenantsByContract_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantsByContractController"/> class.
@@ -51,7 +56,7 @@ namespace API.Controllers
 				{"Profile", Profile }
             };
 
-            var result = await business.GetTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -77,7 +82,7 @@ namespace API.Controllers
 				{"Profile", Profile }
             };
 
-            var result = await business.GetListTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -101,7 +106,7 @@ namespace API.Controllers
 				{"Profile", null }
             };
 
-            var result = await business.GetTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -131,7 +136,7 @@ namespace API.Controllers
 				{"Profile", model.Profile }
             };
 
-            var result = await business.PostTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -161,64 +166,8 @@ namespace API.Controllers
 				{"TenantId", model.TenantId },
 				{"Profile", model.Profile }
             };
-            
-            var result = await business.PutTenantsByContract(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableTenantsByContract.
-        /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableTenantsByContract(TenantsByContractEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TenantsByContractId", model.TenantsByContractId }
-            };
-            
-            var result = await business.EnableTenantsByContract(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableTenantsByContract.
-        /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableTenantsByContract(TenantsByContractEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"TenantsByContractId", model.TenantsByContractId }
-            };
-            
-            var result = await business.DisableTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -239,7 +188,7 @@ namespace API.Controllers
 				{"TenantsByContractId", TenantsByContractId }
             };
 
-            var result = await business.DeleteTenantsByContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

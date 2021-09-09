@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly PropertyStatusService business;
+        private string spForRead = "Properties.PropertyStatus_READ";
+        private string spForList = "Properties.PropertyStatus_LIST";
+        private string spForCreate = "Properties.PropertyStatus_CREATE";
+        private string spForUpdate = "Properties.PropertyStatus_UPDATE";
+        private string spForDelete = "Properties.PropertyStatus_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyStatusController"/> class.
@@ -50,7 +55,7 @@ namespace API.Controllers
 				{"PropertyStatusName", PropertyStatusName }
             };
 
-            var result = await business.GetPropertyStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -75,7 +80,7 @@ namespace API.Controllers
 				{"PropertyStatusName", PropertyStatusName }
             };
 
-            var result = await business.GetListPropertyStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -98,7 +103,7 @@ namespace API.Controllers
 				{"PropertyStatusName", null }
             };
 
-            var result = await business.GetPropertyStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -127,7 +132,7 @@ namespace API.Controllers
 				{"PropertyStatusName", model.PropertyStatusName }
             };
 
-            var result = await business.PostPropertyStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -156,8 +161,8 @@ namespace API.Controllers
 				{"PropertyStatusId", model.PropertyStatusId },
 				{"PropertyStatusName", model.PropertyStatusName }
             };
-            
-            var result = await business.PutPropertyStatus(parameters);
+
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -165,61 +170,6 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-        /// <summary>
-        /// The EnablePropertyStatus.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnablePropertyStatus(PropertyStatusEntity model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyStatusId", model.PropertyStatusId }
-            };
-            
-            var result = await business.EnablePropertyStatus(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisablePropertyStatus.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisablePropertyStatus(PropertyStatusEntity model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"PropertyStatusId", model.PropertyStatusId }
-            };
-            
-            var result = await business.DisablePropertyStatus(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
         /// <summary>
         /// The DeletePropertyStatus.
@@ -234,7 +184,7 @@ namespace API.Controllers
 				{"PropertyStatusId", PropertyStatusId }
             };
 
-            var result = await business.DeletePropertyStatus(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
