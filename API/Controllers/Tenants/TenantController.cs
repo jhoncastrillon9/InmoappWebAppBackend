@@ -130,10 +130,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostTenant.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostTenant(TenantModel model)
+        public async Task<IActionResult> PostTenant(TenantEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -166,10 +166,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutTenant.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutTenant(TenantModel model)
+        public async Task<IActionResult> PutTenant(TenantEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -203,10 +203,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableTenant.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableTenant(TenantModel model)
+        public async Task<IActionResult> EnableTenant(TenantEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -231,10 +231,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableTenant.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableTenant(TenantModel model)
+        public async Task<IActionResult> DisableTenant(TenantEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -259,7 +259,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteTenant.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{TenantId}")]
         public async Task<IActionResult> DeleteTenant(Int32? TenantId)

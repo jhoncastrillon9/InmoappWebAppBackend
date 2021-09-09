@@ -106,10 +106,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostIva.
         /// </summary>
-        /// <param name="model">The model<see cref="IvaModel"/>.</param>
+        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostIva(IvaModel model)
+        public async Task<IActionResult> PostIva(IvaEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -135,10 +135,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutIva.
         /// </summary>
-        /// <param name="model">The model<see cref="IvaModel"/>.</param>
+        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutIva(IvaModel model)
+        public async Task<IActionResult> PutIva(IvaEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -165,10 +165,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableIva.
         /// </summary>
-        /// <param name="model">The model<see cref="IvaModel"/>.</param>
+        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableIva(IvaModel model)
+        public async Task<IActionResult> EnableIva(IvaEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -193,10 +193,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableIva.
         /// </summary>
-        /// <param name="model">The model<see cref="IvaModel"/>.</param>
+        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableIva(IvaModel model)
+        public async Task<IActionResult> DisableIva(IvaEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -221,7 +221,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteIva.
         /// </summary>
-        /// <param name="model">The model<see cref="IvaModel"/>.</param>
+        /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{IvaId}")]
         public async Task<IActionResult> DeleteIva(Int32? IvaId)

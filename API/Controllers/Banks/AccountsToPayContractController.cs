@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly AccountsToPayContractService business;
+        private string spForRead = "Banks.AccountsToPayContract_READ";
+        private string spForList = "Banks.AccountsToPayContract_LIST";
+        private string spForCreate = "Banks.AccountsToPayContract_CREATE";
+        private string spForUpdate = "Banks.AccountsToPayContract_UPDATE";
+        private string spForDelete = "Banks.AccountsToPayContract_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsToPayContractController"/> class.
@@ -52,7 +57,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -79,7 +84,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.GetListAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -104,7 +109,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.GetAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -115,10 +120,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostAccountsToPayContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToPayContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToPayContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostAccountsToPayContract(AccountsToPayContractModel model)
+        public async Task<IActionResult> PostAccountsToPayContract(AccountsToPayContractEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,7 +143,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.PostAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -149,10 +154,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutAccountsToPayContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToPayContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToPayContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractModel model)
+        public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -172,64 +177,8 @@ namespace API.Controllers
 				{"ContractId", model.ContractId },
 				{"CompayId", model.CompayId }
             };
-            
-            var result = await business.PutAccountsToPayContract(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
 
-        /// <summary>
-        /// The EnableAccountsToPayContract.
-        /// </summary>
-        /// <param name="model">The model<see cref="AccountsToPayContractModel"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("enable")]
-        public async Task<IActionResult> EnableAccountsToPayContract(AccountsToPayContractModel model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"AccountsToPayContractId", model.AccountsToPayContractId }
-            };
-            
-            var result = await business.EnableAccountsToPayContract(parameters);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The DisableAccountsToPayContract.
-        /// </summary>
-        /// <param name="model">The model<see cref="AccountsToPayContractModel"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut("disable")]
-        public async Task<IActionResult> DisableAccountsToPayContract(AccountsToPayContractModel model)
-        {
-            Int32 DisabledBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                DisabledBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"AccountsToPayContractId", model.AccountsToPayContractId }
-            };
-            
-            var result = await business.DisableAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForUpdate); ;
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -240,7 +189,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteAccountsToPayContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToPayContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToPayContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{AccountsToPayContractId}")]
         public async Task<IActionResult> DeleteAccountsToPayContract(Int32? AccountsToPayContractId)
@@ -250,7 +199,7 @@ namespace API.Controllers
 				{"AccountsToPayContractId", AccountsToPayContractId }
             };
 
-            var result = await business.DeleteAccountsToPayContract(parameters);
+            var result = await business.ExecStoreProcedure(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

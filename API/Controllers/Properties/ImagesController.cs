@@ -118,10 +118,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesModel"/>.</param>
+        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostImages(ImagesModel model)
+        public async Task<IActionResult> PostImages(ImagesEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -150,10 +150,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesModel"/>.</param>
+        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutImages(ImagesModel model)
+        public async Task<IActionResult> PutImages(ImagesEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -183,10 +183,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesModel"/>.</param>
+        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableImages(ImagesModel model)
+        public async Task<IActionResult> EnableImages(ImagesEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -211,10 +211,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesModel"/>.</param>
+        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableImages(ImagesModel model)
+        public async Task<IActionResult> DisableImages(ImagesEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -239,7 +239,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesModel"/>.</param>
+        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{ImageId}")]
         public async Task<IActionResult> DeleteImages(Int32? ImageId)

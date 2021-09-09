@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly HistoryBankAccountService business;
+        private string spForRead = "Banks.HistoryBankAccount_READ";
+        private string spForList = "Banks.HistoryBankAccount_LIST";
+        private string spForCreate = "Banks.HistoryBankAccount_CREATE";
+        private string spForUpdate = "Banks.HistoryBankAccount_UPDATE";
+        private string spForDelete = "Banks.HistoryBankAccount_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoryBankAccountController"/> class.
@@ -124,10 +129,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostHistoryBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostHistoryBankAccount(HistoryBankAccountModel model)
+        public async Task<IActionResult> PostHistoryBankAccount(HistoryBankAccountEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -159,10 +164,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutHistoryBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutHistoryBankAccount(HistoryBankAccountModel model)
+        public async Task<IActionResult> PutHistoryBankAccount(HistoryBankAccountEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -195,10 +200,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableHistoryBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableHistoryBankAccount(HistoryBankAccountModel model)
+        public async Task<IActionResult> EnableHistoryBankAccount(HistoryBankAccountEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -223,10 +228,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableHistoryBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableHistoryBankAccount(HistoryBankAccountModel model)
+        public async Task<IActionResult> DisableHistoryBankAccount(HistoryBankAccountEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -251,7 +256,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteHistoryBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="HistoryBankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{HistoryBankAccountId}")]
         public async Task<IActionResult> DeleteHistoryBankAccount(Int32? HistoryBankAccountId)

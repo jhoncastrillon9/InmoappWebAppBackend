@@ -121,10 +121,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostContract.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostContract(ContractModel model)
+        public async Task<IActionResult> PostContract(ContractEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -159,10 +159,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutContract.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutContract(ContractModel model)
+        public async Task<IActionResult> PutContract(ContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -198,10 +198,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableContract(ContractModel model)
+        public async Task<IActionResult> EnableContract(ContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -226,10 +226,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableContract(ContractModel model)
+        public async Task<IActionResult> DisableContract(ContractEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -254,7 +254,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteContract.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{ContractId}")]
         public async Task<IActionResult> DeleteContract(Int32? ContractId)

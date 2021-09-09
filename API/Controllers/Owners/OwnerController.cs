@@ -130,10 +130,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostOwner.
         /// </summary>
-        /// <param name="model">The model<see cref="OwnerModel"/>.</param>
+        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostOwner(OwnerModel model)
+        public async Task<IActionResult> PostOwner(OwnerEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -166,10 +166,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutOwner.
         /// </summary>
-        /// <param name="model">The model<see cref="OwnerModel"/>.</param>
+        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutOwner(OwnerModel model)
+        public async Task<IActionResult> PutOwner(OwnerEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -203,10 +203,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableOwner.
         /// </summary>
-        /// <param name="model">The model<see cref="OwnerModel"/>.</param>
+        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableOwner(OwnerModel model)
+        public async Task<IActionResult> EnableOwner(OwnerEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -231,10 +231,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableOwner.
         /// </summary>
-        /// <param name="model">The model<see cref="OwnerModel"/>.</param>
+        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableOwner(OwnerModel model)
+        public async Task<IActionResult> DisableOwner(OwnerEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -259,7 +259,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteOwner.
         /// </summary>
-        /// <param name="model">The model<see cref="OwnerModel"/>.</param>
+        /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{OwnerId}")]
         public async Task<IActionResult> DeleteOwner(Int32? OwnerId)

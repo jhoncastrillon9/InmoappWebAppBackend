@@ -127,10 +127,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostCompany.
         /// </summary>
-        /// <param name="model">The model<see cref="CompanyModel"/>.</param>
+        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostCompany(CompanyModel model)
+        public async Task<IActionResult> PostCompany(CompanyEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -162,10 +162,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutCompany.
         /// </summary>
-        /// <param name="model">The model<see cref="CompanyModel"/>.</param>
+        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutCompany(CompanyModel model)
+        public async Task<IActionResult> PutCompany(CompanyEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -198,10 +198,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableCompany.
         /// </summary>
-        /// <param name="model">The model<see cref="CompanyModel"/>.</param>
+        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableCompany(CompanyModel model)
+        public async Task<IActionResult> EnableCompany(CompanyEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -226,10 +226,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableCompany.
         /// </summary>
-        /// <param name="model">The model<see cref="CompanyModel"/>.</param>
+        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableCompany(CompanyModel model)
+        public async Task<IActionResult> DisableCompany(CompanyEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -254,7 +254,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteCompany.
         /// </summary>
-        /// <param name="model">The model<see cref="CompanyModel"/>.</param>
+        /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{CompayId}")]
         public async Task<IActionResult> DeleteCompany(Int32? CompayId)

@@ -22,8 +22,12 @@ namespace API.Controllers
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly AccountsToReceivableContractService business;
-
+        private readonly AccountsToReceivableContractService business; 
+        private string spForRead = "Banks.AccountsToReceivableContract_READ";
+        private string spForList = "Banks.AccountsToReceivableContract_LIST";
+        private string spForCreate = "Banks.AccountsToReceivableContract_CREATE";
+        private string spForUpdate = "Banks.AccountsToReceivableContract_UPDATE";
+        private string spForDelete = "Banks.AccountsToReceivableContract_DELETE";
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsToReceivableContractController"/> class.
         /// </summary>
@@ -115,10 +119,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostAccountsToReceivableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToReceivableContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToReceivableContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostAccountsToReceivableContract(AccountsToReceivableContractModel model)
+        public async Task<IActionResult> PostAccountsToReceivableContract(AccountsToReceivableContractEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -149,10 +153,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutAccountsToReceivableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToReceivableContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToReceivableContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutAccountsToReceivableContract(AccountsToReceivableContractModel model)
+        public async Task<IActionResult> PutAccountsToReceivableContract(AccountsToReceivableContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -184,10 +188,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableAccountsToReceivableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToReceivableContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToReceivableContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableAccountsToReceivableContract(AccountsToReceivableContractModel model)
+        public async Task<IActionResult> EnableAccountsToReceivableContract(AccountsToReceivableContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -212,10 +216,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableAccountsToReceivableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToReceivableContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToReceivableContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableAccountsToReceivableContract(AccountsToReceivableContractModel model)
+        public async Task<IActionResult> DisableAccountsToReceivableContract(AccountsToReceivableContractEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -240,7 +244,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteAccountsToReceivableContract.
         /// </summary>
-        /// <param name="model">The model<see cref="AccountsToReceivableContractModel"/>.</param>
+        /// <param name="model">The model<see cref="AccountsToReceivableContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{AccountsToReceivableContractId}")]
         public async Task<IActionResult> DeleteAccountsToReceivableContract(Int32? AccountsToReceivableContractId)

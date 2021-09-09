@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly BankAccountService business;
+        private string spForRead = "Banks.BankAccounts_READ";
+        private string spForList = "Banks.BankAccount_LIST";
+        private string spForCreate = "Banks.BankAccount_CREATE";
+        private string spForUpdate = "Banks.BankAccount_UPDATE";
+        private string spForDelete = "Banks.BankAccount_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BankAccountController"/> class.
@@ -112,10 +117,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="BankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="BankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostBankAccount(BankAccountModel model)
+        public async Task<IActionResult> PostBankAccount(BankAccountEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -143,10 +148,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="BankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="BankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutBankAccount(BankAccountModel model)
+        public async Task<IActionResult> PutBankAccount(BankAccountEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -175,10 +180,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="BankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="BankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableBankAccount(BankAccountModel model)
+        public async Task<IActionResult> EnableBankAccount(BankAccountEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -203,10 +208,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="BankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="BankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableBankAccount(BankAccountModel model)
+        public async Task<IActionResult> DisableBankAccount(BankAccountEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -231,7 +236,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteBankAccount.
         /// </summary>
-        /// <param name="model">The model<see cref="BankAccountModel"/>.</param>
+        /// <param name="model">The model<see cref="BankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{BankAccountId}")]
         public async Task<IActionResult> DeleteBankAccount(Int32? BankAccountId)

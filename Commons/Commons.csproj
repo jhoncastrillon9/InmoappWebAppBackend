@@ -4,12 +4,4 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\Companies\" />
-    <Folder Include="DTOs\Contracts\" />
-    <Folder Include="DTOs\Banks\" />
-    <Folder Include="DTOs\Tenants\" />
-    <Folder Include="DTOs\Owners\" />
-  </ItemGroup>
-
 </Project>

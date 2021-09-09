@@ -109,10 +109,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostTypeOffer.
         /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferModel"/>.</param>
+        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostTypeOffer(TypeOfferModel model)
+        public async Task<IActionResult> PostTypeOffer(TypeOfferEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,10 +138,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutTypeOffer.
         /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferModel"/>.</param>
+        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutTypeOffer(TypeOfferModel model)
+        public async Task<IActionResult> PutTypeOffer(TypeOfferEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -168,10 +168,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableTypeOffer.
         /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferModel"/>.</param>
+        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableTypeOffer(TypeOfferModel model)
+        public async Task<IActionResult> EnableTypeOffer(TypeOfferEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -196,10 +196,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableTypeOffer.
         /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferModel"/>.</param>
+        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableTypeOffer(TypeOfferModel model)
+        public async Task<IActionResult> DisableTypeOffer(TypeOfferEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -224,7 +224,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteTypeOffer.
         /// </summary>
-        /// <param name="model">The model<see cref="TypeOfferModel"/>.</param>
+        /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{TypeOfferId}")]
         public async Task<IActionResult> DeleteTypeOffer(Int32? TypeOfferId)

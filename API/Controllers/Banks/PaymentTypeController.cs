@@ -23,6 +23,11 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly PaymentTypeService business;
+        private string spForRead = "Banks.PaymentType_READ";
+        private string spForList = "Banks.PaymentTypes_LIST";
+        private string spForCreate = "Banks.PaymentType_CREATE";
+        private string spForUpdate = "Banks.PaymentType_UPDATE";
+        private string spForDelete = "Banks.PaymentType_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PaymentTypeController"/> class.
@@ -112,10 +117,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostPaymentType.
         /// </summary>
-        /// <param name="model">The model<see cref="PaymentTypeModel"/>.</param>
+        /// <param name="model">The model<see cref="PaymentTypeEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostPaymentType(PaymentTypeModel model)
+        public async Task<IActionResult> PostPaymentType(PaymentTypeEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -142,10 +147,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutPaymentType.
         /// </summary>
-        /// <param name="model">The model<see cref="PaymentTypeModel"/>.</param>
+        /// <param name="model">The model<see cref="PaymentTypeEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutPaymentType(PaymentTypeModel model)
+        public async Task<IActionResult> PutPaymentType(PaymentTypeEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -173,7 +178,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeletePaymentType.
         /// </summary>
-        /// <param name="model">The model<see cref="PaymentTypeModel"/>.</param>
+        /// <param name="model">The model<see cref="PaymentTypeEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{PaymentTypeId}")]
         public async Task<IActionResult> DeletePaymentType(Int32? PaymentTypeId)

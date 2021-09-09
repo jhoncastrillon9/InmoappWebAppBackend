@@ -109,10 +109,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostPropertyStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostPropertyStatus(PropertyStatusModel model)
+        public async Task<IActionResult> PostPropertyStatus(PropertyStatusEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,10 +138,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutPropertyStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutPropertyStatus(PropertyStatusModel model)
+        public async Task<IActionResult> PutPropertyStatus(PropertyStatusEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -168,10 +168,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnablePropertyStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnablePropertyStatus(PropertyStatusModel model)
+        public async Task<IActionResult> EnablePropertyStatus(PropertyStatusEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -196,10 +196,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisablePropertyStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisablePropertyStatus(PropertyStatusModel model)
+        public async Task<IActionResult> DisablePropertyStatus(PropertyStatusEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -224,7 +224,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeletePropertyStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{PropertyStatusId}")]
         public async Task<IActionResult> DeletePropertyStatus(Int32? PropertyStatusId)

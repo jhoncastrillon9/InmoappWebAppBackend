@@ -112,10 +112,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostTenantsByContract.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostTenantsByContract(TenantsByContractModel model)
+        public async Task<IActionResult> PostTenantsByContract(TenantsByContractEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -142,10 +142,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutTenantsByContract.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutTenantsByContract(TenantsByContractModel model)
+        public async Task<IActionResult> PutTenantsByContract(TenantsByContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -173,10 +173,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableTenantsByContract.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableTenantsByContract(TenantsByContractModel model)
+        public async Task<IActionResult> EnableTenantsByContract(TenantsByContractEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -201,10 +201,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableTenantsByContract.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableTenantsByContract(TenantsByContractModel model)
+        public async Task<IActionResult> DisableTenantsByContract(TenantsByContractEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -229,7 +229,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteTenantsByContract.
         /// </summary>
-        /// <param name="model">The model<see cref="TenantsByContractModel"/>.</param>
+        /// <param name="model">The model<see cref="TenantsByContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{TenantsByContractId}")]
         public async Task<IActionResult> DeleteTenantsByContract(Int32? TenantsByContractId)

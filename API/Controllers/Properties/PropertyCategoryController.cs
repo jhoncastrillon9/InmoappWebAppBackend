@@ -109,10 +109,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostPropertyCategory.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostPropertyCategory(PropertyCategoryModel model)
+        public async Task<IActionResult> PostPropertyCategory(PropertyCategoryEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,10 +138,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutPropertyCategory.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutPropertyCategory(PropertyCategoryModel model)
+        public async Task<IActionResult> PutPropertyCategory(PropertyCategoryEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -168,10 +168,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnablePropertyCategory.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnablePropertyCategory(PropertyCategoryModel model)
+        public async Task<IActionResult> EnablePropertyCategory(PropertyCategoryEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -196,10 +196,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisablePropertyCategory.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisablePropertyCategory(PropertyCategoryModel model)
+        public async Task<IActionResult> DisablePropertyCategory(PropertyCategoryEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -224,7 +224,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeletePropertyCategory.
         /// </summary>
-        /// <param name="model">The model<see cref="PropertyCategoryModel"/>.</param>
+        /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{PropertyCategoryId}")]
         public async Task<IActionResult> DeletePropertyCategory(Int32? PropertyCategoryId)

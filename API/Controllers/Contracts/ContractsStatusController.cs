@@ -109,10 +109,10 @@ namespace API.Controllers
         /// <summary>
         /// The PostContractsStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostContractsStatus(ContractsStatusModel model)
+        public async Task<IActionResult> PostContractsStatus(ContractsStatusEntity model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,10 +138,10 @@ namespace API.Controllers
         /// <summary>
         /// The PutContractsStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutContractsStatus(ContractsStatusModel model)
+        public async Task<IActionResult> PutContractsStatus(ContractsStatusEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -168,10 +168,10 @@ namespace API.Controllers
         /// <summary>
         /// The EnableContractsStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableContractsStatus(ContractsStatusModel model)
+        public async Task<IActionResult> EnableContractsStatus(ContractsStatusEntity model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -196,10 +196,10 @@ namespace API.Controllers
         /// <summary>
         /// The DisableContractsStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableContractsStatus(ContractsStatusModel model)
+        public async Task<IActionResult> DisableContractsStatus(ContractsStatusEntity model)
         {
             Int32 DisabledBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -224,7 +224,7 @@ namespace API.Controllers
         /// <summary>
         /// The DeleteContractsStatus.
         /// </summary>
-        /// <param name="model">The model<see cref="ContractsStatusModel"/>.</param>
+        /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpDelete("{ContractsStatusId}")]
         public async Task<IActionResult> DeleteContractsStatus(Int32? ContractsStatusId)
