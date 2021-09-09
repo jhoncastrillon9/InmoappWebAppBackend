@@ -8,10 +8,4 @@ namespace Entities.Commons
 		public String ZoneName { get; set; }
 		public Int32 CityId { get; set; }
     }
-
-    public class ZoneResponseSP : ResponseSP
-    {
-        public Int32 ZoneId { get; set; }      
-    }
-
 }

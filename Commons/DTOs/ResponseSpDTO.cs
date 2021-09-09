@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Entities
+namespace Commons
 {
-    public class ResponseSP
+    public class ResponseSpDTO
     {
         public Int16 ErrorId { get; set; }
         public String Message { get; set; }

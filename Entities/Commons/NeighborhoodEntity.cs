@@ -9,11 +9,4 @@ namespace Entities.Commons
 		public Int32 ZoneId { get; set; }
 
     }
-
-
-    public class NeighborhoodResponseSP: ResponseSP
-    {		
-		public Int32 NeighborhoodId { get; set; }
-    }
-
 }

@@ -2,12 +2,13 @@ namespace Business.Commons
 {
     using DataAccess.Commons;
     using Entities.Commons;
+    using global::Commons.DTOs.Commons;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Defines the <see cref="ZoneService" />.
     /// </summary>
-    public class ZoneService : BaseService<ZoneResponseSP>
+    public class ZoneService : BaseService<ZoneDTO>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneService"/> class.

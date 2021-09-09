@@ -10,10 +10,4 @@ namespace Entities.Commons
 
     }
 
-    public class CityResponseSP: ResponseSP
-    {		
-		public Int32 CityId { get; set; }
-
-    }
-
 }
