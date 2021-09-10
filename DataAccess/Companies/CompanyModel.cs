@@ -10,7 +10,7 @@ namespace DataAccess.Companies
     /// </summary>
     public class CompanyModel: BaseModel
     {
-        public CompanyModel(IConfiguration config, string con) : base(config, con)
+        public CompanyModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

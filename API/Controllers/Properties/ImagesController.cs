@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ImagesController(IConfiguration config)
+        public ImagesController(ImagesService imagesService)
         {
-            business = new ImagesService(config, "Development");
+            business = imagesService;
         }
 
         /// <summary>

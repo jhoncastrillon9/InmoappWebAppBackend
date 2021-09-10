@@ -1,12 +1,5 @@
 namespace Business.Properties
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using Entities.Properties;
     using DataAccess.Properties;
     using global::Commons.DTOs.Properties;
 
@@ -15,7 +8,7 @@ namespace Business.Properties
     /// </summary>
     public class PropertyCategoryService : BaseService<PropertyCategoryDTO>
     {
-        public PropertyCategoryService(IConfiguration config, string con) : base(new PropertyCategoryModel(config, con))
+        public PropertyCategoryService(PropertyCategoryModel model) : base(model)
         {
 
         }

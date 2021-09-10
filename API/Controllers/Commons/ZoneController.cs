@@ -34,9 +34,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ZoneController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ZoneController(IConfiguration config)
+        public ZoneController(ZoneService zoneService)
         {
-            business = new ZoneService(config, "Development");
+            business = zoneService;
         }
 
         /// <summary>

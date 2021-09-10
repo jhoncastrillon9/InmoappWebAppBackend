@@ -10,7 +10,7 @@ namespace DataAccess.Properties
     /// </summary>
     public class IvaModel: BaseModel
     {
-        public IvaModel(IConfiguration config, string con) : base(config, con)
+        public IvaModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

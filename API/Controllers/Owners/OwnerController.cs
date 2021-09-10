@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="OwnerController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public OwnerController(IConfiguration config)
+        public OwnerController(OwnerService ownerService)
         {
-            business = new OwnerService(config, "Development");
+            business = ownerService;
         }
 
         /// <summary>

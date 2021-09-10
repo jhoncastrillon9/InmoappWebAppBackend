@@ -10,7 +10,7 @@ namespace DataAccess.Commons
     /// </summary>
     public class CityModel: BaseModel
     {
-        public CityModel(IConfiguration config, string con) : base(config, con)
+        public CityModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

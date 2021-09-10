@@ -10,7 +10,7 @@ namespace DataAccess.Banks
     /// </summary>
     public class AccountsToPayContractModel: BaseModel
     {
-        public AccountsToPayContractModel(IConfiguration config, string con) : base(config, con)
+        public AccountsToPayContractModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

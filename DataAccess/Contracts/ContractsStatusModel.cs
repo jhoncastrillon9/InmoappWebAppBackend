@@ -10,7 +10,7 @@ namespace DataAccess.Contracts
     /// </summary>
     public class ContractsStatusModel: BaseModel
     {
-        public ContractsStatusModel(IConfiguration config, string con) : base(config, con)
+        public ContractsStatusModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

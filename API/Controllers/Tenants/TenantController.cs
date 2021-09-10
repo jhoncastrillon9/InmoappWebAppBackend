@@ -23,19 +23,19 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly TenantService business;
-        private string spForRead = "Properties.Tenant_READ";
-        private string spForList = "Properties.Tenant_LIST";
-        private string spForCreate = "Properties.Tenant_CREATE";
-        private string spForUpdate = "Properties.Tenant_UPDATE";
-        private string spForDelete = "Properties.Tenant_DELETE";
+        private string spForRead = "Tenants.Tenant_READ";
+        private string spForList = "Tenants.Tenant_LIST";
+        private string spForCreate = "Tenants.Tenant_CREATE";
+        private string spForUpdate = "Tenants.Tenant_UPDATE";
+        private string spForDelete = "Tenants.Tenant_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public TenantController(IConfiguration config)
+        public TenantController(TenantService tenantService)
         {
-            business = new TenantService(config, "Development");
+            business = tenantService;
         }
 
         /// <summary>

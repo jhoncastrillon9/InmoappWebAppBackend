@@ -32,9 +32,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsToReceivableContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsToReceivableContractController(IConfiguration config)
+        public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService)
         {
-            business = new AccountsToReceivableContractService(config, "Development");
+            business = accountsToReceivableContractService;
         }
 
         /// <summary>

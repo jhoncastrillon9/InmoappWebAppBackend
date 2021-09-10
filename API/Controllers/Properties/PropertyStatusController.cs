@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PropertyStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PropertyStatusController(IConfiguration config)
+        public PropertyStatusController(PropertyStatusService propertyStatusService)
         {
-            business = new PropertyStatusService(config, "Development");
+            business = propertyStatusService;
         }
 
         /// <summary>

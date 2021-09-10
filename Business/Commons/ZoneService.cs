@@ -1,7 +1,6 @@
 namespace Business.Commons
 {
     using DataAccess.Commons;
-    using Entities.Commons;
     using global::Commons.DTOs.Commons;
     using Microsoft.Extensions.Configuration;
 
@@ -14,8 +13,8 @@ namespace Business.Commons
         /// Initializes a new instance of the <see cref="ZoneService"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        /// <param name="con">The con<see cref="string"/>.</param>
-        public ZoneService( IConfiguration config, string con) : base(new ZoneModel(config, con))
+        /// <param name="con">The con<see cref="string"/>.</param>        
+        public ZoneService(ZoneModel model) : base(model)
         {
 
         }

@@ -1,5 +1,6 @@
 namespace DataAccess.Commons
 {
+    using CodeMono.DataAccess.DBConnection;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -7,7 +8,7 @@ namespace DataAccess.Commons
     /// </summary>
     public class NeighborhoodModel : BaseModel
     {
-        public NeighborhoodModel(IConfiguration config, string con) : base(config, con)
+        public NeighborhoodModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

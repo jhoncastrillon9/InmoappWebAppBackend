@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="NeighborhoodController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public NeighborhoodController(IConfiguration config)
+        public NeighborhoodController(NeighborhoodService neighborhoodService)
         {
-            business = new NeighborhoodService(config, "Development");
+            business = neighborhoodService;
         }
 
         /// <summary>

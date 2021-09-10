@@ -1,14 +1,8 @@
 namespace Business.Tenants
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using Entities.Tenants;
     using DataAccess.Tenants;
     using global::Commons.DTOs.Tenants;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Defines the <see cref="TenantService" />.
@@ -19,8 +13,8 @@ namespace Business.Tenants
         /// Initializes a new instance of the <see cref="ZoneService"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        /// <param name="con">The con<see cref="string"/>.</param>
-        public TenantService(IConfiguration config, string con) : base(new TenantModel(config, con))
+        /// <param name="con">The con<see cref="string"/>.</param>        
+        public TenantService(TenantModel model) : base(model)
         {
 
         }

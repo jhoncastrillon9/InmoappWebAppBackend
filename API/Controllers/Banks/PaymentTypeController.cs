@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PaymentTypeController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PaymentTypeController(IConfiguration config)
+        public PaymentTypeController(PaymentTypeService paymentTypeService)
         {
-            business = new PaymentTypeService(config, "Development");
+            business = paymentTypeService;
         }
 
         /// <summary>

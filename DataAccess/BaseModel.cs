@@ -16,11 +16,10 @@ namespace DataAccess
         internal DBConnectionMSSQL database;
 
        
-        public BaseModel(IConfiguration config, string con)
+        public BaseModel(DBConnectionMSSQL db)
         {
-            database = new DBConnectionMSSQL(config, con);
+            database = db;
         }
-
 
         /// <summary>
         /// ejecuta un SP de la BD

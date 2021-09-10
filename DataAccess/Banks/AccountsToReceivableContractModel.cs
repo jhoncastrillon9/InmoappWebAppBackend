@@ -10,7 +10,7 @@ namespace DataAccess.Banks
     /// </summary>
     public class AccountsToReceivableContractModel: BaseModel
     {
-        public AccountsToReceivableContractModel(IConfiguration config, string con) : base(config, con)
+        public AccountsToReceivableContractModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="TypeOfferController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public TypeOfferController(IConfiguration config)
+        public TypeOfferController(TypeOfferService typeOfferService)
         {
-            business = new TypeOfferService(config, "Development");
+            business = typeOfferService;
         }
 
         /// <summary>

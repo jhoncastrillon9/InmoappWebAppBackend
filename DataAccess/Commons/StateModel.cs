@@ -1,3 +1,4 @@
+using CodeMono.DataAccess.DBConnection;
 using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Commons
@@ -7,7 +8,7 @@ namespace DataAccess.Commons
     /// </summary>
     public class StateModel : BaseModel
     {
-        public StateModel(IConfiguration config, string con) : base(config, con)
+        public StateModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

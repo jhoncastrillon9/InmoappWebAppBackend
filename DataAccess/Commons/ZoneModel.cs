@@ -10,13 +10,13 @@ namespace DataAccess.Commons
     /// </summary>
     public class ZoneModel: BaseModel
     {
-      
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneModel"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public ZoneModel(IConfiguration config, string con):base(config, con)
+        public ZoneModel(DBConnectionMSSQL db) : base(db)
         {
             
         }

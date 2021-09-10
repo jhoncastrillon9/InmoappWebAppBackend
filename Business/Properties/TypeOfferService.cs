@@ -14,8 +14,8 @@ namespace Business.Properties
     /// Defines the <see cref="TypeOfferService" />.
     /// </summary>
     public class TypeOfferService: BaseService<TypeOfferDTO>
-    {
-        public TypeOfferService(IConfiguration config, string con) : base(new TypeOfferModel(config, con))
+    {        
+        public TypeOfferService(TypeOfferModel model) : base(model)
         {
 
         }

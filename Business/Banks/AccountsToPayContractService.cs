@@ -20,7 +20,7 @@ namespace Business.Banks
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public AccountsToPayContractService(IConfiguration config, string con) : base(new AccountsToPayContractModel(config, con))
+        public AccountsToPayContractService(AccountsToPayContractModel model) : base(model)
         {
 
         }

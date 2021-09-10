@@ -10,7 +10,7 @@ namespace DataAccess.Banks
     /// </summary>
     public class AccountsStatusModel: BaseModel
     {
-        public AccountsStatusModel(IConfiguration config, string con) : base(config, con)
+        public AccountsStatusModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

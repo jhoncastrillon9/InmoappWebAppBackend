@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="IvaController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public IvaController(IConfiguration config)
+        public IvaController(IvaService ivaService)
         {
-            business = new IvaService(config, "Development");
+            business = ivaService;
         }
 
         /// <summary>

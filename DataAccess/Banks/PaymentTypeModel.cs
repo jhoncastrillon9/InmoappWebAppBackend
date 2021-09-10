@@ -10,7 +10,7 @@ namespace DataAccess.Banks
     /// </summary>
     public class PaymentTypeModel: BaseModel
     {
-        public PaymentTypeModel(IConfiguration config, string con) : base(config, con)
+        public PaymentTypeModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsStatusController(IConfiguration config)
+        public AccountsStatusController(AccountsStatusService accountsStatusService)
         {
-            business = new AccountsStatusService(config, "Development");
+            business = accountsStatusService;
         }
 
         /// <summary>

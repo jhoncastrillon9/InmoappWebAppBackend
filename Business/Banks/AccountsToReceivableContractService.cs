@@ -1,14 +1,8 @@
 namespace Business.Banks
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using Entities.Banks;
     using DataAccess.Banks;
     using global::Commons.DTOs.Banks;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Defines the <see cref="AccountsToReceivableContractService" />.
@@ -20,7 +14,7 @@ namespace Business.Banks
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public AccountsToReceivableContractService(IConfiguration config, string con) : base(new AccountsToReceivableContractModel(config, con))
+        public AccountsToReceivableContractService(AccountsToReceivableContractModel model) : base(model)
         {
 
         }

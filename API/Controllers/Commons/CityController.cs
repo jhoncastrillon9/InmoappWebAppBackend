@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="CityController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public CityController(IConfiguration config)
+        public CityController(CityService cityService)
         {
-            business = new CityService(config, "Development");
+            business = cityService;
         }
 
         /// <summary>

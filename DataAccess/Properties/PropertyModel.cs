@@ -10,7 +10,7 @@ namespace DataAccess.Properties
     /// </summary>
     public class PropertyModel: BaseModel
     {
-        public PropertyModel(IConfiguration config, string con) : base(config, con)
+        public PropertyModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

@@ -16,6 +16,7 @@
         /// Defines the _conexion.
         /// </summary>
         private readonly string _conexion;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DBConnectionMSSQL"/> class.
@@ -23,7 +24,8 @@
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public DBConnectionMSSQL(IConfiguration config)
         {
-            _conexion = config.GetConnectionString("Default").ToString();
+            _configuration = config;
+            _conexion = _configuration.GetConnectionString("Development").ToString();
         }
 
         /// <summary>
@@ -33,7 +35,7 @@
         /// <param name="conexion">The conexion<see cref="string"/>.</param>
         public DBConnectionMSSQL(IConfiguration config, string conexion)
         {
-            _conexion = config.GetConnectionString(conexion).ToString();
+            _conexion = config.GetConnectionString("Development").ToString();
         }
 
         /// <summary>

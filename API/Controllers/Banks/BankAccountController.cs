@@ -23,7 +23,7 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly BankAccountService business;
-        private string spForRead = "Banks.BankAccounts_READ";
+        private string spForRead = "Banks.BankAccount_READ";
         private string spForList = "Banks.BankAccount_LIST";
         private string spForCreate = "Banks.BankAccount_CREATE";
         private string spForUpdate = "Banks.BankAccount_UPDATE";
@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="BankAccountController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public BankAccountController(IConfiguration config)
+        public BankAccountController(BankAccountService bankAccountService)
         {
-            business = new BankAccountService(config, "Development");
+            business = bankAccountService;
         }
 
         /// <summary>

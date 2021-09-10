@@ -10,7 +10,7 @@ namespace DataAccess.Contracts
     /// </summary>
     public class TenantsByContractModel: BaseModel
     {
-        public TenantsByContractModel(IConfiguration config, string con) : base(config, con)
+        public TenantsByContractModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

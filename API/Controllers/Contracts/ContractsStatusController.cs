@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ContractsStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ContractsStatusController(IConfiguration config)
+        public ContractsStatusController(ContractsStatusService contractsStatusService)
         {
-            business = new ContractsStatusService(config, "Development");
+            business = contractsStatusService;
         }
 
         /// <summary>

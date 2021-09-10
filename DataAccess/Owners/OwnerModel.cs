@@ -10,7 +10,7 @@ namespace DataAccess.Owners
     /// </summary>
     public class OwnerModel: BaseModel
     {
-        public OwnerModel(IConfiguration config, string con) : base(config, con)
+        public OwnerModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

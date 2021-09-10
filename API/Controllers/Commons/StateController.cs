@@ -32,9 +32,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="StateController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public StateController(IConfiguration config)
+        public StateController(StateService stateService)
         {
-            business = new StateService(config, "Development");
+            business = stateService;
         }
 
         /// <summary>

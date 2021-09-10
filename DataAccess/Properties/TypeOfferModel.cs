@@ -10,7 +10,7 @@ namespace DataAccess.Properties
     /// </summary>
     public class TypeOfferModel: BaseModel
     {
-        public TypeOfferModel(IConfiguration config, string con) : base(config, con)
+        public TypeOfferModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

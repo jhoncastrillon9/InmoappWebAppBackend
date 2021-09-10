@@ -33,9 +33,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="HistoryBankAccountController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public HistoryBankAccountController(IConfiguration config)
+        public HistoryBankAccountController(HistoryBankAccountService historyBankAccountService)
         {
-            business = new HistoryBankAccountService(config, "Development");
+            business = historyBankAccountService;
         }
 
         /// <summary>

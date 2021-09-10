@@ -10,7 +10,7 @@ namespace DataAccess.Tenants
     /// </summary>
     public class TenantModel: BaseModel
     {
-        public TenantModel(IConfiguration config, string con) : base(config, con)
+        public TenantModel(DBConnectionMSSQL db) : base(db)
         {
 
         }

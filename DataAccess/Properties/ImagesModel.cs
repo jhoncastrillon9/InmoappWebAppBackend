@@ -10,7 +10,7 @@ namespace DataAccess.Properties
     /// </summary>
     public class ImagesModel : BaseModel
     {
-        public ImagesModel(IConfiguration config, string con) : base(config, con)
+        public ImagesModel(DBConnectionMSSQL db) : base(db)
         {
 
         }
