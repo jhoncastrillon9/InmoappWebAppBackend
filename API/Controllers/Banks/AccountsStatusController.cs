@@ -1,5 +1,8 @@
 namespace API.Controllers
 {
+    using Business.Banks;
+    using CodeMono.Entities;
+    using Entities.Banks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,16 +11,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Banks;
-    using Entities.Banks;
-
     /// <summary>
     /// Defines the <see cref="AccountsStatusController" />.
     /// </summary>
     [Authorize]
     [Route("Banks/[controller]")]
     [ApiController]
-    public class AccountsStatusController: ControllerBase
+    public class AccountsStatusController : BaseController
     {
         /// <summary>
         /// Defines the business.
@@ -29,6 +29,7 @@ namespace API.Controllers
         private string spForUpdate = "Banks.AccountsStatus_UPDATE";
         private string spForDelete = "Banks.AccountsStatus_DELETE";
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsStatusController"/> class.
         /// </summary>
@@ -36,6 +37,7 @@ namespace API.Controllers
         public AccountsStatusController(AccountsStatusService accountsStatusService)
         {
             business = accountsStatusService;
+           
         }
 
         /// <summary>
@@ -48,19 +50,29 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAccountsStatus(Int32? AccountsStatusId, String AccountsStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsStatusId", AccountsStatusId },
-				{"AccountsStatusName", AccountsStatusName }
-            };
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"AccountsStatusName", AccountsStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await business.ExecStoreProcedure(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -73,19 +85,30 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListAccountsStatus(Int32? AccountsStatusId, String AccountsStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            LoadUserSession();
+            try
             {
-				{"Option", 1 },
-				{"AccountsStatusId", AccountsStatusId },
-				{"AccountsStatusName", AccountsStatusName }
-            };
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"AccountsStatusName", AccountsStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await business.ExecStoreProcedure(parameters, spForList);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -96,19 +119,30 @@ namespace API.Controllers
         [HttpGet("{AccountsStatusId}")]
         public async Task<IActionResult> GetAccountsStatus(Int32 AccountsStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"AccountsStatusId", AccountsStatusId },
-				{"AccountsStatusName", null }
-            };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
-            if (result.executionError)
+            try
             {
-                return new BadRequestObjectResult(result);
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"AccountsStatusName", null }
+                };
+
+                response = await business.ExecStoreProcedure(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -119,26 +153,33 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAccountsStatus(AccountsStatusEntity model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsStatusName", model.AccountsStatusName }                 
+
+                };
+
+                response = await business.ExecStoreProcedure(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"AccountsStatusName", model.AccountsStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
+
+
 
         /// <summary>
         /// The PutAccountsStatus.
@@ -148,29 +189,34 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAccountsStatus(AccountsStatusEntity model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsStatusId", model.AccountsStatusId },
+                    {"AccountsStatusName", model.AccountsStatusName },
+                    {"UpdatedBy", userIdSession }
+                };
+
+                response = await business.ExecStoreProcedure(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"AccountsStatusId", model.AccountsStatusId },
-				{"AccountsStatusName", model.AccountsStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
-       
+
 
         /// <summary>
         /// The DeleteAccountsStatus.
@@ -180,17 +226,26 @@ namespace API.Controllers
         [HttpDelete("{AccountsStatusId}")]
         public async Task<IActionResult> DeleteAccountsStatus(Int32? AccountsStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"AccountsStatusId", AccountsStatusId }
-            };
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"AccountsStatusId", AccountsStatusId }
+                };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await business.ExecStoreProcedure(parameters, spForDelete);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(response);
+            }
         }
 
     }

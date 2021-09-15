@@ -11,6 +11,7 @@ namespace Business
     {          
         protected ResponseModel response = new ResponseModel();
         protected BaseModel model;
+        
 
         public BaseService(BaseModel model)
         {            
