@@ -1,10 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace DataAccess
 {
-    public class InmoappContext
+    public class InmoappContext : DbContext
     {
+        public InmoappContext()
+        {
+
+        }
+
+        public InmoappContext(DbContextOptions<InmoappContext> options) : base(options)
+        {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+           
+        }
     }
 }
