@@ -1,6 +1,7 @@
 namespace DataAccess.Properties
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Properties
     /// <summary>
     /// Defines the <see cref="ImagesModel" />.
     /// </summary>
-    public class ImagesModel : BaseModel
+    public class ImagesModel : BaseModel<Images>
     {
-        public ImagesModel(DBConnectionMSSQL db) : base(db)
+        public ImagesModel(InmmoAppContext context) : base(context)
         {
 
         }

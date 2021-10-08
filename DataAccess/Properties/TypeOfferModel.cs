@@ -1,6 +1,7 @@
 namespace DataAccess.Properties
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Properties
     /// <summary>
     /// Defines the <see cref="TypeOfferModel" />.
     /// </summary>
-    public class TypeOfferModel: BaseModel
+    public class TypeOfferModel: BaseModel<TypeOffer>
     {
-        public TypeOfferModel(DBConnectionMSSQL db) : base(db)
+        public TypeOfferModel(InmmoAppContext context) : base(context)
         {
 
         }

@@ -1,6 +1,7 @@
 namespace DataAccess.Companies
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Companies
     /// <summary>
     /// Defines the <see cref="CompanyModel" />.
     /// </summary>
-    public class CompanyModel: BaseModel
+    public class CompanyModel: BaseModel<Company>
     {
-        public CompanyModel(DBConnectionMSSQL db) : base(db)
+        public CompanyModel(InmmoAppContext context) : base(context)
         {
 
         }

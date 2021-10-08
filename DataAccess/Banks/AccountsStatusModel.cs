@@ -1,6 +1,7 @@
 namespace DataAccess.Banks
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Banks
     /// <summary>
     /// Defines the <see cref="AccountsStatusModel" />.
     /// </summary>
-    public class AccountsStatusModel: BaseModel
+    public class AccountsStatusModel: BaseModel<AccountsStatus>
     {
-        public AccountsStatusModel(DBConnectionMSSQL db) : base(db)
+        public AccountsStatusModel(InmmoAppContext context) : base(context)
         {
 
         }

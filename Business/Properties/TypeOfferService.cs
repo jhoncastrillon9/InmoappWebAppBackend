@@ -9,13 +9,15 @@ namespace Business.Properties
     using Entities.Properties;
     using DataAccess.Properties;
     using global::Commons.DTOs.Properties;
+    using DataAccess;
+    using DataAccess.Data;
 
     /// <summary>
     /// Defines the <see cref="TypeOfferService" />.
     /// </summary>
-    public class TypeOfferService: BaseService<TypeOfferDTO>
+    public class TypeOfferService: BaseService<TypeOffer>
     {        
-        public TypeOfferService(TypeOfferModel model) : base(model)
+        public TypeOfferService(TypeOfferModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
         {
 
         }

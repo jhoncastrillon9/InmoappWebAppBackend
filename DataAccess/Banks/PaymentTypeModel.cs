@@ -1,6 +1,7 @@
 namespace DataAccess.Banks
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Banks
     /// <summary>
     /// Defines the <see cref="PaymentTypeModel" />.
     /// </summary>
-    public class PaymentTypeModel: BaseModel
+    public class PaymentTypeModel: BaseModel<PaymentType>
     {
-        public PaymentTypeModel(DBConnectionMSSQL db) : base(db)
+        public PaymentTypeModel(InmmoAppContext context) : base(context)
         {
 
         }

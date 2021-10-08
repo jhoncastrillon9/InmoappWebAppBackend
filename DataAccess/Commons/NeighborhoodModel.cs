@@ -1,14 +1,15 @@
 namespace DataAccess.Commons
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Defines the <see cref="NeighborhoodModel" />.
     /// </summary>
-    public class NeighborhoodModel : BaseModel
+    public class NeighborhoodModel : BaseModel<Neighborhood>
     {
-        public NeighborhoodModel(DBConnectionMSSQL db) : base(db)
+        public NeighborhoodModel(InmmoAppContext context) : base(context)
         {
 
         }

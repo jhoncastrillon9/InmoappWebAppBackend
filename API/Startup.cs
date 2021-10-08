@@ -6,10 +6,12 @@ using Business.Owners;
 using Business.Properties;
 using Business.Tenants;
 using CodeMono.DataAccess.DBConnection;
+using DataAccess;
 using DataAccess.Banks;
 using DataAccess.Commons;
 using DataAccess.Companies;
 using DataAccess.Contracts;
+using DataAccess.Data;
 using DataAccess.Owners;
 using DataAccess.Properties;
 using DataAccess.Tenants;
@@ -17,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -88,8 +91,12 @@ namespace CodeMono.API
 
             //Otros modelo
             services.AddScoped<DBConnectionMSSQL, DBConnectionMSSQL>();
-            
-            
+            services.AddScoped<InmmoAppContext, InmmoAppContext>();
+            services.AddScoped<BaseStoreProcedureModel, BaseStoreProcedureModel>();
+
+            //Agregar cadena de conexion al contexto
+            services.AddDbContext<InmmoAppContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("Development")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

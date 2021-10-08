@@ -28,9 +28,9 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public UserService(IConfiguration config, string con)
+        public UserService(IConfiguration config)
         {
-            dao = new UserDao(config, con);
+            dao = new UserDao(config);
             m = new ResponseModel();
         }
 

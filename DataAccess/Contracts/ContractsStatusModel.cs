@@ -1,6 +1,7 @@
 namespace DataAccess.Contracts
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Contracts
     /// <summary>
     /// Defines the <see cref="ContractsStatusModel" />.
     /// </summary>
-    public class ContractsStatusModel: BaseModel
+    public class ContractsStatusModel: BaseModel<ContractsStatus>
     {
-        public ContractsStatusModel(DBConnectionMSSQL db) : base(db)
+        public ContractsStatusModel(InmmoAppContext context) : base(context)
         {
 
         }

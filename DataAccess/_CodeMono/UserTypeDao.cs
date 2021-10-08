@@ -20,9 +20,9 @@ namespace CodeMono.DataAccess
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public UserTypeDao(IConfiguration config, string con)
+        public UserTypeDao(IConfiguration config)
         {
-            database = new DBConnectionMSSQL(config, con);
+            database = new DBConnectionMSSQL(config);
         }
 
         /// <summary>

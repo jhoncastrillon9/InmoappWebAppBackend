@@ -1,6 +1,7 @@
 namespace DataAccess.Properties
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace DataAccess.Properties
     /// <summary>
     /// Defines the <see cref="IvaModel" />.
     /// </summary>
-    public class IvaModel: BaseModel
+    public class IvaModel: BaseModel<Iva>
     {
-        public IvaModel(DBConnectionMSSQL db) : base(db)
+        public IvaModel(InmmoAppContext context) : base(context)
         {
 
         }

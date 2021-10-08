@@ -30,7 +30,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public UserTypeController(IConfiguration config)
         {
-            business = new UserTypeService(config, "Development");
+            business = new UserTypeService(config);
         }
 
         /// <summary>

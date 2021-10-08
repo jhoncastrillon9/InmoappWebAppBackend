@@ -58,7 +58,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId },
                     {"AccountsStatusName", AccountsStatusName }
                 };
-
+                business.prueba();
                 response = await business.ExecStoreProcedure(parameters, spForRead);
 
                 return new OkObjectResult(response);
@@ -94,6 +94,8 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId },
                     {"AccountsStatusName", AccountsStatusName }
                 };
+
+                business.prueba();
 
                 response = await business.ExecStoreProcedure(parameters, spForList);
 
@@ -189,6 +191,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAccountsStatus(AccountsStatusEntity model)
         {
+            LoadUserSession();
             try
             {
 
@@ -196,8 +199,8 @@ namespace API.Controllers
                 {
                     {"Option", 1 },
                     {"AccountsStatusId", model.AccountsStatusId },
-                    {"AccountsStatusName", model.AccountsStatusName },
-                    {"UpdatedBy", userIdSession }
+                    {"AccountsStatusName", model.AccountsStatusName }
+                    //{"UpdatedBy", userIdSession }
                 };
 
                 response = await business.ExecStoreProcedure(parameters, spForUpdate);

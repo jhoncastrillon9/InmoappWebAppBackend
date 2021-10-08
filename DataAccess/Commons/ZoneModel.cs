@@ -1,6 +1,7 @@
 namespace DataAccess.Commons
 {
     using CodeMono.DataAccess.DBConnection;
+    using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace DataAccess.Commons
     /// <summary>
     /// Defines the <see cref="ZoneModel" />.
     /// </summary>
-    public class ZoneModel: BaseModel
+    public class ZoneModel: BaseModel<Zone>
     {
 
         /// <summary>
@@ -16,7 +17,7 @@ namespace DataAccess.Commons
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public ZoneModel(DBConnectionMSSQL db) : base(db)
+        public ZoneModel(InmmoAppContext context) : base(context)
         {
             
         }

@@ -28,9 +28,9 @@
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public AuthenticationService(IConfiguration config, string con)
+        public AuthenticationService(IConfiguration config)
         {
-            dao = new AuthenticationDao(config, con);
+            dao = new AuthenticationDao(config);
             m = new ResponseModel();
         }
 

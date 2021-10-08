@@ -10,18 +10,20 @@ namespace Business
     public class BaseService<TEntity> where TEntity : class, new()
     {          
         protected ResponseModel response = new ResponseModel();
-        protected BaseModel model;
-        
+        protected BaseModel<TEntity> model;
+        protected BaseStoreProcedureModel spModel;
 
-        public BaseService(BaseModel model)
+
+        public BaseService(BaseModel<TEntity> model, BaseStoreProcedureModel spModel)
         {            
             this.model = model;
+            this.spModel = spModel;
         }
 
 
         public async Task<ResponseModel> ExecStoreProcedure(Dictionary<string, dynamic> parameters, string spName)
         {
-            response.data = await model.ExecStoreProcedure<TEntity>(parameters, spName);
+            response.data = await spModel.ExecStoreProcedure<TEntity>(parameters, spName);
 
             return response;
         }

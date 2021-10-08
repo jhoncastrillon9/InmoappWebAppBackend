@@ -1,4 +1,6 @@
 ﻿using CodeMono.DataAccess.DBConnection;
+using DataAccess.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -7,30 +9,24 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class BaseModel: Disposable 
+    public class BaseModel<TEntity> where TEntity : class, new()
     {
 
         /// <summary>
-        /// Defines the database.
+        /// Contexto
         /// </summary>
-        internal DBConnectionMSSQL database;
+        InmmoAppContext _context;
 
-       
-        public BaseModel(DBConnectionMSSQL db)
-        {
-            database = db;
+        public BaseModel(InmmoAppContext context)
+        {           
+            _context = context;
         }
 
-        /// <summary>
-        /// ejecuta un SP de la BD
-        /// </summary>
-        /// <typeparam name="T">Tipo de entidad</typeparam>
-        /// <param name="parameters">Dicinario de datos</param>
-        /// <param name="spName">Procedimiento almacenado</param>
-        /// <returns>Respuesta del SP</returns>
-        public async Task<IEnumerable<T>> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
+        public async Task<IEnumerable<AccountsStatus>> PruebaTraerDatos()
         {
-            return await database.QueryAsync<T>(parameters, spName);
+            
+            var status = await _context.AccountsStatus.ToListAsync();
+            return status;
         }
     }
 }

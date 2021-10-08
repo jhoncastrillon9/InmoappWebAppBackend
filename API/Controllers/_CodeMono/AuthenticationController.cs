@@ -36,7 +36,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AuthenticationController(IConfiguration config)
         {
-            business = new AuthenticationService(config, "Development");
+            business = new AuthenticationService(config);
             configuration = config;
         }
 
