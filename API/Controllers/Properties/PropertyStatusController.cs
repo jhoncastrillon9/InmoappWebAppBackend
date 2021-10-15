@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Properties;
     using Entities.Properties;
+    using Commons.DTOs.Properties;
 
     /// <summary>
     /// Defines the <see cref="PropertyStatusController" />.
@@ -55,7 +56,7 @@ namespace API.Controllers
 				{"PropertyStatusName", PropertyStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -80,7 +81,7 @@ namespace API.Controllers
 				{"PropertyStatusName", PropertyStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -103,7 +104,7 @@ namespace API.Controllers
 				{"PropertyStatusName", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -132,7 +133,7 @@ namespace API.Controllers
 				{"PropertyStatusName", model.PropertyStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -162,7 +163,7 @@ namespace API.Controllers
 				{"PropertyStatusName", model.PropertyStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -184,7 +185,7 @@ namespace API.Controllers
 				{"PropertyStatusId", PropertyStatusId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

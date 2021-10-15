@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Contracts;
     using Entities.Contracts;
+    using Commons.DTOs.Contracts;
 
     /// <summary>
     /// Defines the <see cref="TenantsByContractController" />.
@@ -56,7 +57,7 @@ namespace API.Controllers
 				{"Profile", Profile }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -82,7 +83,7 @@ namespace API.Controllers
 				{"Profile", Profile }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -106,7 +107,7 @@ namespace API.Controllers
 				{"Profile", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -136,7 +137,7 @@ namespace API.Controllers
 				{"Profile", model.Profile }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -167,7 +168,7 @@ namespace API.Controllers
 				{"Profile", model.Profile }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -188,7 +189,7 @@ namespace API.Controllers
 				{"TenantsByContractId", TenantsByContractId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

@@ -7,9 +7,8 @@ namespace API.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
     using Business.Banks;
-    using Entities.Banks;
+    using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="PaymentTypeController" />.
@@ -56,7 +55,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -82,7 +81,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -106,7 +105,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -120,7 +119,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PaymentTypeEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostPaymentType(PaymentTypeEntity model)
+        public async Task<IActionResult> PostPaymentType(PaymentTypeDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -136,7 +135,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -150,7 +149,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PaymentTypeEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutPaymentType(PaymentTypeEntity model)
+        public async Task<IActionResult> PutPaymentType(PaymentTypeDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -167,7 +166,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -188,7 +187,7 @@ namespace API.Controllers
 				{"PaymentTypeId", PaymentTypeId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

@@ -6,7 +6,6 @@ namespace Business.Banks
     using System.Threading.Tasks;
 
     using CodeMono.Entities;
-    using Entities.Banks;
     using DataAccess.Banks;
     using global::Commons.DTOs.Banks;
     using DataAccess;

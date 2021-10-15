@@ -46,6 +46,8 @@
                     DP.Add(item.Key, item.Value);
                 }
 
+                con.Close();
+
                 return await con.QueryAsync<T>(SP, param: DP, commandType: CommandType.StoredProcedure);
             }
         }     

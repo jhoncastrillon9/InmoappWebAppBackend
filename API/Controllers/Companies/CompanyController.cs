@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Companies;
     using Entities.Companies;
+    using Commons.DTOs.Companies;
 
     /// <summary>
     /// Defines the <see cref="CompanyController" />.
@@ -61,7 +62,7 @@ namespace API.Controllers
 				{"Observation", Observation }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -92,7 +93,7 @@ namespace API.Controllers
 				{"Observation", Observation }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -121,7 +122,7 @@ namespace API.Controllers
 				{"Observation", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -156,7 +157,7 @@ namespace API.Controllers
 				{"Observation", model.Observation }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -192,7 +193,7 @@ namespace API.Controllers
 				{"Observation", model.Observation }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -213,7 +214,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

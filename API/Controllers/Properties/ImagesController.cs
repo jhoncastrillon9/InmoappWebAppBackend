@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Properties;
     using Entities.Properties;
+    using Commons.DTOs.Properties;
 
     /// <summary>
     /// Defines the <see cref="ImagesController" />.
@@ -58,7 +59,7 @@ namespace API.Controllers
 				{"PropertyId", PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -86,7 +87,7 @@ namespace API.Controllers
 				{"PropertyId", PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -112,7 +113,7 @@ namespace API.Controllers
 				{"PropertyId", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -144,7 +145,7 @@ namespace API.Controllers
 				{"PropertyId", model.PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -177,7 +178,7 @@ namespace API.Controllers
 				{"PropertyId", model.PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -198,7 +199,7 @@ namespace API.Controllers
 				{"ImageId", ImageId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

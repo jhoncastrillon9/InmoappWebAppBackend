@@ -7,9 +7,8 @@ namespace API.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
     using Business.Banks;
-    using Entities.Banks;
+     using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="HistoryBankAccountController" />.
@@ -60,7 +59,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -90,7 +89,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -118,7 +117,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -132,7 +131,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostHistoryBankAccount(HistoryBankAccountEntity model)
+        public async Task<IActionResult> PostHistoryBankAccount(HistoryBankAccountDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -153,7 +152,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -167,7 +166,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="HistoryBankAccountEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutHistoryBankAccount(HistoryBankAccountEntity model)
+        public async Task<IActionResult> PutHistoryBankAccount(HistoryBankAccountDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -189,7 +188,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -210,7 +209,7 @@ namespace API.Controllers
 				{"HistoryBankAccountId", HistoryBankAccountId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

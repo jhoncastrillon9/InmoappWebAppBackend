@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Properties;
     using Entities.Properties;
+    using Commons.DTOs.Properties;
 
     /// <summary>
     /// Defines the <see cref="TypeOfferController" />.
@@ -55,7 +56,7 @@ namespace API.Controllers
 				{"TypeOfferName", TypeOfferName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -80,7 +81,7 @@ namespace API.Controllers
 				{"TypeOfferName", TypeOfferName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -103,7 +104,7 @@ namespace API.Controllers
 				{"TypeOfferName", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -117,7 +118,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostTypeOffer(TypeOfferEntity model)
+        public async Task<IActionResult> PostTypeOffer(TypeOfferDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -132,7 +133,7 @@ namespace API.Controllers
 				{"TypeOfferName", model.TypeOfferName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -146,7 +147,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutTypeOffer(TypeOfferEntity model)
+        public async Task<IActionResult> PutTypeOffer(TypeOfferDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -162,7 +163,7 @@ namespace API.Controllers
 				{"TypeOfferName", model.TypeOfferName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -184,7 +185,7 @@ namespace API.Controllers
 				{"TypeOfferId", TypeOfferId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

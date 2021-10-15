@@ -4,7 +4,7 @@ namespace DataAccess.Tenants
     using DataAccess.Data;
     using Microsoft.Extensions.Configuration;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using System.Threading.Tasks; 
 
     /// <summary>
     /// Defines the <see cref="TenantModel" />.

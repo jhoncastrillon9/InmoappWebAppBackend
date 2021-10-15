@@ -7,9 +7,8 @@ namespace API.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
     using Business.Banks;
-    using Entities.Banks;
+    using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="AccountsToPayContractController" />.
@@ -57,7 +56,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -84,7 +83,7 @@ namespace API.Controllers
 				{"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -109,7 +108,7 @@ namespace API.Controllers
 				{"CompayId", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -123,7 +122,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="AccountsToPayContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostAccountsToPayContract(AccountsToPayContractEntity model)
+        public async Task<IActionResult> PostAccountsToPayContract(AccountsToPayContractDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -143,7 +142,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -157,7 +156,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="AccountsToPayContractEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractEntity model)
+        public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -178,7 +177,7 @@ namespace API.Controllers
 				{"CompayId", model.CompayId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate); ;
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForUpdate); ;
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -199,7 +198,7 @@ namespace API.Controllers
 				{"AccountsToPayContractId", AccountsToPayContractId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

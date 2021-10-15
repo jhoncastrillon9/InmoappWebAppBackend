@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Commons;
     using Entities.Commons;
+    using Commons.DTOs.Commons;
 
     /// <summary>
     /// Defines the <see cref="NeighborhoodController" />.
@@ -56,7 +57,7 @@ namespace API.Controllers
 				{"ZoneId", ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -82,7 +83,7 @@ namespace API.Controllers
 				{"ZoneId", ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -106,7 +107,7 @@ namespace API.Controllers
 				{"ZoneId", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -136,7 +137,7 @@ namespace API.Controllers
 				{"ZoneId", model.ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -167,7 +168,7 @@ namespace API.Controllers
 				{"ZoneId", model.ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -189,7 +190,7 @@ namespace API.Controllers
 				{"NeighborhoodId", NeighborhoodId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

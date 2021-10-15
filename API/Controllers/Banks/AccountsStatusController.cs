@@ -2,7 +2,8 @@ namespace API.Controllers
 {
     using Business.Banks;
     using CodeMono.Entities;
-    using Entities.Banks;
+    using Commons.DTOs.Banks;
+    using DataAccess.Data;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -59,7 +60,7 @@ namespace API.Controllers
                     {"AccountsStatusName", AccountsStatusName }
                 };
                 business.prueba();
-                response = await business.ExecStoreProcedure(parameters, spForRead);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -97,7 +98,7 @@ namespace API.Controllers
 
                 business.prueba();
 
-                response = await business.ExecStoreProcedure(parameters, spForList);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
 
                 return new OkObjectResult(response);
             }
@@ -132,7 +133,7 @@ namespace API.Controllers
                     {"AccountsStatusName", null }
                 };
 
-                response = await business.ExecStoreProcedure(parameters, spForRead);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -153,7 +154,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="AccountsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostAccountsStatus(AccountsStatusEntity model)
+        public async Task<IActionResult> PostAccountsStatus(AccountsStatusDTO model)
         {
             try
             {
@@ -165,7 +166,7 @@ namespace API.Controllers
 
                 };
 
-                response = await business.ExecStoreProcedure(parameters, spForCreate);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForCreate);
 
                 return new OkObjectResult(response);
             }
@@ -189,7 +190,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="AccountsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutAccountsStatus(AccountsStatusEntity model)
+        public async Task<IActionResult> PutAccountsStatus(AccountsStatusDTO model)
         {
             LoadUserSession();
             try
@@ -203,7 +204,7 @@ namespace API.Controllers
                     //{"UpdatedBy", userIdSession }
                 };
 
-                response = await business.ExecStoreProcedure(parameters, spForUpdate);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForUpdate);
 
                 return new OkObjectResult(response);
             }
@@ -236,7 +237,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId }
                 };
 
-                response = await business.ExecStoreProcedure(parameters, spForDelete);
+                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForDelete);
 
                 return new OkObjectResult(response);
             }

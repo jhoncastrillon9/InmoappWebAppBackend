@@ -21,9 +21,9 @@ namespace Business
         }
 
 
-        public async Task<ResponseModel> ExecStoreProcedure(Dictionary<string, dynamic> parameters, string spName)
+        public async Task<ResponseModel> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
         {
-            response.data = await spModel.ExecStoreProcedure<TEntity>(parameters, spName);
+            response.data = await spModel.ExecStoreProcedure<T>(parameters, spName);
 
             return response;
         }

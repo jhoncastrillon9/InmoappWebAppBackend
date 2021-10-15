@@ -10,6 +10,7 @@ namespace API.Controllers
 
     using Business.Contracts;
     using Entities.Contracts;
+    using Commons.DTOs.Contracts;
 
     /// <summary>
     /// Defines the <see cref="ContractsStatusController" />.
@@ -55,7 +56,7 @@ namespace API.Controllers
 				{"ContractsStatusName", ContractsStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -80,7 +81,7 @@ namespace API.Controllers
 				{"ContractsStatusName", ContractsStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForList);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForList);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -103,7 +104,7 @@ namespace API.Controllers
 				{"ContractsStatusName", null }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForRead);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -132,7 +133,7 @@ namespace API.Controllers
 				{"ContractsStatusName", model.ContractsStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForCreate);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForCreate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -162,7 +163,7 @@ namespace API.Controllers
 				{"ContractsStatusName", model.ContractsStatusName }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForUpdate);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -184,7 +185,7 @@ namespace API.Controllers
 				{"ContractsStatusId", ContractsStatusId }
             };
 
-            var result = await business.ExecStoreProcedure(parameters, spForDelete);
+            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
