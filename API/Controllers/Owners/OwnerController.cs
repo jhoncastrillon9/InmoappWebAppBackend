@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Owners;
+    using Commons.DTOs.Owners;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Owners;
-    using Entities.Owners;
-    using Commons.DTOs.Owners;
-
     /// <summary>
     /// Defines the <see cref="OwnerController" />.
     /// </summary>
     [Authorize]
     [Route("Owners/[controller]")]
     [ApiController]
-    public class OwnerController: ControllerBase
+    public class OwnerController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,16 +49,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"OwnerId", OwnerId },
-				{"OwnerName", OwnerName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"OwnerId", OwnerId },
+                {"OwnerName", OwnerName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
@@ -83,16 +81,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"OwnerId", OwnerId },
-				{"OwnerName", OwnerName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"OwnerId", OwnerId },
+                {"OwnerName", OwnerName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForList);
@@ -113,16 +111,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"OwnerId", OwnerId },
-				{"OwnerName", null },
-				{"Document", null },
-				{"Telephone", null },
-				{"Mobile", null },
-				{"Email", null },
-				{"Address", null },
-				{"Observation", null },
-				{"CompayId", null }
+                {"Option", 1 },
+                {"OwnerId", OwnerId },
+                {"OwnerName", null },
+                {"Document", null },
+                {"Telephone", null },
+                {"Mobile", null },
+                {"Email", null },
+                {"Address", null },
+                {"Observation", null },
+                {"CompayId", null }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
@@ -139,7 +137,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostOwner(OwnerEntity model)
+        public async Task<IActionResult> PostOwner(OwnerDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -150,15 +148,15 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"OwnerName", model.OwnerName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"OwnerName", model.OwnerName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
@@ -175,7 +173,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="OwnerEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutOwner(OwnerEntity model)
+        public async Task<IActionResult> PutOwner(OwnerDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -186,16 +184,16 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"OwnerId", model.OwnerId },
-				{"OwnerName", model.OwnerName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"OwnerId", model.OwnerId },
+                {"OwnerName", model.OwnerName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForUpdate);
@@ -216,7 +214,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"OwnerId", OwnerId }
+                {"OwnerId", OwnerId }
             };
 
             var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForDelete);

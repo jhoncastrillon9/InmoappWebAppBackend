@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Companies;
+    using Commons.DTOs.Companies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Companies;
-    using Entities.Companies;
-    using Commons.DTOs.Companies;
-
     /// <summary>
     /// Defines the <see cref="CompanyController" />.
     /// </summary>
     [Authorize]
     [Route("Companies/[controller]")]
     [ApiController]
-    public class CompanyController: ControllerBase
+    public class CompanyController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,15 +49,15 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CompayId", CompayId },
-				{"CompanyName", CompanyName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation }
+                {"Option", 1 },
+                {"CompayId", CompayId },
+                {"CompanyName", CompanyName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
@@ -82,15 +80,15 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CompayId", CompayId },
-				{"CompanyName", CompanyName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation }
+                {"Option", 1 },
+                {"CompayId", CompayId },
+                {"CompanyName", CompanyName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForList);
@@ -111,15 +109,15 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CompayId", CompayId },
-				{"CompanyName", null },
-				{"Document", null },
-				{"Telephone", null },
-				{"Mobile", null },
-				{"Email", null },
-				{"Address", null },
-				{"Observation", null }
+                {"Option", 1 },
+                {"CompayId", CompayId },
+                {"CompanyName", null },
+                {"Document", null },
+                {"Telephone", null },
+                {"Mobile", null },
+                {"Email", null },
+                {"Address", null },
+                {"Observation", null }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
@@ -136,7 +134,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostCompany(CompanyEntity model)
+        public async Task<IActionResult> PostCompany(CompanyDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -147,14 +145,14 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CompanyName", model.CompanyName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation }
+                {"Option", 1 },
+                {"CompanyName", model.CompanyName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForCreate);
@@ -171,7 +169,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutCompany(CompanyEntity model)
+        public async Task<IActionResult> PutCompany(CompanyDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -182,15 +180,15 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CompayId", model.CompayId },
-				{"CompanyName", model.CompanyName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation }
+                {"Option", 1 },
+                {"CompayId", model.CompayId },
+                {"CompanyName", model.CompanyName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForUpdate);
@@ -211,7 +209,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"CompayId", CompayId }
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForDelete);

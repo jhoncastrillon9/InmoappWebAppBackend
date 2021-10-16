@@ -1,15 +1,10 @@
 ﻿using CodeMono.DataAccess.DBConnection;
-using DataAccess.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class BaseStoreProcedureModel : Disposable 
+    public class BaseStoreProcedureModel : Disposable
     {
 
         /// <summary>
@@ -19,7 +14,7 @@ namespace DataAccess
 
         public BaseStoreProcedureModel(DBConnectionMSSQL db)
         {
-            database = db;          
+            database = db;
         }
 
         /// <summary>
@@ -31,7 +26,7 @@ namespace DataAccess
         /// <returns>Respuesta del SP</returns>
         public async Task<IEnumerable<T>> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
         {
-           return await database.QueryAsync<T>(parameters, spName);
+            return await database.QueryAsync<T>(parameters, spName);
         }
     }
 }

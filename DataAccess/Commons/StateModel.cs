@@ -1,6 +1,4 @@
-using CodeMono.DataAccess.DBConnection;
 using DataAccess.Data;
-using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Commons
 {

@@ -1,15 +1,9 @@
 namespace Business.Banks
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using DataAccess.Banks;
-    using global::Commons.DTOs.Banks;
     using DataAccess;
+    using DataAccess.Banks;
     using DataAccess.Data;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary>
     /// Defines the <see cref="AccountsToPayContractService" />.

@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Properties;
+    using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Properties;
-    using Entities.Properties;
-    using Commons.DTOs.Properties;
-
     /// <summary>
     /// Defines the <see cref="PropertyController" />.
     /// </summary>
     [Authorize]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class PropertyController: ControllerBase
+    public class PropertyController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,23 +49,23 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyId", PropertyId },
-				{"IdIva", IdIva },
-				{"Code", Code },
-				{"Title", Title },
-				{"Description", Description },
-				{"Address", Address },
-				{"Reception", Reception },
-				{"Pool", Pool },
-				{"Observation", Observation },
-				{"PropertyStatusId", PropertyStatusId },
-				{"CityId", CityId },
-				{"ZoneId", ZoneId },
-				{"OwnerId", OwnerId },
-				{"PropertyCategoryId", PropertyCategoryId },
-				{"TypeOfferId", TypeOfferId },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"PropertyId", PropertyId },
+                {"IdIva", IdIva },
+                {"Code", Code },
+                {"Title", Title },
+                {"Description", Description },
+                {"Address", Address },
+                {"Reception", Reception },
+                {"Pool", Pool },
+                {"Observation", Observation },
+                {"PropertyStatusId", PropertyStatusId },
+                {"CityId", CityId },
+                {"ZoneId", ZoneId },
+                {"OwnerId", OwnerId },
+                {"PropertyCategoryId", PropertyCategoryId },
+                {"TypeOfferId", TypeOfferId },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
@@ -90,23 +88,23 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyId", PropertyId },
-				{"IdIva", IdIva },
-				{"Code", Code },
-				{"Title", Title },
-				{"Description", Description },
-				{"Address", Address },
-				{"Reception", Reception },
-				{"Pool", Pool },
-				{"Observation", Observation },
-				{"PropertyStatusId", PropertyStatusId },
-				{"CityId", CityId },
-				{"ZoneId", ZoneId },
-				{"OwnerId", OwnerId },
-				{"PropertyCategoryId", PropertyCategoryId },
-				{"TypeOfferId", TypeOfferId },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"PropertyId", PropertyId },
+                {"IdIva", IdIva },
+                {"Code", Code },
+                {"Title", Title },
+                {"Description", Description },
+                {"Address", Address },
+                {"Reception", Reception },
+                {"Pool", Pool },
+                {"Observation", Observation },
+                {"PropertyStatusId", PropertyStatusId },
+                {"CityId", CityId },
+                {"ZoneId", ZoneId },
+                {"OwnerId", OwnerId },
+                {"PropertyCategoryId", PropertyCategoryId },
+                {"TypeOfferId", TypeOfferId },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForList);
@@ -127,23 +125,23 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyId", PropertyId },
-				{"IdIva", null },
-				{"Code", null },
-				{"Title", null },
-				{"Description", null },
-				{"Address", null },
-				{"Reception", null },
-				{"Pool", null },
-				{"Observation", null },
-				{"PropertyStatusId", null },
-				{"CityId", null },
-				{"ZoneId", null },
-				{"OwnerId", null },
-				{"PropertyCategoryId", null },
-				{"TypeOfferId", null },
-				{"CompayId", null }
+                {"Option", 1 },
+                {"PropertyId", PropertyId },
+                {"IdIva", null },
+                {"Code", null },
+                {"Title", null },
+                {"Description", null },
+                {"Address", null },
+                {"Reception", null },
+                {"Pool", null },
+                {"Observation", null },
+                {"PropertyStatusId", null },
+                {"CityId", null },
+                {"ZoneId", null },
+                {"OwnerId", null },
+                {"PropertyCategoryId", null },
+                {"TypeOfferId", null },
+                {"CompayId", null }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
@@ -160,7 +158,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostProperty(PropertyEntity model)
+        public async Task<IActionResult> PostProperty(PropertyDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -171,30 +169,30 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"IdIva", model.IdIva },
-				{"Code", model.Code },
-				{"Title", model.Title },
-				{"Description", model.Description },
-				{"Address", model.Address },
-				{"PriceOwner", model.PriceOwner },
-				{"Percentage", model.Percentage },
-				{"FeeCompany", model.FeeCompany },
-				{"RecruitmentDate", model.RecruitmentDate },
-				{"FinalPrice", model.FinalPrice },
-				{"Rooms", model.Rooms },
-				{"Toilets", model.Toilets },
-				{"Reception", model.Reception },
-				{"Pool", model.Pool },
-				{"Area", model.Area },
-				{"Observation", model.Observation },
-				{"PropertyStatusId", model.PropertyStatusId },
-				{"CityId", model.CityId },
-				{"ZoneId", model.ZoneId },
-				{"OwnerId", model.OwnerId },
-				{"PropertyCategoryId", model.PropertyCategoryId },
-				{"TypeOfferId", model.TypeOfferId },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"IdIva", model.IdIva },
+                {"Code", model.Code },
+                {"Title", model.Title },
+                {"Description", model.Description },
+                {"Address", model.Address },
+                {"PriceOwner", model.PriceOwner },
+                {"Percentage", model.Percentage },
+                {"FeeCompany", model.FeeCompany },
+                {"RecruitmentDate", model.RecruitmentDate },
+                {"FinalPrice", model.FinalPrice },
+                {"Rooms", model.Rooms },
+                {"Toilets", model.Toilets },
+                {"Reception", model.Reception },
+                {"Pool", model.Pool },
+                {"Area", model.Area },
+                {"Observation", model.Observation },
+                {"PropertyStatusId", model.PropertyStatusId },
+                {"CityId", model.CityId },
+                {"ZoneId", model.ZoneId },
+                {"OwnerId", model.OwnerId },
+                {"PropertyCategoryId", model.PropertyCategoryId },
+                {"TypeOfferId", model.TypeOfferId },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForCreate);
@@ -211,7 +209,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutProperty(PropertyEntity model)
+        public async Task<IActionResult> PutProperty(PropertyDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -222,31 +220,31 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyId", model.PropertyId },
-				{"IdIva", model.IdIva },
-				{"Code", model.Code },
-				{"Title", model.Title },
-				{"Description", model.Description },
-				{"Address", model.Address },
-				{"PriceOwner", model.PriceOwner },
-				{"Percentage", model.Percentage },
-				{"FeeCompany", model.FeeCompany },
-				{"RecruitmentDate", model.RecruitmentDate },
-				{"FinalPrice", model.FinalPrice },
-				{"Rooms", model.Rooms },
-				{"Toilets", model.Toilets },
-				{"Reception", model.Reception },
-				{"Pool", model.Pool },
-				{"Area", model.Area },
-				{"Observation", model.Observation },
-				{"PropertyStatusId", model.PropertyStatusId },
-				{"CityId", model.CityId },
-				{"ZoneId", model.ZoneId },
-				{"OwnerId", model.OwnerId },
-				{"PropertyCategoryId", model.PropertyCategoryId },
-				{"TypeOfferId", model.TypeOfferId },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"PropertyId", model.PropertyId },
+                {"IdIva", model.IdIva },
+                {"Code", model.Code },
+                {"Title", model.Title },
+                {"Description", model.Description },
+                {"Address", model.Address },
+                {"PriceOwner", model.PriceOwner },
+                {"Percentage", model.Percentage },
+                {"FeeCompany", model.FeeCompany },
+                {"RecruitmentDate", model.RecruitmentDate },
+                {"FinalPrice", model.FinalPrice },
+                {"Rooms", model.Rooms },
+                {"Toilets", model.Toilets },
+                {"Reception", model.Reception },
+                {"Pool", model.Pool },
+                {"Area", model.Area },
+                {"Observation", model.Observation },
+                {"PropertyStatusId", model.PropertyStatusId },
+                {"CityId", model.CityId },
+                {"ZoneId", model.ZoneId },
+                {"OwnerId", model.OwnerId },
+                {"PropertyCategoryId", model.PropertyCategoryId },
+                {"TypeOfferId", model.TypeOfferId },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForUpdate);
@@ -268,7 +266,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"PropertyId", PropertyId }
+                {"PropertyId", PropertyId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForDelete);

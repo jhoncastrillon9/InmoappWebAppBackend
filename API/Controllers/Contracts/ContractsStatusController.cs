@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Contracts;
+    using Commons.DTOs.Contracts;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Contracts;
-    using Entities.Contracts;
-    using Commons.DTOs.Contracts;
-
     /// <summary>
     /// Defines the <see cref="ContractsStatusController" />.
     /// </summary>
     [Authorize]
     [Route("Contracts/[controller]")]
     [ApiController]
-    public class ContractsStatusController: ControllerBase
+    public class ContractsStatusController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,9 +49,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ContractsStatusId", ContractsStatusId },
-				{"ContractsStatusName", ContractsStatusName }
+                {"Option", 1 },
+                {"ContractsStatusId", ContractsStatusId },
+                {"ContractsStatusName", ContractsStatusName }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
@@ -76,9 +74,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ContractsStatusId", ContractsStatusId },
-				{"ContractsStatusName", ContractsStatusName }
+                {"Option", 1 },
+                {"ContractsStatusId", ContractsStatusId },
+                {"ContractsStatusName", ContractsStatusName }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForList);
@@ -99,9 +97,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ContractsStatusId", ContractsStatusId },
-				{"ContractsStatusName", null }
+                {"Option", 1 },
+                {"ContractsStatusId", ContractsStatusId },
+                {"ContractsStatusName", null }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
@@ -118,7 +116,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostContractsStatus(ContractsStatusEntity model)
+        public async Task<IActionResult> PostContractsStatus(ContractsStatusDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -129,8 +127,8 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ContractsStatusName", model.ContractsStatusName }
+                {"Option", 1 },
+                {"ContractsStatusName", model.ContractsStatusName }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForCreate);
@@ -147,7 +145,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ContractsStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutContractsStatus(ContractsStatusEntity model)
+        public async Task<IActionResult> PutContractsStatus(ContractsStatusDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -158,9 +156,9 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ContractsStatusId", model.ContractsStatusId },
-				{"ContractsStatusName", model.ContractsStatusName }
+                {"Option", 1 },
+                {"ContractsStatusId", model.ContractsStatusId },
+                {"ContractsStatusName", model.ContractsStatusName }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForUpdate);
@@ -182,7 +180,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"ContractsStatusId", ContractsStatusId }
+                {"ContractsStatusId", ContractsStatusId }
             };
 
             var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForDelete);

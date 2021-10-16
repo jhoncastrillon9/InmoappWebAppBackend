@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Properties;
+    using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Properties;
-    using Entities.Properties;
-    using Commons.DTOs.Properties;
-
     /// <summary>
     /// Defines the <see cref="TypeOfferController" />.
     /// </summary>
     [Authorize]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class TypeOfferController: ControllerBase
+    public class TypeOfferController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,9 +49,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TypeOfferId", TypeOfferId },
-				{"TypeOfferName", TypeOfferName }
+                {"Option", 1 },
+                {"TypeOfferId", TypeOfferId },
+                {"TypeOfferName", TypeOfferName }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
@@ -76,9 +74,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TypeOfferId", TypeOfferId },
-				{"TypeOfferName", TypeOfferName }
+                {"Option", 1 },
+                {"TypeOfferId", TypeOfferId },
+                {"TypeOfferName", TypeOfferName }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForList);
@@ -99,9 +97,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TypeOfferId", TypeOfferId },
-				{"TypeOfferName", null }
+                {"Option", 1 },
+                {"TypeOfferId", TypeOfferId },
+                {"TypeOfferName", null }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
@@ -129,8 +127,8 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TypeOfferName", model.TypeOfferName }
+                {"Option", 1 },
+                {"TypeOfferName", model.TypeOfferName }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForCreate);
@@ -158,9 +156,9 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TypeOfferId", model.TypeOfferId },
-				{"TypeOfferName", model.TypeOfferName }
+                {"Option", 1 },
+                {"TypeOfferId", model.TypeOfferId },
+                {"TypeOfferName", model.TypeOfferName }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForUpdate);
@@ -182,7 +180,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"TypeOfferId", TypeOfferId }
+                {"TypeOfferId", TypeOfferId }
             };
 
             var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForDelete);

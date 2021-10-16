@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Tenants;
+    using Commons.DTOs.Tenants;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Tenants;
-    using Entities.Tenants;
-    using Commons.DTOs.Tenants;
-
     /// <summary>
     /// Defines the <see cref="TenantController" />.
     /// </summary>
     [Authorize]
     [Route("Tenants/[controller]")]
     [ApiController]
-    public class TenantController: ControllerBase
+    public class TenantController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,16 +49,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TenantId", TenantId },
-				{"TenantName", TenantName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"TenantId", TenantId },
+                {"TenantName", TenantName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -83,16 +81,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TenantId", TenantId },
-				{"TenantName", TenantName },
-				{"Document", Document },
-				{"Telephone", Telephone },
-				{"Mobile", Mobile },
-				{"Email", Email },
-				{"Address", Address },
-				{"Observation", Observation },
-				{"CompayId", CompayId }
+                {"Option", 1 },
+                {"TenantId", TenantId },
+                {"TenantName", TenantName },
+                {"Document", Document },
+                {"Telephone", Telephone },
+                {"Mobile", Mobile },
+                {"Email", Email },
+                {"Address", Address },
+                {"Observation", Observation },
+                {"CompayId", CompayId }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForList);
@@ -113,16 +111,16 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TenantId", TenantId },
-				{"TenantName", null },
-				{"Document", null },
-				{"Telephone", null },
-				{"Mobile", null },
-				{"Email", null },
-				{"Address", null },
-				{"Observation", null },
-				{"CompayId", null }
+                {"Option", 1 },
+                {"TenantId", TenantId },
+                {"TenantName", null },
+                {"Document", null },
+                {"Telephone", null },
+                {"Mobile", null },
+                {"Email", null },
+                {"Address", null },
+                {"Observation", null },
+                {"CompayId", null }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -139,7 +137,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostTenant(TenantEntity model)
+        public async Task<IActionResult> PostTenant(TenantDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -150,15 +148,15 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TenantName", model.TenantName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"TenantName", model.TenantName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForCreate);
@@ -175,7 +173,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="TenantEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutTenant(TenantEntity model)
+        public async Task<IActionResult> PutTenant(TenantDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -186,16 +184,16 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"TenantId", model.TenantId },
-				{"TenantName", model.TenantName },
-				{"Document", model.Document },
-				{"Telephone", model.Telephone },
-				{"Mobile", model.Mobile },
-				{"Email", model.Email },
-				{"Address", model.Address },
-				{"Observation", model.Observation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"TenantId", model.TenantId },
+                {"TenantName", model.TenantName },
+                {"Document", model.Document },
+                {"Telephone", model.Telephone },
+                {"Mobile", model.Mobile },
+                {"Email", model.Email },
+                {"Address", model.Address },
+                {"Observation", model.Observation },
+                {"CompayId", model.CompayId }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForUpdate);
@@ -205,7 +203,7 @@ namespace API.Controllers
             }
             return new OkObjectResult(result);
         }
-       
+
 
         /// <summary>
         /// The DeleteTenant.
@@ -217,7 +215,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"TenantId", TenantId }
+                {"TenantId", TenantId }
             };
 
             var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForDelete);

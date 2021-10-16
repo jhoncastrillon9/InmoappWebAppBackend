@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Properties;
+    using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Properties;
-    using Entities.Properties;
-    using Commons.DTOs.Properties;
-
     /// <summary>
     /// Defines the <see cref="PropertyCategoryController" />.
     /// </summary>
     [Authorize]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class PropertyCategoryController: ControllerBase
+    public class PropertyCategoryController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,9 +49,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyCategoryId", PropertyCategoryId },
-				{"CategoryName", CategoryName }
+                {"Option", 1 },
+                {"PropertyCategoryId", PropertyCategoryId },
+                {"CategoryName", CategoryName }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
@@ -76,9 +74,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyCategoryId", PropertyCategoryId },
-				{"CategoryName", CategoryName }
+                {"Option", 1 },
+                {"PropertyCategoryId", PropertyCategoryId },
+                {"CategoryName", CategoryName }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForList);
@@ -99,9 +97,9 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyCategoryId", PropertyCategoryId },
-				{"CategoryName", null }
+                {"Option", 1 },
+                {"PropertyCategoryId", PropertyCategoryId },
+                {"CategoryName", null }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
@@ -118,7 +116,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostPropertyCategory(PropertyCategoryEntity model)
+        public async Task<IActionResult> PostPropertyCategory(PropertyCategoryDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -129,8 +127,8 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CategoryName", model.CategoryName }
+                {"Option", 1 },
+                {"CategoryName", model.CategoryName }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForCreate);
@@ -147,7 +145,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutPropertyCategory(PropertyCategoryEntity model)
+        public async Task<IActionResult> PutPropertyCategory(PropertyCategoryDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -158,9 +156,9 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PropertyCategoryId", model.PropertyCategoryId },
-				{"CategoryName", model.CategoryName }
+                {"Option", 1 },
+                {"PropertyCategoryId", model.PropertyCategoryId },
+                {"CategoryName", model.CategoryName }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForUpdate);
@@ -181,7 +179,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"PropertyCategoryId", PropertyCategoryId }
+                {"PropertyCategoryId", PropertyCategoryId }
             };
 
             var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForDelete);

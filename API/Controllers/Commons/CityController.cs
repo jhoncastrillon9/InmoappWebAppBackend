@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Commons;
+    using Commons.DTOs.Commons;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Commons;
-    using Entities.Commons;
-    using Commons.DTOs.Commons;
-
     /// <summary>
     /// Defines the <see cref="CityController" />.
     /// </summary>
     [Authorize]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class CityController: ControllerBase
+    public class CityController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,10 +49,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CityId", CityId },
-				{"CityName", CityName },
-				{"StateId", StateId }
+                {"Option", 1 },
+                {"CityId", CityId },
+                {"CityName", CityName },
+                {"StateId", StateId }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForRead);
@@ -77,10 +75,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CityId", CityId },
-				{"CityName", CityName },
-				{"StateId", StateId }
+                {"Option", 1 },
+                {"CityId", CityId },
+                {"CityName", CityName },
+                {"StateId", StateId }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForList);
@@ -101,10 +99,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CityId", CityId },
-				{"CityName", null },
-				{"StateId", null }
+                {"Option", 1 },
+                {"CityId", CityId },
+                {"CityName", null },
+                {"StateId", null }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForRead);
@@ -121,7 +119,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="CityEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostCity(CityEntity model)
+        public async Task<IActionResult> PostCity(CityDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -132,9 +130,9 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CityName", model.CityName },
-				{"StateId", model.StateId }
+                {"Option", 1 },
+                {"CityName", model.CityName },
+                {"StateId", model.StateId }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForCreate);
@@ -151,7 +149,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="CityEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutCity(CityEntity model)
+        public async Task<IActionResult> PutCity(CityDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -162,10 +160,10 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"CityId", model.CityId },
-				{"CityName", model.CityName },
-				{"StateId", model.StateId }
+                {"Option", 1 },
+                {"CityId", model.CityId },
+                {"CityName", model.CityName },
+                {"StateId", model.StateId }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForUpdate);
@@ -176,7 +174,7 @@ namespace API.Controllers
             return new OkObjectResult(result);
         }
 
-      
+
 
         /// <summary>
         /// The DeleteCity.
@@ -188,7 +186,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"CityId", CityId }
+                {"CityId", CityId }
             };
 
             var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForDelete);

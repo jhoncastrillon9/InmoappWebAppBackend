@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Commons;
+    using Commons.DTOs.Commons;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,22 +10,18 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Commons;
-    using Entities.Commons;
-    using Commons.DTOs.Commons;
-
     /// <summary>
     /// Defines the <see cref="NeighborhoodController" />.
     /// </summary>
     [Authorize]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class NeighborhoodController: ControllerBase
+    public class NeighborhoodController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly NeighborhoodService business;        
+        private readonly NeighborhoodService business;
         private string spForRead = "Commons.Neighborhood_READ";
         private string spForList = "Commons.Neighborhood_LIST";
         private string spForCreate = "Commons.Neighborhood_CREATE";
@@ -51,10 +49,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"NeighborhoodId", NeighborhoodId },
-				{"NeighborhoodName", NeighborhoodName },
-				{"ZoneId", ZoneId }
+                {"Option", 1 },
+                {"NeighborhoodId", NeighborhoodId },
+                {"NeighborhoodName", NeighborhoodName },
+                {"ZoneId", ZoneId }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
@@ -77,10 +75,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"NeighborhoodId", NeighborhoodId },
-				{"NeighborhoodName", NeighborhoodName },
-				{"ZoneId", ZoneId }
+                {"Option", 1 },
+                {"NeighborhoodId", NeighborhoodId },
+                {"NeighborhoodName", NeighborhoodName },
+                {"ZoneId", ZoneId }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForList);
@@ -101,10 +99,10 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"NeighborhoodId", NeighborhoodId },
-				{"NeighborhoodName", null },
-				{"ZoneId", null }
+                {"Option", 1 },
+                {"NeighborhoodId", NeighborhoodId },
+                {"NeighborhoodName", null },
+                {"ZoneId", null }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
@@ -121,7 +119,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="NeighborhoodEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostNeighborhood(NeighborhoodEntity model)
+        public async Task<IActionResult> PostNeighborhood(NeighborhoodDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -132,9 +130,9 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"NeighborhoodName", model.NeighborhoodName },
-				{"ZoneId", model.ZoneId }
+                {"Option", 1 },
+                {"NeighborhoodName", model.NeighborhoodName },
+                {"ZoneId", model.ZoneId }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForCreate);
@@ -151,7 +149,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="NeighborhoodEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutNeighborhood(NeighborhoodEntity model)
+        public async Task<IActionResult> PutNeighborhood(NeighborhoodDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -162,10 +160,10 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"NeighborhoodId", model.NeighborhoodId },
-				{"NeighborhoodName", model.NeighborhoodName },
-				{"ZoneId", model.ZoneId }
+                {"Option", 1 },
+                {"NeighborhoodId", model.NeighborhoodId },
+                {"NeighborhoodName", model.NeighborhoodName },
+                {"ZoneId", model.ZoneId }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForUpdate);
@@ -187,7 +185,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"NeighborhoodId", NeighborhoodId }
+                {"NeighborhoodId", NeighborhoodId }
             };
 
             var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForDelete);

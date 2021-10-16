@@ -2,7 +2,6 @@ namespace API.Controllers
 {
     using Business.Commons;
     using Commons.DTOs.Commons;
-    using Entities.Commons;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -122,7 +121,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ZoneEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostZone(ZoneEntity model)
+        public async Task<IActionResult> PostZone(ZoneDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -152,7 +151,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ZoneEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutZone(ZoneEntity model)
+        public async Task<IActionResult> PutZone(ZoneDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;

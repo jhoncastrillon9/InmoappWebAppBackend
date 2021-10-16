@@ -1,5 +1,7 @@
 namespace API.Controllers
 {
+    using Business.Properties;
+    using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -8,17 +10,13 @@ namespace API.Controllers
     using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using Business.Properties;
-    using Entities.Properties;
-    using Commons.DTOs.Properties;
-
     /// <summary>
     /// Defines the <see cref="ImagesController" />.
     /// </summary>
     [Authorize]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class ImagesController: ControllerBase
+    public class ImagesController : ControllerBase
     {
         /// <summary>
         /// Defines the business.
@@ -51,12 +49,12 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ImageId", ImageId },
-				{"ImageName", ImageName },
-				{"Path", Path },
-				{"IsMain", IsMain },
-				{"PropertyId", PropertyId }
+                {"Option", 1 },
+                {"ImageId", ImageId },
+                {"ImageName", ImageName },
+                {"Path", Path },
+                {"IsMain", IsMain },
+                {"PropertyId", PropertyId }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
@@ -79,12 +77,12 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ImageId", ImageId },
-				{"ImageName", ImageName },
-				{"Path", Path },
-				{"IsMain", IsMain },
-				{"PropertyId", PropertyId }
+                {"Option", 1 },
+                {"ImageId", ImageId },
+                {"ImageName", ImageName },
+                {"Path", Path },
+                {"IsMain", IsMain },
+                {"PropertyId", PropertyId }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForList);
@@ -105,12 +103,12 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ImageId", ImageId },
-				{"ImageName", null },
-				{"Path", null },
-				{"IsMain", null },
-				{"PropertyId", null }
+                {"Option", 1 },
+                {"ImageId", ImageId },
+                {"ImageName", null },
+                {"Path", null },
+                {"IsMain", null },
+                {"PropertyId", null }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
@@ -127,7 +125,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostImages(ImagesEntity model)
+        public async Task<IActionResult> PostImages(ImagesDTO model)
         {
             Int32 CreatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -138,11 +136,11 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ImageName", model.ImageName },
-				{"Path", model.Path },
-				{"IsMain", model.IsMain },
-				{"PropertyId", model.PropertyId }
+                {"Option", 1 },
+                {"ImageName", model.ImageName },
+                {"Path", model.Path },
+                {"IsMain", model.IsMain },
+                {"PropertyId", model.PropertyId }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
@@ -159,7 +157,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutImages(ImagesEntity model)
+        public async Task<IActionResult> PutImages(ImagesDTO model)
         {
             Int32 UpdatedBy = 0;
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -170,12 +168,12 @@ namespace API.Controllers
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"ImageId", model.ImageId },
-				{"ImageName", model.ImageName },
-				{"Path", model.Path },
-				{"IsMain", model.IsMain },
-				{"PropertyId", model.PropertyId }
+                {"Option", 1 },
+                {"ImageId", model.ImageId },
+                {"ImageName", model.ImageName },
+                {"Path", model.Path },
+                {"IsMain", model.IsMain },
+                {"PropertyId", model.PropertyId }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
@@ -196,7 +194,7 @@ namespace API.Controllers
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"ImageId", ImageId }
+                {"ImageId", ImageId }
             };
 
             var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
