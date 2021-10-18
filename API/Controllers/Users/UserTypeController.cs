@@ -1,5 +1,4 @@
 using Business.Users;
-using CodeMono.Business;
 using Commons.DTOs.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +14,10 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="UserTypeController" />.
     /// </summary>
-    [Authorize(Roles ="SuperAdmin")]
+    [Authorize()]
     [Route("[controller]")]
     [ApiController]
-    public class UserTypeController:BaseController
+    public class UserTypeController : BaseController
     {
         /// <summary>
         /// Defines the business.
@@ -76,7 +75,7 @@ namespace API.Controllers
                 return new BadRequestObjectResult(response);
             }
 
-         
+
         }
 
         /// <summary>
@@ -148,7 +147,7 @@ namespace API.Controllers
                 response.executionError = true;
                 return new BadRequestObjectResult(response);
             }
-           
+
         }
 
         /// <summary>

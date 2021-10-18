@@ -66,9 +66,12 @@ namespace CodeMono.API
             services.AddScoped<TenantsByContractService, TenantsByContractService>();
             services.AddScoped<OwnerService, OwnerService>();
             services.AddScoped<TenantService, TenantService>();
+            //Service/User
             services.AddScoped<RoleService, RoleService>();
             services.AddScoped<UserByRoleService, UserByRoleService>();
             services.AddScoped<AuthenticationServices, AuthenticationServices>();
+            services.AddScoped<UserService, UserService>();
+            services.AddScoped<UserTypeService, UserTypeService>();
 
             //Modelos
             services.AddScoped<ImagesModel, ImagesModel>();
@@ -93,8 +96,12 @@ namespace CodeMono.API
             services.AddScoped<TenantsByContractModel, TenantsByContractModel>();
             services.AddScoped<OwnerModel, OwnerModel>();
             services.AddScoped<TenantModel, TenantModel>();
+            //Model/User
             services.AddScoped<RoleModel, RoleModel>();
             services.AddScoped<UserByRoleModel, UserByRoleModel>();
+            services.AddScoped<AuthenticationModel, AuthenticationModel>();
+            services.AddScoped<UserTypeModel, UserTypeModel>();
+            services.AddScoped<UserModel, UserModel>();
 
             //Otros modelo
             services.AddScoped<DBConnectionMSSQL, DBConnectionMSSQL>();

@@ -21,16 +21,20 @@ namespace API.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        private ResponseMDTO response = new ResponseMDTO();
 
         private AuthenticationServices _AuthenticationServices;
-
+        /// <summary>
+        /// Defines the configuration.
+        /// </summary>
+        private readonly IConfiguration configuration;
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AuthenticationController(IConfiguration config, AuthenticationServices authenticationServices)
-        {          
-   
+        {
+            configuration = config;
             _AuthenticationServices = authenticationServices;
         }
 
@@ -42,57 +46,48 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Validate([FromBody] AuthenticationDTO data)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Username", data.Username },
-                {"Password", data.Password  }
-            };
-            // DB user validation
-            var response = await _AuthenticationServices.Validate(parameters);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Username", data.Username },
+                    {"Password", data.Password  }
+                };
+                // DB user validation
+                response = await _AuthenticationServices.Validate(parameters);
 
-            if (response.executionError)
-            {
-                return Ok(new
-                {
-                    data = "",
-                    executionError = true,
-                    message = response.message
-                });
-            }
-            else
-            {
-                Byte lAuthenticated = 0;
-                foreach (var item in response.data)
-                {
-                    lAuthenticated = item.Authenticated;
-                }
-
-                // Unauthorizad response
-                if (lAuthenticated == 0)
-                {
-                    return Ok(new
-                    {
-                        data = response.data,
-                        executionError = false,
-                        message = ""
-                    });
-                }
+                if (response.executionError)
+                    return Ok(new { data = "", executionError = true, message = response.message });
                 else
                 {
-                    JwtSecurityTokenHandler tokenHandler;
-                    SecurityToken Token;
-                    GenerateAuthentication(response, out tokenHandler, out Token);
-
-                    // Authentication response
-                    return Ok(new
+                    Byte lAuthenticated = 0;
+                    foreach (var item in response.data)
                     {
-                        data = response.data[0],
-                        token = tokenHandler.WriteToken(Token),
-                        executionError = false,
-                        message = ""
-                    });
+                        lAuthenticated = item.Authenticated;
+                    }
+
+                    // Unauthorizad response
+                    if (lAuthenticated == 0)
+                    {
+                        return Ok(new { data = response.data, executionError = false, message = "" });
+                    }
+                    else
+                    {
+                        JwtSecurityTokenHandler tokenHandler;
+                        SecurityToken Token;
+                        GenerateAuthentication(response, out tokenHandler, out Token);
+
+                        // Authentication response
+                        return Ok(new { data = response.data[0], token = tokenHandler.WriteToken(Token), executionError = false, message = "" });
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }           
 
         }
 

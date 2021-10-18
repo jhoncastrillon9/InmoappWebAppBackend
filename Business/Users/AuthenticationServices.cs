@@ -46,7 +46,7 @@ namespace Business.Users
 
         public List<Claim> GetClaimsForUser(ResponseMDTO response)
         {
-            int userId = (int)response.data[0].UserId.ToString();
+            int userId = Convert.ToInt32(response.data[0].UserId.ToString());
             var roles = _UserByRoleService.GetAllBy(x => x.UserId == userId).Select(x => x.Role.Name).ToList();
 
             // Payload creation
