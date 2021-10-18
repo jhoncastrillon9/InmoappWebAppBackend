@@ -1,5 +1,4 @@
 using Business.Users;
-using CodeMono.Business;
 using Commons.DTOs;
 using Commons.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -22,27 +21,17 @@ namespace API.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        /// <summary>
-        /// Defines the business.
-        /// </summary>
-        private readonly AuthenticationService business;
 
-        /// <summary>
-        /// Defines the configuration.
-        /// </summary>
-        private readonly IConfiguration configuration;
-
-        private AuthenticationServices authenticationServices;
+        private AuthenticationServices _AuthenticationServices;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AuthenticationController(IConfiguration config, AuthenticationServices authenticationServices)
-        {
-            business = new AuthenticationService(config);
-            configuration = config;
-            this.authenticationServices = authenticationServices;
+        {          
+   
+            _AuthenticationServices = authenticationServices;
         }
 
         /// <summary>
@@ -59,7 +48,7 @@ namespace API.Controllers
                 {"Password", data.Password  }
             };
             // DB user validation
-            var response = await business.Validate(parameters);
+            var response = await _AuthenticationServices.Validate(parameters);
 
             if (response.executionError)
             {
@@ -114,7 +103,7 @@ namespace API.Controllers
             var key = Encoding.ASCII.GetBytes(secretKey);
 
             // Payload creation
-            var claims = authenticationServices.GetClaimsForUser(response);
+            var claims = _AuthenticationServices.GetClaimsForUser(response);
 
             // Token configuration
             var tokenConfiguration = new SecurityTokenDescriptor

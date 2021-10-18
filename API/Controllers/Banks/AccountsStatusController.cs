@@ -63,11 +63,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
+                response.executionError = true;
                 response.message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
+                response.executionError = true;
                 return new BadRequestObjectResult(response);
             }
 
