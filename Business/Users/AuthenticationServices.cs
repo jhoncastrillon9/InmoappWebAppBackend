@@ -1,38 +1,36 @@
-﻿using CodeMono.Entities;
-using System;
+﻿using Commons.DTOs;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Business.Users
 {
     public class AuthenticationServices
     {
-        public void GenerateAuthentication(ResponseModel response, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token)
+        private UserByRoleService _UserByRoleService;
+        public AuthenticationServices(UserByRoleService userByRoleService)
         {
-            // Get SecretKey from appseting
-            var secretKey = configuration.GetValue<string>("SecretKey");
-            var key = Encoding.ASCII.GetBytes(secretKey);
+            _UserByRoleService = userByRoleService;
+        }
+
+        public List<Claim> GetClaimsForUser(ResponseMDTO response)
+        {
+            int userId = (int)response.data[0].UserId.ToString();
+            var roles = _UserByRoleService.GetAllBy(x => x.UserId == userId).Select(x => x.Role.Name).ToList();
 
             // Payload creation
-            var claims = new[]
+            var claims = new List<Claim>
             {
                         new Claim("userId", response.data[0].UserId.ToString() as string),
-                        new Claim("username", response.data[0].Username.ToString() as string),
-                        new Claim(ClaimTypes.Role, "Admin")
-                    };
-
-            // Token configuration
-            var tokenConfiguration = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                // token duration
-                Expires = DateTime.UtcNow.AddDays(1),
-                // Token Signing Credential
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                        new Claim("username", response.data[0].Username.ToString() as string)
             };
 
-            tokenHandler = new JwtSecurityTokenHandler();
-            Token = tokenHandler.CreateToken(tokenConfiguration);
+            foreach (var rolName in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, rolName));
+            }
+
+            return claims;
         }
     }
 }

@@ -1,13 +1,14 @@
+
+using CodeMono.DataAccess;
+using Commons.DTOs;
+using Commons.DTOs.Users;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace CodeMono.Business
 {
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using CodeMono.DataAccess;
-
     /// <summary>
     /// Defines the <see cref="UserTypeService" />.
     /// </summary>
@@ -21,7 +22,7 @@ namespace CodeMono.Business
         /// <summary>
         /// Defines the m.
         /// </summary>
-        private ResponseModel m;
+        private ResponseMDTO m;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserTypeService"/> class.
@@ -31,7 +32,7 @@ namespace CodeMono.Business
         public UserTypeService(IConfiguration config)
         {
             dao = new UserTypeDao(config);
-            m = new ResponseModel();
+            m = new ResponseMDTO();
         }
 
         /// <summary>
@@ -39,11 +40,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> GetUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> GetUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.GetUserType<UserTypeModel>(parameters);
+                var res = await dao.GetUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -62,11 +63,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> GetListUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> GetListUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.GetListUserType<UserTypeListModel>(parameters);
+                var res = await dao.GetListUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -85,11 +86,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> PostUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> PostUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.PostUserType<UserTypePostModel>(parameters);
+                var res = await dao.PostUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -109,11 +110,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> PutUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> PutUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.PutUserType<UserTypePutModel>(parameters);
+                var res = await dao.PutUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -133,11 +134,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> EnableUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> EnableUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.EnableUserType<UserTypePutModel>(parameters);
+                var res = await dao.EnableUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -156,11 +157,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> DisableUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> DisableUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.DisableUserType<UserTypePutModel>(parameters);
+                var res = await dao.DisableUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -179,11 +180,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> DeleteUserType(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> DeleteUserType(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.DeleteUserType<UserTypeDeleteModel>(parameters);
+                var res = await dao.DeleteUserType<UserTypeDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";

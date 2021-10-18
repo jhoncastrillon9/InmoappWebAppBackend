@@ -1,12 +1,12 @@
 namespace CodeMono.Business
 {
+    using CodeMono.DataAccess;
+    using Commons.DTOs;
+    using Commons.DTOs.Users;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using CodeMono.Entities;
-    using CodeMono.DataAccess;
 
     /// <summary>
     /// Defines the <see cref="UserService" />.
@@ -21,7 +21,7 @@ namespace CodeMono.Business
         /// <summary>
         /// Defines the m.
         /// </summary>
-        private ResponseModel m;
+        private ResponseMDTO m;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
@@ -31,7 +31,7 @@ namespace CodeMono.Business
         public UserService(IConfiguration config)
         {
             dao = new UserDao(config);
-            m = new ResponseModel();
+            m = new ResponseMDTO();
         }
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> GetUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> GetUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.GetUser<UserModel>(parameters);
+                var res = await dao.GetUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -62,11 +62,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> GetListUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> GetListUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.GetListUser<UserListModel>(parameters);
+                var res = await dao.GetListUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -85,11 +85,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> PostUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> PostUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.PostUser<UserPostModel>(parameters);
+                var res = await dao.PostUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -109,11 +109,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> PutUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> PutUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.PutUser<UserPutModel>(parameters);
+                var res = await dao.PutUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -133,11 +133,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> EnableUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> EnableUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.EnableUser<UserPutModel>(parameters);
+                var res = await dao.EnableUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -156,11 +156,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> DisableUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> DisableUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.DisableUser<UserPutModel>(parameters);
+                var res = await dao.DisableUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";
@@ -179,11 +179,11 @@ namespace CodeMono.Business
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> DeleteUser(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> DeleteUser(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.DeleteUser<UserDeleteModel>(parameters);
+                var res = await dao.DeleteUser<UserDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";

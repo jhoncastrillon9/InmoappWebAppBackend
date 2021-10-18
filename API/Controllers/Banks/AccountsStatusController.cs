@@ -1,23 +1,18 @@
 namespace API.Controllers
 {
-    using API.Controllers._CodeMono;
     using Business.Banks;
-    using CodeMono.Entities;
     using Commons.DTOs.Banks;
-    using DataAccess.Data;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Defines the <see cref="AccountsStatusController" />.
     /// </summary>
     [Authorize]
-    //[ClaimRequirement(MyClaimTypes.Permission, "CanReadResource")]
     [Route("Banks/[controller]")]
     [ApiController]
     public class AccountsStatusController : BaseController
@@ -40,7 +35,7 @@ namespace API.Controllers
         public AccountsStatusController(AccountsStatusService accountsStatusService)
         {
             business = accountsStatusService;
-           
+
         }
 
         /// <summary>
@@ -61,7 +56,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId },
                     {"AccountsStatusName", AccountsStatusName }
                 };
-              
+
                 response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
@@ -97,7 +92,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId },
                     {"AccountsStatusName", AccountsStatusName }
                 };
-                               
+
                 response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
 
                 return new OkObjectResult(response);
@@ -162,7 +157,7 @@ namespace API.Controllers
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"AccountsStatusName", model.AccountsStatusName }                 
+                    {"AccountsStatusName", model.AccountsStatusName }
 
                 };
 

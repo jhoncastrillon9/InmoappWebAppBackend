@@ -68,6 +68,7 @@ namespace CodeMono.API
             services.AddScoped<TenantService, TenantService>();
             services.AddScoped<RoleService, RoleService>();
             services.AddScoped<UserByRoleService, UserByRoleService>();
+            services.AddScoped<AuthenticationServices, AuthenticationServices>();
 
             //Modelos
             services.AddScoped<ImagesModel, ImagesModel>();

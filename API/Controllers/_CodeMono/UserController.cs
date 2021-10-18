@@ -1,14 +1,12 @@
 namespace API.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
+    using CodeMono.Business;
+    using Commons.DTOs.Users;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using CodeMono.Business;
-    using CodeMono.Entities;
 
 
     /// <summary>
@@ -121,7 +119,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostUser(UserModel model)
+        public async Task<IActionResult> PostUser(UserDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -148,7 +146,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutUser(UserModel model)
+        public async Task<IActionResult> PutUser(UserDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -176,7 +174,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableUser(UserModel model)
+        public async Task<IActionResult> EnableUser(UserDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -198,7 +196,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableUser(UserModel model)
+        public async Task<IActionResult> DisableUser(UserDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {

@@ -1,8 +1,8 @@
 namespace API.Controllers
 {
-    using API.Controllers._CodeMono;
     using Business.Commons;
     using Commons.DTOs.Commons;
+    using Commons.Enums.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -10,15 +10,12 @@ namespace API.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Commons.Enums.Users;
-    using Business.Users;
-    using DataAccess.Users;
 
     /// <summary>
     /// Defines the <see cref="CityController" />.
     /// </summary>
     [Authorize(Roles = "Admin")]
-   // [AuthorizeAttribute(typeof(AuthorizeRoleAttribute), Arguments = new object[] { 10 })]
+    // [AuthorizeAttribute(typeof(AuthorizeRoleAttribute), Arguments = new object[] { 10 })]
     [Route("Commons/[controller]")]
     [ApiController]
     public class CityController : ControllerBase

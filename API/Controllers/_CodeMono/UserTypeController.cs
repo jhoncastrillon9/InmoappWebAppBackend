@@ -1,15 +1,14 @@
+using CodeMono.Business;
+using Commons.DTOs.Users;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+
 namespace API.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CodeMono.Business;
-    using CodeMono.Entities;
-
 
     /// <summary>
     /// Defines the <see cref="UserTypeController" />.
@@ -110,7 +109,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserTypeModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostUserType(UserTypeModel model)
+        public async Task<IActionResult> PostUserType(UserDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -132,7 +131,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserTypeModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutUserType(UserTypeModel model)
+        public async Task<IActionResult> PutUserType(UserTypeDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -155,7 +154,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserTypeModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("enable")]
-        public async Task<IActionResult> EnableUserType(UserTypeModel model)
+        public async Task<IActionResult> EnableUserType(UserTypeDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -177,7 +176,7 @@ namespace API.Controllers
         /// <param name="model">The model<see cref="UserTypeModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPut("disable")]
-        public async Task<IActionResult> DisableUserType(UserTypeModel model)
+        public async Task<IActionResult> DisableUserType(UserTypeDTO model)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {

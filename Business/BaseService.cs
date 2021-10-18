@@ -1,4 +1,4 @@
-﻿using CodeMono.Entities;
+﻿using Commons.DTOs;
 using DataAccess;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace Business
 {
     public class BaseService<TEntity> where TEntity : class, new()
     {
-        protected ResponseModel response = new ResponseModel();
+        protected ResponseMDTO response = new ResponseMDTO();
         protected BaseModel<TEntity> model;
         protected BaseStoreProcedureModel spModel;
 
@@ -22,7 +22,7 @@ namespace Business
         }
 
 
-        public async Task<ResponseModel> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
+        public async Task<ResponseMDTO> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
         {
             response.data = await spModel.ExecStoreProcedure<T>(parameters, spName);
 

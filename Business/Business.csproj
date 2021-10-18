@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

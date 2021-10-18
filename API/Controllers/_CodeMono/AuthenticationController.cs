@@ -1,14 +1,16 @@
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
+using Business.Users;
+using CodeMono.Business;
+using Commons.DTOs;
+using Commons.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using CodeMono.Business;
-using CodeMono.Entities;
 
 namespace API.Controllers
 {
@@ -30,14 +32,17 @@ namespace API.Controllers
         /// </summary>
         private readonly IConfiguration configuration;
 
+        private AuthenticationServices authenticationServices;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AuthenticationController(IConfiguration config)
+        public AuthenticationController(IConfiguration config, AuthenticationServices authenticationServices)
         {
             business = new AuthenticationService(config);
             configuration = config;
+            this.authenticationServices = authenticationServices;
         }
 
         /// <summary>
@@ -46,7 +51,7 @@ namespace API.Controllers
         /// <param name="data">The data<see cref="AuthenticationModel"/>.</param>
         /// <returns>The <see cref="Task{IActionResult}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> Validate([FromBody] AuthenticationModel data)
+        public async Task<IActionResult> Validate([FromBody] AuthenticationDTO data)
         {
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -100,6 +105,29 @@ namespace API.Controllers
                 }
             }
 
-        }        
+        }
+
+        private void GenerateAuthentication(ResponseMDTO response, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token)
+        {
+            // Get SecretKey from appseting
+            var secretKey = configuration.GetValue<string>("SecretKey");
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            // Payload creation
+            var claims = authenticationServices.GetClaimsForUser(response);
+
+            // Token configuration
+            var tokenConfiguration = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                // token duration
+                Expires = DateTime.UtcNow.AddHours(1),
+                // Token Signing Credential
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            tokenHandler = new JwtSecurityTokenHandler();
+            Token = tokenHandler.CreateToken(tokenConfiguration);
+        }
     }
 }

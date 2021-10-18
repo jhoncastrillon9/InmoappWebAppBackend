@@ -1,12 +1,13 @@
-﻿namespace CodeMono.Business
-{
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+﻿using CodeMono.DataAccess;
+using Commons.DTOs;
+using Commons.DTOs.Users;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-    using CodeMono.Entities;
-    using CodeMono.DataAccess;
+namespace CodeMono.Business
+{
 
     /// <summary>
     /// Defines the <see cref="AuthenticationService" />.
@@ -21,7 +22,7 @@
         /// <summary>
         /// Defines the m.
         /// </summary>
-        private ResponseModel m;
+        private ResponseMDTO m;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationService"/> class.
@@ -31,7 +32,7 @@
         public AuthenticationService(IConfiguration config)
         {
             dao = new AuthenticationDao(config);
-            m = new ResponseModel();
+            m = new ResponseMDTO();
         }
 
         /// <summary>
@@ -39,11 +40,11 @@
         /// </summary>
         /// <param name="parameters">The parameters<see cref="Dictionary{string, dynamic}"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        public async Task<ResponseModel> Validate(Dictionary<string, dynamic> parameters)
+        public async Task<ResponseMDTO> Validate(Dictionary<string, dynamic> parameters)
         {
             try
             {
-                var res = await dao.Validate<AuthenticationResponse>(parameters);
+                var res = await dao.Validate<AuthenticationResponseDTO>(parameters);
                 m.data = res;
                 m.executionError = false;
                 m.message = "";

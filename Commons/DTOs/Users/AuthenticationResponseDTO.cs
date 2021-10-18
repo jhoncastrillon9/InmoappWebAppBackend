@@ -1,14 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace CodeMono.Entities
+namespace Commons.DTOs.Users
 {
-    public class AuthenticationModel
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class AuthenticationResponse
+    public class AuthenticationResponseDTO
     {
         public Byte Authenticated { get; set; }
         public string Message { get; set; }

@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Busine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6A23F7C5-E3AE-4248-839F-03659C49A2A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{BB191EDE-D6E1-4D27-9B6D-2407D0B90D22}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "Commons\Commons.csproj", "{04B00F66-31C9-4296-8ACC-0926423C4CA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.csproj", "{04B00F66-31C9-4296-8ACC-0926423C4CA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{6A23F7C5-E3AE-4248-839F-03659C49A2A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A23F7C5-E3AE-4248-839F-03659C49A2A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A23F7C5-E3AE-4248-839F-03659C49A2A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB191EDE-D6E1-4D27-9B6D-2407D0B90D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB191EDE-D6E1-4D27-9B6D-2407D0B90D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB191EDE-D6E1-4D27-9B6D-2407D0B90D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB191EDE-D6E1-4D27-9B6D-2407D0B90D22}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04B00F66-31C9-4296-8ACC-0926423C4CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{04B00F66-31C9-4296-8ACC-0926423C4CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B00F66-31C9-4296-8ACC-0926423C4CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
