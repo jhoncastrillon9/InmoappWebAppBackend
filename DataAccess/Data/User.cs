@@ -5,6 +5,11 @@ namespace DataAccess.Data
 {
     public partial class User
     {
+        public User()
+        {
+            UserByRole = new HashSet<UserByRole>();
+        }
+
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,5 +26,6 @@ namespace DataAccess.Data
         public bool? Active { get; set; }
 
         public UserType UserType { get; set; }
+        public ICollection<UserByRole> UserByRole { get; set; }
     }
 }

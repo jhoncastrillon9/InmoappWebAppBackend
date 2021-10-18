@@ -85,29 +85,9 @@ namespace API.Controllers
                 }
                 else
                 {
-                    // Get SecretKey from appseting
-                    var secretKey = configuration.GetValue<string>("SecretKey");
-                    var key = Encoding.ASCII.GetBytes(secretKey);
-
-                    // Payload creation
-                    var claims = new[] 
-                    {
-                        new Claim("userId", response.data[0].UserId.ToString() as string),
-                        new Claim("username", response.data[0].Username.ToString() as string)
-                    };
-
-                    // Token configuration
-                    var tokenConfiguration = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(claims),
-                        // token duration
-                        Expires = DateTime.UtcNow.AddDays(1),
-                        // Token Signing Credential
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    };
-
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var Token = tokenHandler.CreateToken(tokenConfiguration);
+                    JwtSecurityTokenHandler tokenHandler;
+                    SecurityToken Token;
+                    GenerateAuthentication(response, out tokenHandler, out Token);
 
                     // Authentication response
                     return Ok(new
@@ -120,6 +100,6 @@ namespace API.Controllers
                 }
             }
 
-        }
+        }        
     }
 }

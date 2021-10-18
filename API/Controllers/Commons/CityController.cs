@@ -1,5 +1,6 @@
 namespace API.Controllers
 {
+    using API.Controllers._CodeMono;
     using Business.Commons;
     using Commons.DTOs.Commons;
     using Microsoft.AspNetCore.Authorization;
@@ -9,11 +10,15 @@ namespace API.Controllers
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Commons.Enums.Users;
+    using Business.Users;
+    using DataAccess.Users;
 
     /// <summary>
     /// Defines the <see cref="CityController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "Admin")]
+   // [AuthorizeAttribute(typeof(AuthorizeRoleAttribute), Arguments = new object[] { 10 })]
     [Route("Commons/[controller]")]
     [ApiController]
     public class CityController : ControllerBase
@@ -47,6 +52,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCity(Int32? CityId, String CityName, Int32? StateId)
         {
+            var tt = new List<Role> { Role.SuperAdmin };
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },

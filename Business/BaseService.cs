@@ -15,7 +15,7 @@ namespace Business
         protected BaseStoreProcedureModel spModel;
 
 
-        public BaseService(BaseModel<TEntity> model, BaseStoreProcedureModel spModel)
+        public BaseService(BaseModel<TEntity> model, BaseStoreProcedureModel spModel = null)
         {
             this.model = model;
             this.spModel = spModel;

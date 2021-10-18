@@ -30,14 +30,15 @@ namespace DataAccess.Data
         public virtual DbSet<Property> Property { get; set; }
         public virtual DbSet<PropertyCategory> PropertyCategory { get; set; }
         public virtual DbSet<PropertyStatus> PropertyStatus { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<State> State { get; set; }
         public virtual DbSet<Tenant> Tenant { get; set; }
         public virtual DbSet<TenantsByContract> TenantsByContract { get; set; }
         public virtual DbSet<TypeOffer> TypeOffer { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserByRole> UserByRole { get; set; }
         public virtual DbSet<UserType> UserType { get; set; }
         public virtual DbSet<Zone> Zone { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -396,6 +397,15 @@ namespace DataAccess.Data
                     .HasMaxLength(200);
             });
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("Role", "Users");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(200);
+            });
+
             modelBuilder.Entity<State>(entity =>
             {
                 entity.ToTable("State", "Commons");
@@ -501,6 +511,23 @@ namespace DataAccess.Data
                     .HasForeignKey(d => d.UserTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CodeMono_UserTypeId");
+            });
+
+            modelBuilder.Entity<UserByRole>(entity =>
+            {
+                entity.ToTable("UserByRole", "Users");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UserByRole)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserByRol__RoleI__53D770D6");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserByRole)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserByRol__UserI__52E34C9D");
             });
 
             modelBuilder.Entity<UserType>(entity =>

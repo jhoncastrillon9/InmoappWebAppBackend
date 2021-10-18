@@ -5,6 +5,7 @@ using Business.Contracts;
 using Business.Owners;
 using Business.Properties;
 using Business.Tenants;
+using Business.Users;
 using CodeMono.DataAccess.DBConnection;
 using DataAccess;
 using DataAccess.Banks;
@@ -15,6 +16,7 @@ using DataAccess.Data;
 using DataAccess.Owners;
 using DataAccess.Properties;
 using DataAccess.Tenants;
+using DataAccess.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -64,6 +66,8 @@ namespace CodeMono.API
             services.AddScoped<TenantsByContractService, TenantsByContractService>();
             services.AddScoped<OwnerService, OwnerService>();
             services.AddScoped<TenantService, TenantService>();
+            services.AddScoped<RoleService, RoleService>();
+            services.AddScoped<UserByRoleService, UserByRoleService>();
 
             //Modelos
             services.AddScoped<ImagesModel, ImagesModel>();
@@ -88,6 +92,8 @@ namespace CodeMono.API
             services.AddScoped<TenantsByContractModel, TenantsByContractModel>();
             services.AddScoped<OwnerModel, OwnerModel>();
             services.AddScoped<TenantModel, TenantModel>();
+            services.AddScoped<RoleModel, RoleModel>();
+            services.AddScoped<UserByRoleModel, UserByRoleModel>();
 
             //Otros modelo
             services.AddScoped<DBConnectionMSSQL, DBConnectionMSSQL>();
