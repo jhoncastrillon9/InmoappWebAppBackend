@@ -13,6 +13,7 @@ namespace DataAccess.Data
         {
         }
 
+
         public virtual DbSet<AccountsStatus> AccountsStatus { get; set; }
         public virtual DbSet<AccountsToPayContract> AccountsToPayContract { get; set; }
         public virtual DbSet<AccountsToReceivableContract> AccountsToReceivableContract { get; set; }
@@ -39,6 +40,8 @@ namespace DataAccess.Data
         public virtual DbSet<UserByRole> UserByRole { get; set; }
         public virtual DbSet<UserType> UserType { get; set; }
         public virtual DbSet<Zone> Zone { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -505,6 +508,12 @@ namespace DataAccess.Data
                     .IsRequired()
                     .HasMaxLength(45)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.CompanyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__User__CompanyId__57A801BA");
 
                 entity.HasOne(d => d.UserType)
                     .WithMany(p => p.User)

@@ -1,5 +1,6 @@
 ﻿using Commons.DTOs;
 using Commons.DTOs.Users;
+using Commons.Enums.Users;
 using DataAccess;
 using DataAccess.Data;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using RoleEmun = Commons.Enums.Users.RoleEmun;
 
 namespace Business.Users
 {
@@ -67,15 +69,38 @@ namespace Business.Users
             return claims;
         }
 
+        /// <summary>
+        /// Registrar un usuario nuevo 
+        /// </summary>
+        /// <param name="dto">AuthenticationDTO</param>
+        /// <returns></returns>
         public async Task<ResponseMDTO> Register(AuthenticationDTO dto)
         {
             var newUser = new User
             {
-                Username = dto.Username,
-                Password = dto.Password
+                FirstName = dto.FirstName,
+                LastName = string.Empty,
+                Username = dto.Email,
+                Password = dto.Password,
+                Active = true,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                UserTypeId = (int)UserTypeEnum.Prod
             };
 
-            response.data = _Userservice.Create(newUser);
+            newUser.Company = new Company
+            {
+                CompanyName = dto.CompanyName,
+                Email = dto.Email
+            };
+
+            newUser.UserByRole = new List<UserByRole> { new UserByRole {
+                    UserId = newUser.UserId,
+                    RoleId = (int)RoleEmun.CompanyAdmin
+                }};
+
+            var usercreated = _Userservice.Create(newUser);
+            response.data = new { usercreated.FirstName};
 
             return response;
 

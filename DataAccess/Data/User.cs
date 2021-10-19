@@ -24,7 +24,9 @@ namespace DataAccess.Data
         public int? DisabledBy { get; set; }
         public DateTime? DisabledAt { get; set; }
         public bool? Active { get; set; }
+        public int CompanyId { get; set; }
 
+        public Company Company { get; set; }
         public UserType UserType { get; set; }
         public ICollection<UserByRole> UserByRole { get; set; }
     }

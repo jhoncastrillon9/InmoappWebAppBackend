@@ -122,13 +122,13 @@ namespace API.Controllers
         /// </summary>
         /// <param name="newUser"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] AuthenticationDTO newUser)
         {
             try
             {             
                 response = await _AuthenticationServices.Register(newUser);
-                return Ok(new { data = response.data[0], executionError = false, message = "" });
+                return Ok(response);
             }
             catch (Exception ex)
             {

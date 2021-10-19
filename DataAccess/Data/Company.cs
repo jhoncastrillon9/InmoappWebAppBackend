@@ -16,6 +16,7 @@ namespace DataAccess.Data
             PaymentType = new HashSet<PaymentType>();
             Property = new HashSet<Property>();
             Tenant = new HashSet<Tenant>();
+            User = new HashSet<User>();
         }
 
         public int CompayId { get; set; }
@@ -36,5 +37,6 @@ namespace DataAccess.Data
         public ICollection<PaymentType> PaymentType { get; set; }
         public ICollection<Property> Property { get; set; }
         public ICollection<Tenant> Tenant { get; set; }
+        public ICollection<User> User { get; set; }
     }
 }

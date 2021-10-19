@@ -49,7 +49,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCity(Int32? CityId, String CityName, Int32? StateId)
         {
-            var tt = new List<Role> { Role.SuperAdmin };
+            var tt = new List<RoleEmun> { RoleEmun.SuperAdmin };
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
