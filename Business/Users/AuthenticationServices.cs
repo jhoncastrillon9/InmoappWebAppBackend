@@ -1,6 +1,7 @@
 ﻿using Commons.DTOs;
 using Commons.DTOs.Users;
 using DataAccess;
+using DataAccess.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,14 @@ namespace Business.Users
     public class AuthenticationServices
     {
         private UserByRoleService _UserByRoleService;
+        private UserService _Userservice;
         private BaseStoreProcedureModel _SpModel;
         protected ResponseMDTO response = new ResponseMDTO();
-        public AuthenticationServices(UserByRoleService userByRoleService, BaseStoreProcedureModel spModel)
+        public AuthenticationServices(UserByRoleService userByRoleService, BaseStoreProcedureModel spModel, UserService userService)
         {
             _UserByRoleService = userByRoleService;
             _SpModel = spModel;
+            _Userservice = userService;
         }
 
         /// <summary>
@@ -62,6 +65,20 @@ namespace Business.Users
             }
 
             return claims;
+        }
+
+        public async Task<ResponseMDTO> Register(AuthenticationDTO dto)
+        {
+            var newUser = new User
+            {
+                Username = dto.Username,
+                Password = dto.Password
+            };
+
+            response.data = _Userservice.Create(newUser);
+
+            return response;
+
         }
     }
 }

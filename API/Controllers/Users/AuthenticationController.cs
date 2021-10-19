@@ -1,6 +1,7 @@
 using Business.Users;
 using Commons.DTOs;
 using Commons.DTOs.Users;
+using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ namespace API.Controllers
         private ResponseMDTO response = new ResponseMDTO();
 
         private AuthenticationServices _AuthenticationServices;
+
         /// <summary>
         /// Defines the configuration.
         /// </summary>
@@ -36,6 +38,7 @@ namespace API.Controllers
         {
             configuration = config;
             _AuthenticationServices = authenticationServices;
+      
         }
 
         /// <summary>
@@ -113,5 +116,28 @@ namespace API.Controllers
             tokenHandler = new JwtSecurityTokenHandler();
             Token = tokenHandler.CreateToken(tokenConfiguration);
         }
+
+        /// <summary>
+        /// Registra al usuario (Crea un nuevo usuario)
+        /// </summary>
+        /// <param name="newUser"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] AuthenticationDTO newUser)
+        {
+            try
+            {             
+                response = await _AuthenticationServices.Register(newUser);
+                return Ok(new { data = response.data[0], executionError = false, message = "" });
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+
+        }
+
     }
 }
