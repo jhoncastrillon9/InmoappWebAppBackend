@@ -1,9 +1,9 @@
 namespace Business.Commons
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Commons;
     using Microsoft.Extensions.Configuration;
-    using System.Security.Policy;
     using Zone = DataAccess.Data.Zone;
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace Business.Commons
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>        
-        public ZoneService(ZoneModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public ZoneService(ZoneModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

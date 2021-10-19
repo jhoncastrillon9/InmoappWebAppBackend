@@ -1,9 +1,9 @@
 namespace Business.Contracts
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Contracts;
     using DataAccess.Data;
-    using global::Commons.DTOs.Contracts;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace Business.Contracts
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public TenantsByContractService(TenantsByContractModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public TenantsByContractService(TenantsByContractModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

@@ -1,9 +1,9 @@
 namespace Business.Owners
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Owners;
-    using global::Commons.DTOs.Owners;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -16,7 +16,7 @@ namespace Business.Owners
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public OwnerService(OwnerModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public OwnerService(OwnerModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

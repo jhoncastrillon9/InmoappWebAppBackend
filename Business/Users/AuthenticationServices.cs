@@ -1,4 +1,5 @@
-﻿using Commons.DTOs;
+﻿using AutoMapper;
+using Commons.DTOs;
 using Commons.DTOs.Users;
 using Commons.Enums.Users;
 using DataAccess;
@@ -14,15 +15,21 @@ namespace Business.Users
 {
     public class AuthenticationServices
     {
+        private readonly IMapper _mapper;
         private UserByRoleService _UserByRoleService;
         private UserService _Userservice;
         private BaseStoreProcedureModel _SpModel;
         protected ResponseMDTO response = new ResponseMDTO();
-        public AuthenticationServices(UserByRoleService userByRoleService, BaseStoreProcedureModel spModel, UserService userService)
+        public AuthenticationServices(
+            UserByRoleService userByRoleService, 
+            BaseStoreProcedureModel spModel, 
+            UserService userService,
+            IMapper mapper)
         {
             _UserByRoleService = userByRoleService;
             _SpModel = spModel;
             _Userservice = userService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -98,10 +105,8 @@ namespace Business.Users
                     UserId = newUser.UserId,
                     RoleId = (int)RoleEmun.CompanyAdmin
                 }};
-
-            var usercreated = _Userservice.Create(newUser);
-            response.data = new { usercreated.FirstName};
-
+                        
+            response.data = _mapper.Map<UserDTO>(_Userservice.Create(newUser));
             return response;
 
         }

@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using AutoMapper;
+using DataAccess;
 using DataAccess.Data;
 using DataAccess.Users;
 
@@ -11,7 +12,7 @@ namespace Business.Users
         /// </summary>
         /// <param name="model"></param>
         /// <param name="spModel"></param>
-        public UserService(UserModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public UserService(UserModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

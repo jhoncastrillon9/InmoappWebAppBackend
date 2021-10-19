@@ -1,5 +1,6 @@
 namespace Business.Banks
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Banks;
     using DataAccess.Data;
@@ -16,7 +17,10 @@ namespace Business.Banks
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public AccountsToReceivableContractService(AccountsToReceivableContractModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public AccountsToReceivableContractService(
+            AccountsToReceivableContractModel model,
+             IMapper mapper,
+            BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

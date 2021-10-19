@@ -1,5 +1,6 @@
 namespace Business.Tenants
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Tenants;
@@ -16,7 +17,10 @@ namespace Business.Tenants
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>        
-        public TenantService(TenantModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public TenantService(
+            TenantModel model, 
+            IMapper mapper, 
+            BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

@@ -1,9 +1,9 @@
 namespace Business.Properties
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Properties;
-    using global::Commons.DTOs.Properties;
 
     /// <summary>
     /// Defines the <see cref="ImagesService" />.
@@ -11,7 +11,7 @@ namespace Business.Properties
     public class ImagesService : BaseService<Images>
     {
 
-        public ImagesService(ImagesModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public ImagesService(ImagesModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

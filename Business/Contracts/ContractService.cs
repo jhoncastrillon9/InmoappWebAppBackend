@@ -1,11 +1,11 @@
 namespace Business.Contracts
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Contracts;
-    using Contract = DataAccess.Data.Contract;
     using Microsoft.Extensions.Configuration;
-    using System.Diagnostics.Contracts;
-  
+    using Contract = DataAccess.Data.Contract;
+
 
     /// <summary>
     /// Defines the <see cref="ContractService" />.
@@ -17,7 +17,7 @@ namespace Business.Contracts
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>        
-        public ContractService(ContractModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public ContractService(ContractModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

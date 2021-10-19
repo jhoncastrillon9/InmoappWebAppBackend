@@ -1,4 +1,5 @@
-﻿using Commons.DTOs;
+﻿using AutoMapper;
+using Commons.DTOs;
 using DataAccess;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,17 @@ namespace Business
         protected ResponseMDTO response = new ResponseMDTO();
         protected BaseModel<TEntity> model;
         protected BaseStoreProcedureModel spModel;
+        /// <summary>
+        /// Automapper
+        /// </summary>
+        private readonly IMapper _mapper;
 
 
-        public BaseService(BaseModel<TEntity> model, BaseStoreProcedureModel spModel = null)
+        public BaseService(BaseModel<TEntity> model, IMapper mapper, BaseStoreProcedureModel spModel = null)
         {
             this.model = model;
             this.spModel = spModel;
+            _mapper = mapper;
         }
 
 

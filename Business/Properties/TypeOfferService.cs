@@ -1,5 +1,6 @@
 namespace Business.Properties
 {
+    using AutoMapper;
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Properties;
@@ -9,7 +10,7 @@ namespace Business.Properties
     /// </summary>
     public class TypeOfferService : BaseService<TypeOffer>
     {
-        public TypeOfferService(TypeOfferModel model, BaseStoreProcedureModel spModel) : base(model, spModel)
+        public TypeOfferService(TypeOfferModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
         {
 
         }

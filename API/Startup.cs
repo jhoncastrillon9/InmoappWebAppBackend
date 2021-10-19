@@ -1,7 +1,9 @@
-﻿using Business.Banks;
+﻿using AutoMapper;
+using Business.Banks;
 using Business.Commons;
 using Business.Companies;
 using Business.Contracts;
+using Business.Mappings;
 using Business.Owners;
 using Business.Properties;
 using Business.Tenants;
@@ -113,6 +115,8 @@ namespace CodeMono.API
                 options.UseSqlServer(Configuration.GetConnectionString("Development")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //Se agrega Automapper
+            services.AddAutoMapper(typeof(MappingProfiles));
 
             // ======== CONFIGURACIÓN DE SWAGGER =========
             services.AddSwaggerGen(c =>
