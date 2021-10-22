@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Banks;
     using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -30,7 +31,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsToReceivableContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService)
+        public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _AccountsToReceivableContractService = accountsToReceivableContractService;
         }
@@ -47,14 +48,14 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
@@ -88,14 +89,14 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForList);
@@ -126,14 +127,14 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", null },
                     {"ContractId", null },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
@@ -163,7 +164,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -172,7 +173,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForCreate);
@@ -204,7 +205,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_AccountsToReceivableContractService.FindById(model.AccountsToReceivableContractId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -216,7 +217,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", companyIdSession}
+                    {"CompayId", currentUserCompanyId}
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForUpdate);
@@ -246,7 +247,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_AccountsToReceivableContractService.FindById(AccountsToReceivableContractId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()

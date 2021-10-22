@@ -5,6 +5,7 @@ namespace Business.Tenants
     using DataAccess.Data;
     using DataAccess.Tenants;
     using global::Commons.DTOs.Tenants;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -19,8 +20,8 @@ namespace Business.Tenants
         /// <param name="con">The con<see cref="string"/>.</param>        
         public TenantService(
             TenantModel model, 
-            IMapper mapper, 
-            BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+            IMapper mapper,
+            IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

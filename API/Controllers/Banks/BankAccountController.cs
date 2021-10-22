@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Banks;
     using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="BankAccountController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public BankAccountController(BankAccountService bankAccountService)
+        public BankAccountController(BankAccountService bankAccountService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _BankAccountService = bankAccountService;
         }
@@ -48,13 +49,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", BankAccountName },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
@@ -89,13 +90,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", BankAccountName },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForList);
@@ -127,13 +128,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", null },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
@@ -165,13 +166,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"BankAccountName", model.BankAccountName },
                     {"Total", model.Total },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForCreate);
@@ -203,7 +204,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_BankAccountService.FindById(model.BankAccountId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -212,7 +213,7 @@ namespace API.Controllers
                     {"BankAccountId", model.BankAccountId },
                     {"BankAccountName", model.BankAccountName },
                     {"Total", model.Total },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForUpdate);
@@ -244,7 +245,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_BankAccountService.FindById(BankAccountId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

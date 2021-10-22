@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Tenants;
     using Commons.DTOs.Tenants;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="TenantController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public TenantController(TenantService tenantService)
+        public TenantController(TenantService tenantService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _TenantService = tenantService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -61,7 +62,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -94,7 +95,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -106,7 +107,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForList);
@@ -137,7 +138,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -149,7 +150,7 @@ namespace API.Controllers
                     {"Email", null },
                     {"Address", null },
                     {"Observation", null },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -180,7 +181,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -191,7 +192,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForCreate);
@@ -222,7 +223,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_TenantService.FindById(model.TenantId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -235,7 +236,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForUpdate);
@@ -266,7 +267,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_TenantService.FindById(TenantId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

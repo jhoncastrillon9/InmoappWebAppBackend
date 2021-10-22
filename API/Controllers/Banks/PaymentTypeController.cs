@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Banks;
     using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PaymentTypeController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PaymentTypeController(PaymentTypeService paymentTypeService)
+        public PaymentTypeController(PaymentTypeService paymentTypeService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _PaymentTypeService = paymentTypeService;
         }
@@ -48,13 +49,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"PaymentTypeId", PaymentTypeId },
                     {"PaymentTypeName", PaymentTypeName },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
@@ -87,13 +88,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"PaymentTypeId", PaymentTypeId },
                 {"PaymentTypeName", PaymentTypeName },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForList);
@@ -124,13 +125,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"PaymentTypeId", PaymentTypeId },
                 {"PaymentTypeName", null },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
@@ -160,13 +161,13 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"PaymentTypeName", model.PaymentTypeName },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForCreate);
@@ -198,7 +199,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_PaymentTypeService.FindById(model.PaymentTypeId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -206,7 +207,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"PaymentTypeId", model.PaymentTypeId },
                     {"PaymentTypeName", model.PaymentTypeName },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForUpdate);
@@ -238,7 +239,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_PaymentTypeService.FindById(PaymentTypeId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

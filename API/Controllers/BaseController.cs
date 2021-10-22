@@ -12,36 +12,16 @@ namespace API.Controllers
     {
 
         protected ResponseMDTO response = new ResponseMDTO();
-        protected int userIdSession;
-        protected int companyIdSession;
+        protected int currentUserId;
+        protected int currentUserCompanyId;
+        protected ClaimsIdentity _ClaimsUser;
 
-
-        protected void LoadUserSession()
+        public BaseController(IHttpContextAccessor _HttpContext)
         {
-            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                userIdSession = int.Parse(identity.FindFirst("userId").Value);
-                companyIdSession = int.Parse(identity.FindFirst("companyId").Value);
-            }
-        }
+            _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
+            currentUserId = int.Parse(_ClaimsUser.FindFirst("userId").Value);
+            currentUserCompanyId = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
+        }  
 
-        protected void ValidateCompany(int companyId)
-        {
-            if (companyId != companyIdSession)
-            {
-                throw new Exception(Messages.ErrorEntityNoAutorizate);
-            }
-            
-        }
-
-        protected void ValidateUserId(int companyId)
-        {
-            if (companyId != userIdSession)
-            {
-                throw new Exception(Messages.ErrorEntityNoAutorizate);
-            }
-
-        }
     }
 }

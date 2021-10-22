@@ -1,6 +1,7 @@
 using Business.Commons;
 using Commons.DTOs.Commons;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="CityController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public CityController(CityService cityService)
+        public CityController(CityService cityService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _CityService = cityService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -90,7 +91,7 @@ namespace API.Controllers
 
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -128,7 +129,7 @@ namespace API.Controllers
 
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -165,7 +166,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -201,7 +202,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -240,7 +241,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"CityId", CityId }

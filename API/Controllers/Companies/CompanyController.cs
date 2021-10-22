@@ -4,6 +4,7 @@ namespace API.Controllers
     using Business.Users;
     using Commons.DTOs.Companies;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -34,7 +35,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="CompanyController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public CompanyController(CompanyService companyService, UserService userService)
+        public CompanyController(CompanyService companyService, UserService userService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _CompanyService = companyService;
             _Userservice = userService;
@@ -52,11 +53,11 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", companyIdSession },
+                    {"CompayId", currentUserCompanyId },
                     {"CompanyName", CompanyName },
                     {"Document", Document },
                     {"Telephone", Telephone },
@@ -97,11 +98,11 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", companyIdSession },
+                    {"CompayId", currentUserCompanyId },
                     {"CompanyName", CompanyName },
                     {"Document", Document },
                     {"Telephone", Telephone },
@@ -140,11 +141,11 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", companyIdSession },
+                    {"CompayId", currentUserCompanyId },
                     {"CompanyName", null },
                     {"Document", null },
                     {"Telephone", null },
@@ -184,7 +185,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -225,12 +226,12 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(model.CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", companyIdSession },
+                    {"CompayId", currentUserCompanyId },
                     {"CompanyName", model.CompanyName },
                     {"Document", model.Document },
                     {"Telephone", model.Telephone },
@@ -272,7 +273,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"CompayId", CompayId }

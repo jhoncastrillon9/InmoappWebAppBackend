@@ -3,6 +3,7 @@ namespace Business.Commons
     using AutoMapper;
     using DataAccess;
     using DataAccess.Commons;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Zone = DataAccess.Data.Zone;
 
@@ -16,7 +17,7 @@ namespace Business.Commons
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>        
-        public ZoneService(ZoneModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public ZoneService(ZoneModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

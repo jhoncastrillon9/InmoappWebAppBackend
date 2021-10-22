@@ -6,6 +6,7 @@ namespace Business.Properties
     using DataAccess.Properties;
     using global::Commons.DTOs;
     using global::Commons.DTOs.Properties;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Defines the <see cref="ImagesService" />.
@@ -13,7 +14,7 @@ namespace Business.Properties
     public class ImagesService : BaseService<Images>
     {
 
-        public ImagesService(ImagesModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public ImagesService(ImagesModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

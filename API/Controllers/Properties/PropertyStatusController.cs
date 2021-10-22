@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Properties;
     using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PropertyStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PropertyStatusController(PropertyStatusService propertyStatusService)
+        public PropertyStatusController(PropertyStatusService propertyStatusService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _PropertyStatusService = propertyStatusService;
         }
@@ -48,7 +49,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -87,7 +88,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -123,7 +124,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -160,7 +161,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -197,7 +198,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -235,7 +236,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"PropertyStatusId", PropertyStatusId }

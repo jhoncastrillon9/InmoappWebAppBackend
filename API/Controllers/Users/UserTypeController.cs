@@ -1,6 +1,7 @@
 using Business.Users;
 using Commons.DTOs.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -35,7 +36,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="UserTypeController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public UserTypeController(UserTypeService userTypeService)
+        public UserTypeController(UserTypeService userTypeService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _UserTypeService = userTypeService;
         }
@@ -52,7 +53,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId },
@@ -91,7 +92,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId },
@@ -126,7 +127,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId }
@@ -160,7 +161,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeName", model.UserTypeName },
@@ -194,7 +195,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
@@ -229,7 +230,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
@@ -263,7 +264,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
@@ -298,7 +299,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId }

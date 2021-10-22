@@ -2,6 +2,7 @@
 using DataAccess;
 using DataAccess.Data;
 using DataAccess.Users;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Users
 {
@@ -12,7 +13,7 @@ namespace Business.Users
         /// </summary>
         /// <param name="model"></param>
         /// <param name="spModel"></param>
-        public UserService(UserModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public UserService(UserModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

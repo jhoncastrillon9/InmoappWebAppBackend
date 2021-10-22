@@ -3,6 +3,7 @@ namespace Business.Contracts
     using AutoMapper;
     using DataAccess;
     using DataAccess.Contracts;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Contract = DataAccess.Data.Contract;
 
@@ -17,7 +18,7 @@ namespace Business.Contracts
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>        
-        public ContractService(ContractModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public ContractService(ContractModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

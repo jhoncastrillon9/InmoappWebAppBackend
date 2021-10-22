@@ -1,6 +1,7 @@
 using Business.Banks;
 using Commons.DTOs.Banks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="HistoryBankAccountController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public HistoryBankAccountController(HistoryBankAccountService historyBankAccountService)
+        public HistoryBankAccountController(HistoryBankAccountService historyBankAccountService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _HistoryBankAccountServie = historyBankAccountService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -59,7 +60,7 @@ namespace API.Controllers
                     {"AccountsToPayContractsId", AccountsToPayContractsId },
                     {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
                     {"Obervation", Obervation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
@@ -93,7 +94,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -103,7 +104,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
                 {"Obervation", Obervation },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForList);
@@ -135,7 +136,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -145,7 +146,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", null },
                 {"AccountsToReceivableContractsId", null },
                 {"Obervation", null },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
@@ -177,7 +178,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -188,7 +189,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", model.AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
                 {"Obervation", model.Obervation },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForCreate);
@@ -220,7 +221,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_HistoryBankAccountServie.FindById(model.HistoryBankAccountId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -232,7 +233,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", model.AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
                 {"Obervation", model.Obervation },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForUpdate);
@@ -263,7 +264,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_HistoryBankAccountServie.FindById(HistoryBankAccountId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()

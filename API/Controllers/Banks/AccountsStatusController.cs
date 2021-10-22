@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Banks;
     using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -12,7 +13,7 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="AccountsStatusController" />.
     /// </summary>
-    [Authorize(Roles ="SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Banks/[controller]")]
     [ApiController]
     public class AccountsStatusController : BaseController
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsStatusController(AccountsStatusService accountsStatusService)
+        public AccountsStatusController(AccountsStatusService accountsStatusService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _AccountsStatusService = accountsStatusService;
 
@@ -50,6 +51,7 @@ namespace API.Controllers
         {
             try
             {
+                _AccountsStatusService.LoadUserSessionservice();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -85,7 +87,7 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListAccountsStatus(Int32? AccountsStatusId, String AccountsStatusName)
         {
-            LoadUserSession();
+            _AccountsStatusService.LoadUserSessionservice();
             try
             {
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -155,7 +157,6 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -189,7 +190,6 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAccountsStatus(AccountsStatusDTO model)
         {
-            LoadUserSession();
             try
             {
 

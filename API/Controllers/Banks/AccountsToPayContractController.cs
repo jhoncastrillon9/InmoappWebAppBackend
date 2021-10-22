@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Banks;
     using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -11,8 +12,9 @@ namespace API.Controllers
 
     /// <summary>
     /// Defines the <see cref="AccountsToPayContractController" />.
-    /// </summary>
+    /// </summary>    
     [Authorize(Roles = "SuperAdmin,CompanyAdmin,FinanceUser")]
+   
     [Route("Banks/[controller]")]
     [ApiController]
     public class AccountsToPayContractController : BaseController
@@ -31,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsToPayContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsToPayContractController(AccountsToPayContractService accountsToPayContractService)
+        public AccountsToPayContractController(AccountsToPayContractService accountsToPayContractService, IHttpContextAccessor httpContext):base(httpContext)
         {
             _AccountsToPayContractService = accountsToPayContractService;
         }
@@ -47,15 +49,14 @@ namespace API.Controllers
         public async Task<IActionResult> GetAccountsToPayContract(Int32? AccountsToPayContractId, Int32? AccountsStatusId, Int32? ContractId, Int32? CompayId)
         {
             try
-            {
-                LoadUserSession();
+            {               
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
@@ -87,14 +88,14 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForList);
@@ -127,14 +128,14 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", null },
                     {"ContractId", null },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
@@ -165,7 +166,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -174,7 +175,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId",companyIdSession }
+                    {"CompayId",currentUserCompanyId }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForCreate);
@@ -203,8 +204,7 @@ namespace API.Controllers
         public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractDTO model)
         {
             try
-            {
-                LoadUserSession();
+            {                
                 ValidateCompany(_AccountsToPayContractService.FindById(model.AccountsToPayContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -215,7 +215,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForUpdate);
@@ -245,8 +245,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteAccountsToPayContract(Int32? AccountsToPayContractId)
         {
             try
-            {
-                LoadUserSession();
+            {                
                 ValidateCompany(_AccountsToPayContractService.FindById(AccountsToPayContractId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>(){

@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Commons;
     using Commons.DTOs.Commons;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="NeighborhoodController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public NeighborhoodController(NeighborhoodService neighborhoodService)
+        public NeighborhoodController(NeighborhoodService neighborhoodService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _NeighborhoodService = neighborhoodService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -89,7 +90,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -127,7 +128,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -164,7 +165,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -203,7 +204,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -243,7 +244,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"NeighborhoodId", NeighborhoodId }

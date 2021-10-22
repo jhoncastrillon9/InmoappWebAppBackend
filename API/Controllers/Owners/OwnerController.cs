@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Owners;
     using Commons.DTOs.Owners;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="OwnerController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public OwnerController(OwnerService ownerService)
+        public OwnerController(OwnerService ownerService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _OwnerService = ownerService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -61,7 +62,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 var responde = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
@@ -95,7 +96,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -107,7 +108,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForList);
@@ -139,7 +140,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -151,7 +152,7 @@ namespace API.Controllers
                 {"Email", null },
                 {"Address", null },
                 {"Observation", null },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
@@ -183,7 +184,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -194,7 +195,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                  response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
@@ -226,7 +227,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_OwnerService.FindById(model.OwnerId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -239,7 +240,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", companyIdSession}
+                    {"CompayId", currentUserCompanyId}
                 };
 
                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForUpdate);
@@ -271,7 +272,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_OwnerService.FindById(OwnerId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

@@ -22,6 +22,7 @@ using DataAccess.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -110,6 +111,11 @@ namespace CodeMono.API
             services.AddScoped<InmmoAppContext, InmmoAppContext>();
             services.AddScoped<BaseStoreProcedureModel, BaseStoreProcedureModel>();
 
+            //Otros servicios
+
+            
+
+
             //Agregar cadena de conexion al contexto
             services.AddDbContext<InmmoAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Development")));
@@ -160,6 +166,8 @@ namespace CodeMono.API
                     ValidateLifetime = true
                 };
             });
+            services.AddHttpContextAccessor();
+            services.AddSession();
         }
 
 
@@ -185,6 +193,9 @@ namespace CodeMono.API
                 .AllowAnyHeader());
 
             app.UseAuthentication();
+            // AÑADIR LA SESIÓN.
+            // DEBE IR SIEMPRE ANTES DE app.UseMvc
+            app.UseSession();
             app.UseMvc();
         }
     }

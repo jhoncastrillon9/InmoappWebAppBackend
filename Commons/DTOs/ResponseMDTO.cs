@@ -17,11 +17,11 @@ namespace Commons.DTOs
             message = "Proceso finalizado exitosamente";
         }
 
-        public ResponseMDTO(dynamic _d, bool _e, string _m = "")
+        public ResponseMDTO(dynamic _dynamic, bool _executionError, string _message = "")
         {
-            data = _d;
-            executionError = _e;
-            message = _m;
+            data = _dynamic;
+            executionError = _executionError;
+            message = _message;
         }
     }
 }

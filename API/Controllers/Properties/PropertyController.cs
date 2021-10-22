@@ -1,6 +1,7 @@
 using Business.Properties;
 using Commons.DTOs.Properties;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PropertyController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PropertyController(PropertyService propertyService)
+        public PropertyController(PropertyService propertyService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _PropertyService = propertyService;
         }
@@ -48,7 +49,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = GenerateDictionary(PropertyId, IdIva, Code, Title, Description, Address, Reception, Pool, Observation, PropertyStatusId, CityId, ZoneId, OwnerId, PropertyCategoryId, TypeOfferId);
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
                 return new OkObjectResult(response);
@@ -79,7 +80,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = GenerateDictionary(PropertyId, IdIva, Code, Title, Description, Address, Reception, Pool, Observation, PropertyStatusId, CityId, ZoneId, OwnerId, PropertyCategoryId, TypeOfferId);
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForList);
                 return new OkObjectResult(response);
@@ -109,7 +110,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -128,7 +129,7 @@ namespace API.Controllers
                     {"OwnerId", null },
                     {"PropertyCategoryId", null },
                     {"TypeOfferId", null },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
@@ -184,7 +185,7 @@ namespace API.Controllers
                     {"OwnerId", model.OwnerId },
                     {"PropertyCategoryId", model.PropertyCategoryId },
                     {"TypeOfferId", model.TypeOfferId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForCreate);
@@ -243,7 +244,7 @@ namespace API.Controllers
                     {"OwnerId", model.OwnerId },
                     {"PropertyCategoryId", model.PropertyCategoryId },
                     {"TypeOfferId", model.TypeOfferId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForUpdate);
@@ -322,7 +323,7 @@ namespace API.Controllers
                 {"OwnerId", OwnerId },
                 {"PropertyCategoryId", PropertyCategoryId },
                 {"TypeOfferId", TypeOfferId },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
         }
 

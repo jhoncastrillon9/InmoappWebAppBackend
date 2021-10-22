@@ -4,6 +4,7 @@ namespace Business.Owners
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Owners;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -16,7 +17,7 @@ namespace Business.Owners
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public OwnerService(OwnerModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public OwnerService(OwnerModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

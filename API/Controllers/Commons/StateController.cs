@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Commons;
     using Commons.DTOs.Commons;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="StateController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public StateController(StateService stateService)
+        public StateController(StateService stateService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _StateService = stateService;
         }
@@ -48,7 +49,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -88,7 +89,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -125,7 +126,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -162,7 +163,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -200,7 +201,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -239,7 +240,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"StateId", StateId }

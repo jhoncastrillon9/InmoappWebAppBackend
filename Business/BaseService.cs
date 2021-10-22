@@ -1,30 +1,70 @@
 ﻿using AutoMapper;
+using Business.Resources;
 using Commons.DTOs;
 using DataAccess;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Business
 {
     public class BaseService<TEntity> where TEntity : class, new()
     {
+        /// <summary>
+        /// Contexto dela petición
+        /// </summary>
+        protected readonly IHttpContextAccessor _HttpContext;
+
         protected ResponseMDTO response = new ResponseMDTO();
-        protected BaseModel<TEntity> model;
+        protected BaseModel<TEntity> _BaseModel;
         protected BaseStoreProcedureModel spModel;
+        /// <summary>
+        /// Claims del usuario
+        /// </summary>
+        protected ClaimsIdentity _ClaimsUser;
+        /// <summary>
+        /// Id del usuario actual
+        /// </summary>
+        protected int currentUserId;
+        /// <summary>
+        /// Id de la compañia del usuario actual
+        /// </summary>
+        protected int currentUserCompanyId;
         /// <summary>
         /// Automapper
         /// </summary>
         private readonly IMapper _mapper;
 
 
-        public BaseService(BaseModel<TEntity> model, IMapper mapper, BaseStoreProcedureModel spModel = null)
+        public BaseService(BaseModel<TEntity> baseModel, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel = null)
         {
-            this.model = model;
+            this._BaseModel = baseModel;
             this.spModel = spModel;
             _mapper = mapper;
+            _HttpContext = httpContext;
+            _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
+        }
+
+        public void ValidateCompany(int companyId)
+        {
+            if (companyId != currentUserCompanyId)
+            {
+                throw new Exception(Messages.ErrorEntityNoAutorizate);
+            }
+
+        }
+
+        public void ValidateUserId(int companyId)
+        {
+            if (companyId != currentUserId)
+            {
+                throw new Exception(Messages.ErrorEntityNoAutorizate);
+            }
+
         }
 
         public async Task<ResponseMDTO> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
@@ -39,7 +79,7 @@ namespace Business
         /// </summary>
         public virtual IQueryable<TEntity> GetAll()
         {
-            return model.GetAll;
+            return _BaseModel.GetAll;
         }
 
         /// <summary>
@@ -49,7 +89,7 @@ namespace Business
         /// <returns></returns>
         public virtual TEntity FindById(object id)
         {
-            return model.FindById(id);
+            return _BaseModel.FindById(id);
         }
 
         /// <summary>
@@ -59,7 +99,7 @@ namespace Business
         /// <returns></returns>
         public virtual TEntity Insert(TEntity entity)
         {
-            return model.Insert(entity);
+            return _BaseModel.Insert(entity);
         }
 
         /// <summary>
@@ -69,7 +109,7 @@ namespace Business
         /// <returns></returns>
         public virtual IEnumerable<TEntity> InsertRange(IEnumerable<TEntity> entities)
         {
-            return model.InsertRange(entities);
+            return _BaseModel.InsertRange(entities);
         }
 
         /// <summary>
@@ -80,7 +120,7 @@ namespace Business
         public virtual TEntity Create(TEntity entity)
         {
 
-            return model.Create(entity);
+            return _BaseModel.Create(entity);
         }
 
         /// <summary>
@@ -90,7 +130,7 @@ namespace Business
         /// <returns></returns>
         public virtual IEnumerable<TEntity> CreateBatch(IEnumerable<TEntity> entities)
         {
-            return model.CreateBatch(entities);
+            return _BaseModel.CreateBatch(entities);
         }
 
         /// <summary>
@@ -103,7 +143,7 @@ namespace Business
         public virtual TEntity Modify(object id, TEntity editedEntity, out bool changed)
         {
             TEntity originalEntity = FindById(id);
-            return model.Modify(editedEntity, originalEntity, out changed);
+            return _BaseModel.Modify(editedEntity, originalEntity, out changed);
         }
 
         /// <summary>
@@ -116,7 +156,7 @@ namespace Business
         public virtual TEntity Update(object id, TEntity editedEntity, out bool changed)
         {
             TEntity originalEntity = FindById(id);
-            return model.Modify(editedEntity, originalEntity, out changed);
+            return _BaseModel.Modify(editedEntity, originalEntity, out changed);
         }
 
         /// <summary>
@@ -126,7 +166,7 @@ namespace Business
         /// <returns></returns>
         public virtual TEntity Remove(TEntity entity)
         {
-            return model.Remove(entity);
+            return _BaseModel.Remove(entity);
         }
 
         /// <summary>
@@ -136,7 +176,7 @@ namespace Business
         /// <returns></returns>
         public virtual IEnumerable<TEntity> RemoveRange(IEnumerable<TEntity> entities)
         {
-            return model.RemoveRange(entities);
+            return _BaseModel.RemoveRange(entities);
         }
 
         /// <summary>
@@ -146,7 +186,7 @@ namespace Business
         /// <returns></returns>
         public virtual TEntity Delete(TEntity entity)
         {
-            return model.Delete(entity);
+            return _BaseModel.Delete(entity);
         }
 
         /// <summary>
@@ -156,7 +196,7 @@ namespace Business
         /// <returns></returns>
         public virtual IEnumerable<TEntity> DeleteBatch(IEnumerable<TEntity> entities)
         {
-            return model.DeleteBatch(entities);
+            return _BaseModel.DeleteBatch(entities);
         }
 
         /// <summary>
@@ -166,7 +206,7 @@ namespace Business
         /// <returns></returns>
         public virtual IQueryable<TEntity> GetAllBy(Expression<Func<TEntity, bool>> condition)
         {
-            return model.GetAllBy(condition);
+            return _BaseModel.GetAllBy(condition);
         }
 
         /// <summary>
@@ -177,7 +217,7 @@ namespace Business
 
         public virtual TEntity GetBy(Expression<Func<TEntity, bool>> condition)
         {
-            return model.GetBy(condition);
+            return _BaseModel.GetBy(condition);
         }
 
         /// <summary>
@@ -185,7 +225,7 @@ namespace Business
         /// </summary>
         public virtual void SaveChanges()
         {
-            model.SaveChanges();
+            _BaseModel.SaveChanges();
         }
     }
 }

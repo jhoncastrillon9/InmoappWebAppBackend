@@ -5,6 +5,7 @@ namespace Business.Banks
     using DataAccess.Banks;
     using DataAccess.Data;
     using global::Commons.DTOs.Banks;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace Business.Banks
         public AccountsToReceivableContractService(
             AccountsToReceivableContractModel model,
              IMapper mapper,
-            BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+            IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

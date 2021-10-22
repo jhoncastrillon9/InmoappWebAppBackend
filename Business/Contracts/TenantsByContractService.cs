@@ -4,6 +4,7 @@ namespace Business.Contracts
     using DataAccess;
     using DataAccess.Contracts;
     using DataAccess.Data;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
@@ -16,7 +17,7 @@ namespace Business.Contracts
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         /// <param name="con">The con<see cref="string"/>.</param>
-        public TenantsByContractService(TenantsByContractModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public TenantsByContractService(TenantsByContractModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

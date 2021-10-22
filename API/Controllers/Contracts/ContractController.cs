@@ -3,6 +3,7 @@ namespace API.Controllers
     using Business.Contracts;
     using Commons.DTOs.Contracts;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ContractController(ContractService contractService)
+        public ContractController(ContractService contractService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _ContractService = contractService;
         }
@@ -49,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -58,7 +59,7 @@ namespace API.Controllers
                 {"StatusId", StatusId },
                 {"PropertyId", PropertyId },
                 {"TenantId", TenantId },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
@@ -92,17 +93,17 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ContractId", ContractId },
-                {"Observation", Observation },
-                {"StatusId", StatusId },
-                {"PropertyId", PropertyId },
-                {"TenantId", TenantId },
-                {"CompayId", companyIdSession }
-            };
+                {
+                    {"Option", 1 },
+                    {"ContractId", ContractId },
+                    {"Observation", Observation },
+                    {"StatusId", StatusId },
+                    {"PropertyId", PropertyId },
+                    {"TenantId", TenantId },
+                    {"CompayId", currentUserCompanyId }
+                };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForList);
                
@@ -133,7 +134,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -142,7 +143,7 @@ namespace API.Controllers
                 {"StatusId", null },
                 {"PropertyId", null },
                 {"TenantId", null },
-                {"CompayId", companyIdSession }
+                {"CompayId", currentUserCompanyId }
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
@@ -174,7 +175,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -187,7 +188,7 @@ namespace API.Controllers
                     {"StatusId", model.StatusId },
                     {"PropertyId", model.PropertyId },
                     {"TenantId", model.TenantId },
-                    {"CompayId", companyIdSession }
+                    {"CompayId", currentUserCompanyId }
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForCreate);
@@ -219,8 +220,8 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
-                ValidateCompany(_ContractService.FindById(model.ContractId).CompayId);
+                
+                _ContractService.ValidateCompany(_ContractService.FindById(model.ContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -266,7 +267,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateCompany(_ContractService.FindById(ContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

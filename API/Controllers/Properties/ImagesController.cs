@@ -4,6 +4,7 @@ namespace API.Controllers
     using Commons.DTOs;
     using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
@@ -33,7 +34,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ImagesController(ImagesService imagesService, PropertyService propertyService)
+        public ImagesController(ImagesService imagesService, PropertyService propertyService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _imagesServices = imagesService;
             _PropertyService = propertyService;
@@ -49,8 +50,8 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            LoadUserSession();
-            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, companyIdSession);
+            
+            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
 
             if (result.executionError)        
                 return new BadRequestObjectResult(result);
@@ -69,8 +70,8 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            LoadUserSession();
-            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, companyIdSession);
+            
+            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
 
             if (result.executionError)         
                 return new BadRequestObjectResult(result);
@@ -90,7 +91,7 @@ namespace API.Controllers
         {
             ResponseMDTO result = new ResponseMDTO
             {
-                data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == companyIdSession)
+                data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == currentUserCompanyId)
             };
 
             return new OkObjectResult(result);
@@ -104,7 +105,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostImages(ImagesDTO dto)
         {
-            LoadUserSession();
+            
             var property = _PropertyService.GetBy(x => x.PropertyId == dto.PropertyId);
             ValidateCompany(property.CompayId);
 
@@ -132,7 +133,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutImages(ImagesDTO model)
         {
-            LoadUserSession();
+            
             var imageOld = _imagesServices.GetBy(x => x.ImageId == model.ImageId);
             ValidateCompany(imageOld.Property.CompayId);
 
@@ -162,7 +163,7 @@ namespace API.Controllers
         [HttpDelete("{ImageId}")]
         public async Task<IActionResult> DeleteImages(Int32? ImageId)
         {
-            LoadUserSession();
+            
             ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()

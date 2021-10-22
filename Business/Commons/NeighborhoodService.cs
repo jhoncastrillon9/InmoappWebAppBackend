@@ -4,6 +4,7 @@ namespace Business.Commons
     using DataAccess;
     using DataAccess.Commons;
     using DataAccess.Data;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Defines the <see cref="NeighborhoodService" />.
@@ -11,7 +12,7 @@ namespace Business.Commons
     public class NeighborhoodService : BaseService<Neighborhood>
     {
 
-        public NeighborhoodService(NeighborhoodModel model, IMapper mapper, BaseStoreProcedureModel spModel) : base(model, mapper, spModel)
+        public NeighborhoodService(NeighborhoodModel model, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel) : base(model, mapper, httpContext, spModel)
         {
 
         }

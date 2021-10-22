@@ -1,6 +1,7 @@
 using Business.Users;
 using Commons.DTOs.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -34,7 +35,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public UserController(UserService userService)
+        public UserController(UserService userService, IHttpContextAccessor httpContext) : base(httpContext)
         {
             _UserServices = userService;
         }
@@ -51,10 +52,10 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
-                    {"UserId", userIdSession },
+                    {"UserId", currentUserId },
                     {"FirstName", FirstName },
                     {"LastName", LastName },
                     {"UserTypeId", UserTypeId },
@@ -123,10 +124,10 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
-                    {"UserId", userIdSession },
+                    {"UserId", currentUserId },
                     {"FirstName", null },
                     {"LastName", null },
                     {"UserTypeId", null },
@@ -196,7 +197,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 ValidateUserId(model.UserId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -236,7 +237,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
@@ -268,7 +269,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
@@ -300,7 +301,7 @@ namespace API.Controllers
         {
             try
             {
-                LoadUserSession();
+                
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", UserId }
