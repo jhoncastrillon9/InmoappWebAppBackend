@@ -27,7 +27,6 @@ namespace Business
             _mapper = mapper;
         }
 
-
         public async Task<ResponseMDTO> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
         {
             response.data = await spModel.ExecStoreProcedure<T>(parameters, spName);

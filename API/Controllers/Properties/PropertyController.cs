@@ -1,32 +1,31 @@
+using Business.Properties;
+using Commons.DTOs.Properties;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace API.Controllers
 {
-    using Business.Properties;
-    using Commons.DTOs.Properties;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Defines the <see cref="PropertyController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class PropertyController : ControllerBase
+    public class PropertyController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly PropertyService business;
-        private string spForRead = "Properties.Property_READ";
-        private string spForList = "Properties.Property_LIST";
-        private string spForCreate = "Properties.Property_CREATE";
-        private string spForUpdate = "Properties.Property_UPDATE";
-        private string spForDelete = "Properties.Property_DELETE";
+        private readonly PropertyService _PropertyService;
+        private readonly string spForRead = "Properties.Property_READ";
+        private readonly string spForList = "Properties.Property_LIST";
+        private readonly string spForCreate = "Properties.Property_CREATE";
+        private readonly string spForUpdate = "Properties.Property_UPDATE";
+        private readonly string spForDelete = "Properties.Property_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyController"/> class.
@@ -34,7 +33,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public PropertyController(PropertyService propertyService)
         {
-            business = propertyService;
+            _PropertyService = propertyService;
         }
 
         /// <summary>
@@ -45,35 +44,27 @@ namespace API.Controllers
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetProperty(Int32? PropertyId, Int32? IdIva, String Code, String Title, String Description, String Address, Boolean? Reception, Boolean? Pool, String Observation, Int32? PropertyStatusId, Int32? CityId, Int32? ZoneId, Int32? OwnerId, Int32? PropertyCategoryId, Int32? TypeOfferId, Int32? CompayId)
+        public async Task<IActionResult> GetProperty(Int32? PropertyId, Int32? IdIva, String Code, String Title, String Description, String Address, Boolean? Reception, Boolean? Pool, String Observation, Int32? PropertyStatusId, Int32? CityId, Int32? ZoneId, Int32? OwnerId, Int32? PropertyCategoryId, Int32? TypeOfferId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyId", PropertyId },
-                {"IdIva", IdIva },
-                {"Code", Code },
-                {"Title", Title },
-                {"Description", Description },
-                {"Address", Address },
-                {"Reception", Reception },
-                {"Pool", Pool },
-                {"Observation", Observation },
-                {"PropertyStatusId", PropertyStatusId },
-                {"CityId", CityId },
-                {"ZoneId", ZoneId },
-                {"OwnerId", OwnerId },
-                {"PropertyCategoryId", PropertyCategoryId },
-                {"TypeOfferId", TypeOfferId },
-                {"CompayId", CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = GenerateDictionary(PropertyId, IdIva, Code, Title, Description, Address, Reception, Pool, Observation, PropertyStatusId, CityId, ZoneId, OwnerId, PropertyCategoryId, TypeOfferId);
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -84,9 +75,236 @@ namespace API.Controllers
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpGet("list")]
-        public async Task<IActionResult> GetListProperty(Int32? PropertyId, Int32? IdIva, String Code, String Title, String Description, String Address, Boolean? Reception, Boolean? Pool, String Observation, Int32? PropertyStatusId, Int32? CityId, Int32? ZoneId, Int32? OwnerId, Int32? PropertyCategoryId, Int32? TypeOfferId, Int32? CompayId)
+        public async Task<IActionResult> GetListProperty(Int32? PropertyId, Int32? IdIva, String Code, String Title, String Description, String Address, Boolean? Reception, Boolean? Pool, String Observation, Int32? PropertyStatusId, Int32? CityId, Int32? ZoneId, Int32? OwnerId, Int32? PropertyCategoryId, Int32? TypeOfferId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = GenerateDictionary(PropertyId, IdIva, Code, Title, Description, Address, Reception, Pool, Observation, PropertyStatusId, CityId, ZoneId, OwnerId, PropertyCategoryId, TypeOfferId);
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForList);
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+        }
+
+
+        /// <summary>
+        /// The GetProperty.
+        /// </summary>
+        /// <param name="id">The ProjectId<see cref="int?"/>.</param>
+        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [HttpGet("{PropertyId}")]
+        public async Task<IActionResult> GetProperty(Int32 PropertyId)
+        {
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyId", PropertyId },
+                    {"IdIva", null },
+                    {"Code", null },
+                    {"Title", null },
+                    {"Description", null },
+                    {"Address", null },
+                    {"Reception", null },
+                    {"Pool", null },
+                    {"Observation", null },
+                    {"PropertyStatusId", null },
+                    {"CityId", null },
+                    {"ZoneId", null },
+                    {"OwnerId", null },
+                    {"PropertyCategoryId", null },
+                    {"TypeOfferId", null },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+        }
+
+        /// <summary>
+        /// The PostProperty.
+        /// </summary>
+        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
+        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [HttpPost]
+        public async Task<IActionResult> PostProperty(PropertyDTO model)
+        {
+            try
+            {               
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"IdIva", model.IdIva },
+                    {"Code", model.Code },
+                    {"Title", model.Title },
+                    {"Description", model.Description },
+                    {"Address", model.Address },
+                    {"PriceOwner", model.PriceOwner },
+                    {"Percentage", model.Percentage },
+                    {"FeeCompany", model.FeeCompany },
+                    {"RecruitmentDate", model.RecruitmentDate },
+                    {"FinalPrice", model.FinalPrice },
+                    {"Rooms", model.Rooms },
+                    {"Toilets", model.Toilets },
+                    {"Reception", model.Reception },
+                    {"Pool", model.Pool },
+                    {"Area", model.Area },
+                    {"Observation", model.Observation },
+                    {"PropertyStatusId", model.PropertyStatusId },
+                    {"CityId", model.CityId },
+                    {"ZoneId", model.ZoneId },
+                    {"OwnerId", model.OwnerId },
+                    {"PropertyCategoryId", model.PropertyCategoryId },
+                    {"TypeOfferId", model.TypeOfferId },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+        }
+
+        /// <summary>
+        /// The PutProperty.
+        /// </summary>
+        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
+        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [HttpPut]
+        public async Task<IActionResult> PutProperty(PropertyDTO model)
+        {
+
+            try
+            {
+                ValidateCompany(_PropertyService.FindById(model.PropertyId).CompayId);
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyId", model.PropertyId },
+                    {"IdIva", model.IdIva },
+                    {"Code", model.Code },
+                    {"Title", model.Title },
+                    {"Description", model.Description },
+                    {"Address", model.Address },
+                    {"PriceOwner", model.PriceOwner },
+                    {"Percentage", model.Percentage },
+                    {"FeeCompany", model.FeeCompany },
+                    {"RecruitmentDate", model.RecruitmentDate },
+                    {"FinalPrice", model.FinalPrice },
+                    {"Rooms", model.Rooms },
+                    {"Toilets", model.Toilets },
+                    {"Reception", model.Reception },
+                    {"Pool", model.Pool },
+                    {"Area", model.Area },
+                    {"Observation", model.Observation },
+                    {"PropertyStatusId", model.PropertyStatusId },
+                    {"CityId", model.CityId },
+                    {"ZoneId", model.ZoneId },
+                    {"OwnerId", model.OwnerId },
+                    {"PropertyCategoryId", model.PropertyCategoryId },
+                    {"TypeOfferId", model.TypeOfferId },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForUpdate);
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+        }
+
+        /// <summary>
+        /// The DeleteProperty.
+        /// </summary>
+        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
+        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [HttpDelete("{PropertyId}")]
+        public async Task<IActionResult> DeleteProperty(Int32? PropertyId)
+        {
+            try
+            {
+                ValidateCompany(_PropertyService.FindById(PropertyId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"PropertyId", PropertyId }
+                };
+
+                response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForDelete);              
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+            
+        }
+
+        /// <summary>
+        /// crear diccionario
+        /// </summary>
+        /// <returns></returns>
+        private Dictionary<string, dynamic> GenerateDictionary(int? PropertyId, int? IdIva, string Code, string Title, string Description, string Address, bool? Reception, bool? Pool, string Observation, int? PropertyStatusId, int? CityId, int? ZoneId, int? OwnerId, int? PropertyCategoryId, int? TypeOfferId)
+        {
+            return new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"PropertyId", PropertyId },
@@ -104,177 +322,8 @@ namespace API.Controllers
                 {"OwnerId", OwnerId },
                 {"PropertyCategoryId", PropertyCategoryId },
                 {"TypeOfferId", TypeOfferId },
-                {"CompayId", CompayId }
+                {"CompayId", companyIdSession }
             };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The GetProperty.
-        /// </summary>
-        /// <param name="id">The ProjectId<see cref="int?"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpGet("{PropertyId}")]
-        public async Task<IActionResult> GetProperty(Int32 PropertyId)
-        {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"PropertyId", PropertyId },
-                {"IdIva", null },
-                {"Code", null },
-                {"Title", null },
-                {"Description", null },
-                {"Address", null },
-                {"Reception", null },
-                {"Pool", null },
-                {"Observation", null },
-                {"PropertyStatusId", null },
-                {"CityId", null },
-                {"ZoneId", null },
-                {"OwnerId", null },
-                {"PropertyCategoryId", null },
-                {"TypeOfferId", null },
-                {"CompayId", null }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The PostProperty.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPost]
-        public async Task<IActionResult> PostProperty(PropertyDTO model)
-        {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"IdIva", model.IdIva },
-                {"Code", model.Code },
-                {"Title", model.Title },
-                {"Description", model.Description },
-                {"Address", model.Address },
-                {"PriceOwner", model.PriceOwner },
-                {"Percentage", model.Percentage },
-                {"FeeCompany", model.FeeCompany },
-                {"RecruitmentDate", model.RecruitmentDate },
-                {"FinalPrice", model.FinalPrice },
-                {"Rooms", model.Rooms },
-                {"Toilets", model.Toilets },
-                {"Reception", model.Reception },
-                {"Pool", model.Pool },
-                {"Area", model.Area },
-                {"Observation", model.Observation },
-                {"PropertyStatusId", model.PropertyStatusId },
-                {"CityId", model.CityId },
-                {"ZoneId", model.ZoneId },
-                {"OwnerId", model.OwnerId },
-                {"PropertyCategoryId", model.PropertyCategoryId },
-                {"TypeOfferId", model.TypeOfferId },
-                {"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-        /// <summary>
-        /// The PutProperty.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpPut]
-        public async Task<IActionResult> PutProperty(PropertyDTO model)
-        {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"PropertyId", model.PropertyId },
-                {"IdIva", model.IdIva },
-                {"Code", model.Code },
-                {"Title", model.Title },
-                {"Description", model.Description },
-                {"Address", model.Address },
-                {"PriceOwner", model.PriceOwner },
-                {"Percentage", model.Percentage },
-                {"FeeCompany", model.FeeCompany },
-                {"RecruitmentDate", model.RecruitmentDate },
-                {"FinalPrice", model.FinalPrice },
-                {"Rooms", model.Rooms },
-                {"Toilets", model.Toilets },
-                {"Reception", model.Reception },
-                {"Pool", model.Pool },
-                {"Area", model.Area },
-                {"Observation", model.Observation },
-                {"PropertyStatusId", model.PropertyStatusId },
-                {"CityId", model.CityId },
-                {"ZoneId", model.ZoneId },
-                {"OwnerId", model.OwnerId },
-                {"PropertyCategoryId", model.PropertyCategoryId },
-                {"TypeOfferId", model.TypeOfferId },
-                {"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
-
-
-        /// <summary>
-        /// The DeleteProperty.
-        /// </summary>
-        /// <param name="model">The model<see cref="PropertyEntity"/>.</param>
-        /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [HttpDelete("{PropertyId}")]
-        public async Task<IActionResult> DeleteProperty(Int32? PropertyId)
-        {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"PropertyId", PropertyId }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
     }

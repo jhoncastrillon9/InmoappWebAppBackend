@@ -7,26 +7,25 @@ namespace API.Controllers
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Defines the <see cref="StateController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class StateController : ControllerBase
+    public class StateController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly StateService business;
-        private string spForRead = "Commons.State_READ";
-        private string spForList = "Commons.State_LIST";
-        private string spForCreate = "Commons.State_CREATE";
-        private string spForUpdate = "Commons.State_UPDATE";
-        private string spForDelete = "Commons.State_DELETE";
+        private readonly StateService _StateService;
+        private readonly string spForRead = "Commons.State_READ";
+        private readonly string spForList = "Commons.State_LIST";
+        private readonly string spForCreate = "Commons.State_CREATE";
+        private readonly string spForUpdate = "Commons.State_UPDATE";
+        private readonly string spForDelete = "Commons.State_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StateController"/> class.
@@ -34,7 +33,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public StateController(StateService stateService)
         {
-            business = stateService;
+            _StateService = stateService;
         }
 
         /// <summary>
@@ -47,19 +46,34 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetState(Int32? StateId, String StateName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"StateId", StateId },
                 {"StateName", StateName }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -72,19 +86,33 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListState(Int32? StateId, String StateName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"StateId", StateId },
                 {"StateName", StateName }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -95,19 +123,33 @@ namespace API.Controllers
         [HttpGet("{StateId}")]
         public async Task<IActionResult> GetState(Int32 StateId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"StateId", StateId },
                 {"StateName", null }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -118,25 +160,34 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostState(StateDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"StateName", model.StateName }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+
+
         }
 
         /// <summary>
@@ -147,28 +198,36 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutState(StateDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"StateId", model.StateId },
                 {"StateName", model.StateName }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
-        }
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForUpdate);
 
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
+
+        }
 
         /// <summary>
         /// The DeleteState.
@@ -178,17 +237,31 @@ namespace API.Controllers
         [HttpDelete("{StateId}")]
         public async Task<IActionResult> DeleteState(Int32? StateId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"StateId", StateId }
             };
 
-            var result = await business.ExecStoreProcedure<StateDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _StateService.ExecStoreProcedure<StateDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

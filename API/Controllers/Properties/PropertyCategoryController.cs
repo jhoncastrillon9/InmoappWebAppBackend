@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="PropertyCategoryController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class PropertyCategoryController : ControllerBase
+    public class PropertyCategoryController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly PropertyCategoryService business;
-        private string spForRead = "Properties.PropertyCategory_READ";
-        private string spForList = "Properties.PropertyCategory_LIST";
-        private string spForCreate = "Properties.PropertyCategory_CREATE";
-        private string spForUpdate = "Properties.PropertyCategory_UPDATE";
-        private string spForDelete = "Properties.PropertyCategory_DELETE";
+        private readonly PropertyCategoryService _PropertyCategoryService;
+        private readonly string spForRead = "Properties.PropertyCategory_READ";
+        private readonly string spForList = "Properties.PropertyCategory_LIST";
+        private readonly string spForCreate = "Properties.PropertyCategory_CREATE";
+        private readonly string spForUpdate = "Properties.PropertyCategory_UPDATE";
+        private readonly string spForDelete = "Properties.PropertyCategory_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyCategoryController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public PropertyCategoryController(PropertyCategoryService propertyCategoryService)
         {
-            business = propertyCategoryService;
+            _PropertyCategoryService = propertyCategoryService;
         }
 
         /// <summary>
@@ -47,19 +47,32 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPropertyCategory(Int32? PropertyCategoryId, String CategoryName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyCategoryId", PropertyCategoryId },
-                {"CategoryName", CategoryName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyCategoryId", PropertyCategoryId },
+                    {"CategoryName", CategoryName }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+            
         }
 
         /// <summary>
@@ -72,19 +85,32 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListPropertyCategory(Int32? PropertyCategoryId, String CategoryName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyCategoryId", PropertyCategoryId },
-                {"CategoryName", CategoryName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyCategoryId", PropertyCategoryId },
+                    {"CategoryName", CategoryName }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForList);
+              
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+            
         }
 
         /// <summary>
@@ -95,19 +121,32 @@ namespace API.Controllers
         [HttpGet("{PropertyCategoryId}")]
         public async Task<IActionResult> GetPropertyCategory(Int32 PropertyCategoryId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyCategoryId", PropertyCategoryId },
-                {"CategoryName", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyCategoryId", PropertyCategoryId },
+                    {"CategoryName", null }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+            
         }
 
         /// <summary>
@@ -118,25 +157,30 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostPropertyCategory(PropertyCategoryDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CategoryName", model.CategoryName }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"CategoryName", model.CategoryName }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForCreate);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -147,26 +191,32 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutPropertyCategory(PropertyCategoryDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyCategoryId", model.PropertyCategoryId },
+                    {"CategoryName", model.CategoryName }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"PropertyCategoryId", model.PropertyCategoryId },
-                {"CategoryName", model.CategoryName }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForUpdate);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+            
         }
 
         /// <summary>
@@ -177,17 +227,30 @@ namespace API.Controllers
         [HttpDelete("{PropertyCategoryId}")]
         public async Task<IActionResult> DeletePropertyCategory(Int32? PropertyCategoryId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"PropertyCategoryId", PropertyCategoryId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"PropertyCategoryId", PropertyCategoryId }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyCategoryService.ExecStoreProcedure<PropertyCategoryDTO>(parameters, spForDelete);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+           
         }
 
     }

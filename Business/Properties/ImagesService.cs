@@ -4,6 +4,8 @@ namespace Business.Properties
     using DataAccess;
     using DataAccess.Data;
     using DataAccess.Properties;
+    using global::Commons.DTOs;
+    using global::Commons.DTOs.Properties;
 
     /// <summary>
     /// Defines the <see cref="ImagesService" />.
@@ -16,6 +18,19 @@ namespace Business.Properties
 
         }
 
+
+        public ResponseMDTO GetImagesFilter(int? ImageId, string ImageName, string Path, bool? IsMain, int? PropertyId, int companyIdSession)
+        {
+            response.data = GetAllBy(x =>
+            (ImageId == null || x.ImageId == ImageId) &&
+            (string.IsNullOrEmpty(ImageName) || x.ImageName.ToLower().Contains(ImageName.Trim().ToLower())) &&
+            (string.IsNullOrEmpty(Path) || x.Path.ToLower().Contains(Path.Trim().ToLower())) &&
+            (IsMain == null || x.IsMain == IsMain) &&
+            (PropertyId == null || x.PropertyId == PropertyId) &&
+            x.Property.CompayId == companyIdSession);
+
+            return response;
+        }
     }
 }
 

@@ -7,27 +7,26 @@ namespace API.Controllers
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Defines the <see cref="ZoneController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class ZoneController : ControllerBase
+    public class ZoneController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly ZoneService business;
+        private readonly ZoneService ZoneService;
 
-        private string spForRead = "Commons.Zone_READ";
-        private string spForList = "Commons.Zone_LIST";
-        private string spForCreate = "Commons.Zone_CREATE";
-        private string spForUpdate = "Commons.Zone_UPDATE";
-        private string spForDelete = "Commons.Zone_DELETE";
+        private readonly string spForRead = "Commons.Zone_READ";
+        private readonly string spForList = "Commons.Zone_LIST";
+        private readonly string spForCreate = "Commons.Zone_CREATE";
+        private readonly string spForUpdate = "Commons.Zone_UPDATE";
+        private readonly string spForDelete = "Commons.Zone_DELETE";
 
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public ZoneController(ZoneService zoneService)
         {
-            business = zoneService;
+            ZoneService = zoneService;
         }
 
         /// <summary>
@@ -49,7 +48,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetZone(Int32? ZoneId, String ZoneName, Int32? CityId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ZoneId", ZoneId },
@@ -57,12 +59,23 @@ namespace API.Controllers
                 {"CityId", CityId }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForRead);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -75,7 +88,10 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListZone(Int32? ZoneId, String ZoneName, Int32? CityId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ZoneId", ZoneId },
@@ -83,12 +99,23 @@ namespace API.Controllers
                 {"CityId", CityId }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -99,7 +126,10 @@ namespace API.Controllers
         [HttpGet("{ZoneId}")]
         public async Task<IActionResult> GetZone(Int32 ZoneId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ZoneId", ZoneId },
@@ -107,12 +137,23 @@ namespace API.Controllers
                 {"CityId", null }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -123,26 +164,35 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostZone(ZoneDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ZoneName", model.ZoneName },
                 {"CityId", model.CityId }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
+
         }
 
         /// <summary>
@@ -153,14 +203,10 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutZone(ZoneDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ZoneId", model.ZoneId },
@@ -168,12 +214,25 @@ namespace API.Controllers
                 {"CityId", model.CityId }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
+
         }
 
         /// <summary>
@@ -184,17 +243,31 @@ namespace API.Controllers
         [HttpDelete("{ZoneId}")]
         public async Task<IActionResult> DeleteZone(Int32? ZoneId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"ZoneId", ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure<ZoneDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

@@ -7,26 +7,25 @@ namespace API.Controllers
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Defines the <see cref="PropertyStatusController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class PropertyStatusController : ControllerBase
+    public class PropertyStatusController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly PropertyStatusService business;
-        private string spForRead = "Properties.PropertyStatus_READ";
-        private string spForList = "Properties.PropertyStatus_LIST";
-        private string spForCreate = "Properties.PropertyStatus_CREATE";
-        private string spForUpdate = "Properties.PropertyStatus_UPDATE";
-        private string spForDelete = "Properties.PropertyStatus_DELETE";
+        private readonly PropertyStatusService _PropertyStatusService;
+        private readonly string spForRead = "Properties.PropertyStatus_READ";
+        private readonly string spForList = "Properties.PropertyStatus_LIST";
+        private readonly string spForCreate = "Properties.PropertyStatus_CREATE";
+        private readonly string spForUpdate = "Properties.PropertyStatus_UPDATE";
+        private readonly string spForDelete = "Properties.PropertyStatus_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyStatusController"/> class.
@@ -34,7 +33,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public PropertyStatusController(PropertyStatusService propertyStatusService)
         {
-            business = propertyStatusService;
+            _PropertyStatusService = propertyStatusService;
         }
 
         /// <summary>
@@ -47,19 +46,33 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPropertyStatus(Int32? PropertyStatusId, String PropertyStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyStatusId", PropertyStatusId },
-                {"PropertyStatusName", PropertyStatusName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyStatusId", PropertyStatusId },
+                    {"PropertyStatusName", PropertyStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -72,19 +85,32 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListPropertyStatus(Int32? PropertyStatusId, String PropertyStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyStatusId", PropertyStatusId },
-                {"PropertyStatusName", PropertyStatusName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyStatusId", PropertyStatusId },
+                    {"PropertyStatusName", PropertyStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -95,19 +121,33 @@ namespace API.Controllers
         [HttpGet("{PropertyStatusId}")]
         public async Task<IActionResult> GetPropertyStatus(Int32 PropertyStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"PropertyStatusId", PropertyStatusId },
-                {"PropertyStatusName", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyStatusId", PropertyStatusId },
+                    {"PropertyStatusName", null }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -118,25 +158,33 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostPropertyStatus(PropertyStatusDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyStatusName", model.PropertyStatusName }
+                };
+
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"PropertyStatusName", model.PropertyStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -147,26 +195,33 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutPropertyStatus(PropertyStatusDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"PropertyStatusId", model.PropertyStatusId },
+                    {"PropertyStatusName", model.PropertyStatusName }
+                };
+
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"PropertyStatusId", model.PropertyStatusId },
-                {"PropertyStatusName", model.PropertyStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
 
@@ -178,17 +233,30 @@ namespace API.Controllers
         [HttpDelete("{PropertyStatusId}")]
         public async Task<IActionResult> DeletePropertyStatus(Int32? PropertyStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"PropertyStatusId", PropertyStatusId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"PropertyStatusId", PropertyStatusId }
+                };
 
-            var result = await business.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _PropertyStatusService.ExecStoreProcedure<PropertyStatusDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

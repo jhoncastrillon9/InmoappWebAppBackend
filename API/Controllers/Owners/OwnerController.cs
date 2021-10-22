@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="OwnerController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,OwnerUser")]
     [Route("Owners/[controller]")]
     [ApiController]
-    public class OwnerController : ControllerBase
+    public class OwnerController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly OwnerService business;
-        private string spForRead = "Owners.Owner_READ";
-        private string spForList = "Owners.Owner_LIST";
-        private string spForCreate = "Owners.Owner_CREATE";
-        private string spForUpdate = "Owners.Owner_UPDATE";
-        private string spForDelete = "Owners.Owner_DELETE";
+        private readonly OwnerService _OwnerService;
+        private readonly string spForRead = "Owners.Owner_READ";
+        private readonly string spForList = "Owners.Owner_LIST";
+        private readonly string spForCreate = "Owners.Owner_CREATE";
+        private readonly string spForUpdate = "Owners.Owner_UPDATE";
+        private readonly string spForDelete = "Owners.Owner_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public OwnerController(OwnerService ownerService)
         {
-            business = ownerService;
+            _OwnerService = ownerService;
         }
 
         /// <summary>
@@ -47,26 +47,40 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOwner(Int32? OwnerId, String OwnerName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"OwnerId", OwnerId },
-                {"OwnerName", OwnerName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation },
-                {"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"OwnerId", OwnerId },
+                    {"OwnerName", OwnerName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var responde = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
+
+                return new OkObjectResult(responde);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -79,26 +93,40 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListOwner(Int32? OwnerId, String OwnerName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"OwnerId", OwnerId },
-                {"OwnerName", OwnerName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation },
-                {"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"OwnerId", OwnerId },
+                    {"OwnerName", OwnerName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -109,7 +137,10 @@ namespace API.Controllers
         [HttpGet("{OwnerId}")]
         public async Task<IActionResult> GetOwner(Int32 OwnerId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"OwnerId", OwnerId },
@@ -120,15 +151,26 @@ namespace API.Controllers
                 {"Email", null },
                 {"Address", null },
                 {"Observation", null },
-                {"CompayId", null }
+                {"CompayId", companyIdSession }
             };
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -139,32 +181,39 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostOwner(OwnerDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"OwnerName", model.OwnerName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"OwnerName", model.OwnerName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation },
-                {"CompayId", model.CompayId }
-            };
+                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -175,33 +224,41 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutOwner(OwnerDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                ValidateCompany(_OwnerService.FindById(model.OwnerId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"OwnerId", model.OwnerId },
+                    {"OwnerName", model.OwnerName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation },
+                    {"CompayId", companyIdSession}
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"OwnerId", model.OwnerId },
-                {"OwnerName", model.OwnerName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation },
-                {"CompayId", model.CompayId }
-            };
+                response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForUpdate);
+              
+                return new OkObjectResult(response);
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -212,17 +269,32 @@ namespace API.Controllers
         [HttpDelete("{OwnerId}")]
         public async Task<IActionResult> DeleteOwner(Int32? OwnerId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"OwnerId", OwnerId }
-            };
+                LoadUserSession();
+                ValidateCompany(_OwnerService.FindById(OwnerId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"OwnerId", OwnerId }
+                };
 
-            var result = await business.ExecStoreProcedure<OwnerDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForDelete);
+              
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
     }

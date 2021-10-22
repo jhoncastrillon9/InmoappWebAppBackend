@@ -14,7 +14,7 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="UserTypeController" />.
     /// </summary>
-    [Authorize()]
+    [Authorize(Roles ="SuperAdmin")]
     [Route("[controller]")]
     [ApiController]
     public class UserTypeController : BaseController
@@ -52,16 +52,17 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"UserTypeId", UserTypeId },
-                {"UserTypeName", UserTypeName },
-                {"Active", Active }
-            };
+                {
+                    {"UserTypeId", UserTypeId },
+                    {"UserTypeName", UserTypeName },
+                    {"Active", Active }
+                };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForRead);
+                 response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForRead);
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -90,6 +91,7 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId },
@@ -97,8 +99,8 @@ namespace API.Controllers
                     {"Active", Active }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForList);
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForList);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -124,17 +126,15 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForRead);
-                if (result.executionError)
-                {
-                    return new BadRequestObjectResult(result);
-                }
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForRead);
+             
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -160,14 +160,15 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeName", model.UserTypeName },
                     {"CreatedBy", model.CreatedBy }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForCreate);
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForCreate);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -193,6 +194,7 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
@@ -200,8 +202,8 @@ namespace API.Controllers
                     {"UpdatedBy", model.UpdatedBy }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForUpdate);
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForUpdate);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -227,14 +229,15 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
                     {"UpdatedBy", model.UpdatedBy }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForEnable);
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForEnable);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -260,15 +263,16 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", model.UserTypeId },
                     {"DisabledBy", model.DisabledBy }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForDisable);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForDisable);
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -294,13 +298,14 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserTypeId", UserTypeId }
                 };
 
-                var result = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForDelete);
-                return new OkObjectResult(result);
+                response = await _UserTypeService.ExecStoreProcedure<UserTypeDTO>(parameters, spForDelete);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {

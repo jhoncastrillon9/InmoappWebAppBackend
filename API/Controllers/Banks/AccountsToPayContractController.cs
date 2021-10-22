@@ -1,32 +1,31 @@
 namespace API.Controllers
 {
+    using Business.Banks;
+    using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using Business.Banks;
-    using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="AccountsToPayContractController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,FinanceUser")]
     [Route("Banks/[controller]")]
     [ApiController]
-    public class AccountsToPayContractController: ControllerBase
+    public class AccountsToPayContractController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly AccountsToPayContractService business;
-        private string spForRead = "Banks.AccountsToPayContract_READ";
-        private string spForList = "Banks.AccountsToPayContract_LIST";
-        private string spForCreate = "Banks.AccountsToPayContract_CREATE";
-        private string spForUpdate = "Banks.AccountsToPayContract_UPDATE";
-        private string spForDelete = "Banks.AccountsToPayContract_DELETE";
+        private readonly AccountsToPayContractService _AccountsToPayContractService;
+        private readonly string spForRead = "Banks.AccountsToPayContract_READ";
+        private readonly string spForList = "Banks.AccountsToPayContract_LIST";
+        private readonly string spForCreate = "Banks.AccountsToPayContract_CREATE";
+        private readonly string spForUpdate = "Banks.AccountsToPayContract_UPDATE";
+        private readonly string spForDelete = "Banks.AccountsToPayContract_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsToPayContractController"/> class.
@@ -34,7 +33,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AccountsToPayContractController(AccountsToPayContractService accountsToPayContractService)
         {
-            business = accountsToPayContractService;
+            _AccountsToPayContractService = accountsToPayContractService;
         }
 
         /// <summary>
@@ -47,21 +46,33 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAccountsToPayContract(Int32? AccountsToPayContractId, Int32? AccountsStatusId, Int32? ContractId, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToPayContractId", AccountsToPayContractId },
-				{"AccountsStatusId", AccountsStatusId },
-				{"ContractId", ContractId },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToPayContractId", AccountsToPayContractId },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"ContractId", ContractId },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -74,21 +85,36 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListAccountsToPayContract(Int32? AccountsToPayContractId, Int32? AccountsStatusId, Int32? ContractId, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToPayContractId", AccountsToPayContractId },
-				{"AccountsStatusId", AccountsStatusId },
-				{"ContractId", ContractId },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToPayContractId", AccountsToPayContractId },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"ContractId", ContractId },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -99,21 +125,34 @@ namespace API.Controllers
         [HttpGet("{AccountsToPayContractId}")]
         public async Task<IActionResult> GetAccountsToPayContract(Int32 AccountsToPayContractId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToPayContractId", AccountsToPayContractId },
-				{"AccountsStatusId", null },
-				{"ContractId", null },
-				{"CompayId", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToPayContractId", AccountsToPayContractId },
+                    {"AccountsStatusId", null },
+                    {"ContractId", null },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -124,30 +163,35 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAccountsToPayContract(AccountsToPayContractDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"QuotaNumber", model.QuotaNumber },
+                    {"Value", model.Value },
+                    {"ExpirationDate", model.ExpirationDate },
+                    {"AccountsStatusId", model.AccountsStatusId },
+                    {"ContractId", model.ContractId },
+                    {"CompayId",companyIdSession }
+                };
+
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForCreate);
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"QuotaNumber", model.QuotaNumber },
-				{"Value", model.Value },
-				{"ExpirationDate", model.ExpirationDate },
-				{"AccountsStatusId", model.AccountsStatusId },
-				{"ContractId", model.ContractId },
-				{"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -158,31 +202,38 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAccountsToPayContract(AccountsToPayContractDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                ValidateCompany(_AccountsToPayContractService.FindById(model.AccountsToPayContractId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToPayContractId", model.AccountsToPayContractId },
+                    {"QuotaNumber", model.QuotaNumber },
+                    {"Value", model.Value },
+                    {"ExpirationDate", model.ExpirationDate },
+                    {"AccountsStatusId", model.AccountsStatusId },
+                    {"ContractId", model.ContractId },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForUpdate);
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"AccountsToPayContractId", model.AccountsToPayContractId },
-				{"QuotaNumber", model.QuotaNumber },
-				{"Value", model.Value },
-				{"ExpirationDate", model.ExpirationDate },
-				{"AccountsStatusId", model.AccountsStatusId },
-				{"ContractId", model.ContractId },
-				{"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForUpdate); ;
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -193,17 +244,31 @@ namespace API.Controllers
         [HttpDelete("{AccountsToPayContractId}")]
         public async Task<IActionResult> DeleteAccountsToPayContract(Int32? AccountsToPayContractId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"AccountsToPayContractId", AccountsToPayContractId }
-            };
+                LoadUserSession();
+                ValidateCompany(_AccountsToPayContractService.FindById(AccountsToPayContractId).CompayId);
 
-            var result = await business.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>(){
+                        {"AccountsToPayContractId", AccountsToPayContractId }
+                    };
+
+                response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForDelete);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="NeighborhoodController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class NeighborhoodController : ControllerBase
+    public class NeighborhoodController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly NeighborhoodService business;
-        private string spForRead = "Commons.Neighborhood_READ";
-        private string spForList = "Commons.Neighborhood_LIST";
-        private string spForCreate = "Commons.Neighborhood_CREATE";
-        private string spForUpdate = "Commons.Neighborhood_UPDATE";
-        private string spForDelete = "Commons.Neighborhood_DELETE";
+        private readonly NeighborhoodService _NeighborhoodService;
+        private readonly string spForRead = "Commons.Neighborhood_READ";
+        private readonly string spForList = "Commons.Neighborhood_LIST";
+        private readonly string spForCreate = "Commons.Neighborhood_CREATE";
+        private readonly string spForUpdate = "Commons.Neighborhood_UPDATE";
+        private readonly string spForDelete = "Commons.Neighborhood_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NeighborhoodController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public NeighborhoodController(NeighborhoodService neighborhoodService)
         {
-            business = neighborhoodService;
+            _NeighborhoodService = neighborhoodService;
         }
 
         /// <summary>
@@ -47,7 +47,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetNeighborhood(Int32? NeighborhoodId, String NeighborhoodName, Int32? ZoneId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"NeighborhoodId", NeighborhoodId },
@@ -55,12 +58,23 @@ namespace API.Controllers
                 {"ZoneId", ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
+                
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+           
         }
 
         /// <summary>
@@ -73,7 +87,10 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListNeighborhood(Int32? NeighborhoodId, String NeighborhoodName, Int32? ZoneId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"NeighborhoodId", NeighborhoodId },
@@ -81,12 +98,23 @@ namespace API.Controllers
                 {"ZoneId", ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForList);
+              
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+            
         }
 
         /// <summary>
@@ -97,7 +125,10 @@ namespace API.Controllers
         [HttpGet("{NeighborhoodId}")]
         public async Task<IActionResult> GetNeighborhood(Int32 NeighborhoodId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"NeighborhoodId", NeighborhoodId },
@@ -105,12 +136,22 @@ namespace API.Controllers
                 {"ZoneId", null }
             };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForRead);
+                            return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+          
         }
 
         /// <summary>
@@ -121,26 +162,35 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostNeighborhood(NeighborhoodDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"NeighborhoodName", model.NeighborhoodName },
                 {"ZoneId", model.ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForCreate);
+              
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+           
         }
 
         /// <summary>
@@ -151,14 +201,11 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutNeighborhood(NeighborhoodDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"NeighborhoodId", model.NeighborhoodId },
@@ -166,12 +213,23 @@ namespace API.Controllers
                 {"ZoneId", model.ZoneId }
             };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForUpdate);
+              
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+          
         }
 
 
@@ -183,17 +241,31 @@ namespace API.Controllers
         [HttpDelete("{NeighborhoodId}")]
         public async Task<IActionResult> DeleteNeighborhood(Int32? NeighborhoodId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"NeighborhoodId", NeighborhoodId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"NeighborhoodId", NeighborhoodId }
+                };
 
-            var result = await business.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _NeighborhoodService.ExecStoreProcedure<NeighborhoodDTO>(parameters, spForDelete);
+               
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

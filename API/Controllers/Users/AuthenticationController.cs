@@ -1,3 +1,4 @@
+using Business.Resources;
 using Business.Users;
 using Commons.DTOs;
 using Commons.DTOs.Users;
@@ -76,9 +77,9 @@ namespace API.Controllers
                     }
                     else
                     {
-                        JwtSecurityTokenHandler tokenHandler;
-                        SecurityToken Token;
-                        GenerateAuthentication(response, out tokenHandler, out Token);
+                        int userId = Convert.ToInt32(response.data[0].UserId.ToString());
+                        string userName = response.data[0].Username.ToString() as string;
+                        GenerateAuthentication(userId, userName, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token);
 
                         // Authentication response
                         return Ok(new { data = response.data[0], token = tokenHandler.WriteToken(Token), executionError = false, message = "" });
@@ -94,14 +95,14 @@ namespace API.Controllers
 
         }
 
-        private void GenerateAuthentication(ResponseMDTO response, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token)
+        private string GenerateAuthentication(int userId, string userName, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token)
         {
             // Get SecretKey from appseting
             var secretKey = configuration.GetValue<string>("SecretKey");
             var key = Encoding.ASCII.GetBytes(secretKey);
 
             // Payload creation
-            var claims = _AuthenticationServices.GetClaimsForUser(response);
+            var claims = _AuthenticationServices.GetClaimsForUser(userId, userName);
 
             // Token configuration
             var tokenConfiguration = new SecurityTokenDescriptor
@@ -115,6 +116,7 @@ namespace API.Controllers
 
             tokenHandler = new JwtSecurityTokenHandler();
             Token = tokenHandler.CreateToken(tokenConfiguration);
+            return tokenHandler.WriteToken(Token);
         }
 
         /// <summary>
@@ -127,8 +129,10 @@ namespace API.Controllers
         {
             try
             {             
-                response = await _AuthenticationServices.Register(newUser);
-                return Ok(response);
+                response = await _AuthenticationServices.Register(newUser);                
+                string token = GenerateAuthentication(response.data.UserId, response.data.Username, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token);
+
+                return Ok(new { response.data, token, executionError = false, message = Messages.SuccessGeneral });
             }
             catch (Exception ex)
             {

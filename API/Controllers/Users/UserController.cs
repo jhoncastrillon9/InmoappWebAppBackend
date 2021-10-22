@@ -22,13 +22,13 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly UserService _UserServices;
-        private string spForRead = "CodeMono.User_READ";
-        private string spForList = "CodeMono.User_LIST";
-        private string spForCreate = "CodeMono.User_CREATE";
-        private string spForUpdate = "CodeMono.User_UPDATE";
-        private string spForDelete = "CodeMono.User_DELETE";
-        private string spForEnable = "CodeMono.User_ENABLE";
-        private string spForDisable = "CodeMono.User_DISABLE";
+        private readonly string spForRead = "CodeMono.User_READ";
+        private readonly string spForList = "CodeMono.User_LIST";
+        private readonly string spForCreate = "CodeMono.User_CREATE";
+        private readonly string spForUpdate = "CodeMono.User_UPDATE";
+        private readonly string spForDelete = "CodeMono.User_DELETE";
+        private readonly string spForEnable = "CodeMono.User_ENABLE";
+        private readonly string spForDisable = "CodeMono.User_DISABLE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
@@ -51,9 +51,10 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
-                    {"UserId", UserId },
+                    {"UserId", userIdSession },
                     {"FirstName", FirstName },
                     {"LastName", LastName },
                     {"UserTypeId", UserTypeId },
@@ -61,8 +62,8 @@ namespace API.Controllers
                     {"Active", Active }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForRead);
-                return new OkObjectResult(result);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -82,6 +83,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles ="SuperAdmin")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListUser(Int32? UserId, String FirstName, String LastName, Int16? UserTypeId, String Username, Byte? Active)
         {
@@ -97,8 +99,8 @@ namespace API.Controllers
                     {"Active", Active }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForList);
-                return new OkObjectResult(result);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForList);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -121,9 +123,10 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
-                    {"UserId", UserId },
+                    {"UserId", userIdSession },
                     {"FirstName", null },
                     {"LastName", null },
                     {"UserTypeId", null },
@@ -131,9 +134,9 @@ namespace API.Controllers
                     {"Active", null }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForRead);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForRead);
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -151,6 +154,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles ="SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostUser(UserDTO model)
         {
@@ -167,9 +171,9 @@ namespace API.Controllers
                     {"CreatedBy", model.CreatedBy }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForCreate);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForCreate);
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -192,6 +196,8 @@ namespace API.Controllers
         {
             try
             {
+                LoadUserSession();
+                ValidateUserId(model.UserId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
@@ -204,9 +210,9 @@ namespace API.Controllers
                     {"UpdatedBy", model.UpdatedBy }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForUpdate);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForUpdate);
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -224,19 +230,21 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles ="Superadmin")]
         [HttpPut("enable")]
         public async Task<IActionResult> EnableUser(UserDTO model)
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
                     {"UpdatedBy", model.UpdatedBy }
                 };
 
-                var result = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForEnable);
-                return new OkObjectResult(result);
+                response = await _UserServices.ExecStoreProcedure<UserDTO>(parameters, spForEnable);
+                return new OkObjectResult(response);
             }
             catch (ApplicationException ex)
             {
@@ -254,12 +262,13 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "Superadmin")]
         [HttpPut("disable")]
         public async Task<IActionResult> DisableUser(UserDTO model)
         {
             try
             {
-
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
@@ -285,11 +294,13 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "Superadmin")]
         [HttpDelete("{UserId}")]
         public async Task<IActionResult> DeleteUser(Int32? UserId)
         {
             try
             {
+                LoadUserSession();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", UserId }

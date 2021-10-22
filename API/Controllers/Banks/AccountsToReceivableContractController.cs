@@ -1,39 +1,38 @@
 namespace API.Controllers
 {
+    using Business.Banks;
+    using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using Business.Banks;
-    using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="AccountsToReceivableContractController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,FinanceUser")]
     [Route("Banks/[controller]")]
     [ApiController]
-    public class AccountsToReceivableContractController: ControllerBase
+    public class AccountsToReceivableContractController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly AccountsToReceivableContractService business; 
-        private string spForRead = "Banks.AccountsToReceivableContract_READ";
-        private string spForList = "Banks.AccountsToReceivableContract_LIST";
-        private string spForCreate = "Banks.AccountsToReceivableContract_CREATE";
-        private string spForUpdate = "Banks.AccountsToReceivableContract_UPDATE";
-        private string spForDelete = "Banks.AccountsToReceivableContract_DELETE";
+        private readonly AccountsToReceivableContractService _AccountsToReceivableContractService;
+        private readonly string spForRead = "Banks.AccountsToReceivableContract_READ";
+        private readonly string spForList = "Banks.AccountsToReceivableContract_LIST";
+        private readonly string spForCreate = "Banks.AccountsToReceivableContract_CREATE";
+        private readonly string spForUpdate = "Banks.AccountsToReceivableContract_UPDATE";
+        private readonly string spForDelete = "Banks.AccountsToReceivableContract_DELETE";
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsToReceivableContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService)
         {
-            business = accountsToReceivableContractService;
+            _AccountsToReceivableContractService = accountsToReceivableContractService;
         }
 
         /// <summary>
@@ -46,21 +45,35 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAccountsToReceivableContract(Int32? AccountsToReceivableContractId, Int32? AccountsStatusId, Int32? ContractId, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToReceivableContractId", AccountsToReceivableContractId },
-				{"AccountsStatusId", AccountsStatusId },
-				{"ContractId", ContractId },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToReceivableContractId", AccountsToReceivableContractId },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"ContractId", ContractId },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -73,21 +86,34 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListAccountsToReceivableContract(Int32? AccountsToReceivableContractId, Int32? AccountsStatusId, Int32? ContractId, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToReceivableContractId", AccountsToReceivableContractId },
-				{"AccountsStatusId", AccountsStatusId },
-				{"ContractId", ContractId },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToReceivableContractId", AccountsToReceivableContractId },
+                    {"AccountsStatusId", AccountsStatusId },
+                    {"ContractId", ContractId },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForList);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -98,21 +124,33 @@ namespace API.Controllers
         [HttpGet("{AccountsToReceivableContractId}")]
         public async Task<IActionResult> GetAccountsToReceivableContract(Int32 AccountsToReceivableContractId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"AccountsToReceivableContractId", AccountsToReceivableContractId },
-				{"AccountsStatusId", null },
-				{"ContractId", null },
-				{"CompayId", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToReceivableContractId", AccountsToReceivableContractId },
+                    {"AccountsStatusId", null },
+                    {"ContractId", null },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -123,30 +161,37 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAccountsToReceivableContract(AccountsToReceivableContractDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"QuotaNumber", model.QuotaNumber },
+                    {"Value", model.Value },
+                    {"ExpirationDate", model.ExpirationDate },
+                    {"AccountsStatusId", model.AccountsStatusId },
+                    {"ContractId", model.ContractId },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"QuotaNumber", model.QuotaNumber },
-				{"Value", model.Value },
-				{"ExpirationDate", model.ExpirationDate },
-				{"AccountsStatusId", model.AccountsStatusId },
-				{"ContractId", model.ContractId },
-				{"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -157,31 +202,37 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutAccountsToReceivableContract(AccountsToReceivableContractDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                ValidateCompany(_AccountsToReceivableContractService.FindById(model.AccountsToReceivableContractId).CompayId);
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"AccountsToReceivableContractId", model.AccountsToReceivableContractId },
-				{"QuotaNumber", model.QuotaNumber },
-				{"Value", model.Value },
-				{"ExpirationDate", model.ExpirationDate },
-				{"AccountsStatusId", model.AccountsStatusId },
-				{"ContractId", model.ContractId },
-				{"CompayId", model.CompayId }
-            };
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"AccountsToReceivableContractId", model.AccountsToReceivableContractId },
+                    {"QuotaNumber", model.QuotaNumber },
+                    {"Value", model.Value },
+                    {"ExpirationDate", model.ExpirationDate },
+                    {"AccountsStatusId", model.AccountsStatusId },
+                    {"ContractId", model.ContractId },
+                    {"CompayId", companyIdSession}
+                };
 
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForUpdate);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
 
@@ -193,17 +244,32 @@ namespace API.Controllers
         [HttpDelete("{AccountsToReceivableContractId}")]
         public async Task<IActionResult> DeleteAccountsToReceivableContract(Int32? AccountsToReceivableContractId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"AccountsToReceivableContractId", AccountsToReceivableContractId }
-            };
+                LoadUserSession();
+                ValidateCompany(_AccountsToReceivableContractService.FindById(AccountsToReceivableContractId).CompayId);
 
-            var result = await business.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                    {
+                        {"AccountsToReceivableContractId", AccountsToReceivableContractId }
+                    };
+
+                response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForDelete);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

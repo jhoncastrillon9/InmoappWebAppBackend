@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="IvaController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class IvaController : ControllerBase
+    public class IvaController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly IvaService business;
-        private string spForRead = "Properties.Iva_READ";
-        private string spForList = "Properties.Iva_LIST";
-        private string spForCreate = "Properties.Iva_CREATE";
-        private string spForUpdate = "Properties.Iva_UPDATE";
-        private string spForDelete = "Properties.Iva_DELETE";
+        private readonly IvaService _IvaService;
+        private readonly string spForRead = "Properties.Iva_READ";
+        private readonly string spForList = "Properties.Iva_LIST";
+        private readonly string spForCreate = "Properties.Iva_CREATE";
+        private readonly string spForUpdate = "Properties.Iva_UPDATE";
+        private readonly string spForDelete = "Properties.Iva_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IvaController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public IvaController(IvaService ivaService)
         {
-            business = ivaService;
+            _IvaService = ivaService;
         }
 
         /// <summary>
@@ -47,18 +47,30 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetIva(Int32? IvaId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"IvaId", IvaId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"IvaId", IvaId }
+                };
 
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForRead);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -71,18 +83,30 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListIva(Int32? IvaId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"IvaId", IvaId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"IvaId", IvaId }
+                };
 
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForList);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -93,18 +117,30 @@ namespace API.Controllers
         [HttpGet("{IvaId}")]
         public async Task<IActionResult> GetIva(Int32 IvaId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"IvaId", IvaId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"IvaId", IvaId }
+                };
 
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -115,25 +151,30 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostIva(IvaDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"Valor", model.Valor }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"Valor", model.Valor }
-            };
-
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForCreate);
+               
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -144,26 +185,31 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutIva(IvaDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"IvaId", model.IvaId },
+                    {"Valor", model.Valor }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"IvaId", model.IvaId },
-                {"Valor", model.Valor }
-            };
-
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForUpdate);
+               
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
 
@@ -175,17 +221,29 @@ namespace API.Controllers
         [HttpDelete("{IvaId}")]
         public async Task<IActionResult> DeleteIva(Int32? IvaId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"IvaId", IvaId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"IvaId", IvaId }
+                };
 
-            var result = await business.ExecStoreProcedure<IvaDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _IvaService.ExecStoreProcedure<IvaDTO>(parameters, spForDelete);
+              
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
     }

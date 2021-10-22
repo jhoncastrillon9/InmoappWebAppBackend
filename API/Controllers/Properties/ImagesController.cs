@@ -1,27 +1,28 @@
 namespace API.Controllers
 {
     using Business.Properties;
+    using Commons.DTOs;
     using Commons.DTOs.Properties;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Defines the <see cref="ImagesController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class ImagesController : ControllerBase
+    public class ImagesController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly ImagesService business;
+        private readonly ImagesService _imagesServices;
+        private readonly PropertyService _PropertyService;
         private string spForRead = "Properties.Images_READ";
         private string spForList = "Properties.Images_LIST";
         private string spForCreate = "Properties.Images_CREATE";
@@ -32,9 +33,10 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ImagesController(ImagesService imagesService)
+        public ImagesController(ImagesService imagesService, PropertyService propertyService)
         {
-            business = imagesService;
+            _imagesServices = imagesService;
+            _PropertyService = propertyService;
         }
 
         /// <summary>
@@ -47,21 +49,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ImageId", ImageId },
-                {"ImageName", ImageName },
-                {"Path", Path },
-                {"IsMain", IsMain },
-                {"PropertyId", PropertyId }
-            };
+            LoadUserSession();
+            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, companyIdSession);
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
+            if (result.executionError)        
                 return new BadRequestObjectResult(result);
-            }
+         
+
             return new OkObjectResult(result);
         }
 
@@ -75,23 +69,16 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ImageId", ImageId },
-                {"ImageName", ImageName },
-                {"Path", Path },
-                {"IsMain", IsMain },
-                {"PropertyId", PropertyId }
-            };
+            LoadUserSession();
+            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, companyIdSession);
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForList);
-            if (result.executionError)
-            {
+            if (result.executionError)         
                 return new BadRequestObjectResult(result);
-            }
+        
             return new OkObjectResult(result);
         }
+
+
 
         /// <summary>
         /// The GetImages.
@@ -101,53 +88,39 @@ namespace API.Controllers
         [HttpGet("{ImageId}")]
         public async Task<IActionResult> GetImages(Int32 ImageId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            ResponseMDTO result = new ResponseMDTO
             {
-                {"Option", 1 },
-                {"ImageId", ImageId },
-                {"ImageName", null },
-                {"Path", null },
-                {"IsMain", null },
-                {"PropertyId", null }
+                data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == companyIdSession)
             };
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
             return new OkObjectResult(result);
         }
 
         /// <summary>
         /// The PostImages.
         /// </summary>
-        /// <param name="model">The model<see cref="ImagesEntity"/>.</param>
+        /// <param name="dto">The model<see cref="ImagesEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpPost]
-        public async Task<IActionResult> PostImages(ImagesDTO model)
+        public async Task<IActionResult> PostImages(ImagesDTO dto)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+            LoadUserSession();
+            var property = _PropertyService.GetBy(x => x.PropertyId == dto.PropertyId);
+            ValidateCompany(property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
-                {"ImageName", model.ImageName },
-                {"Path", model.Path },
-                {"IsMain", model.IsMain },
-                {"PropertyId", model.PropertyId }
+                {"ImageName", dto.ImageName },
+                {"Path", dto.Path },
+                {"IsMain", dto.IsMain },
+                {"PropertyId", dto.PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
+            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
+            if (result.executionError)     
                 return new BadRequestObjectResult(result);
-            }
+       
             return new OkObjectResult(result);
         }
 
@@ -159,12 +132,9 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutImages(ImagesDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+            LoadUserSession();
+            var imageOld = _imagesServices.GetBy(x => x.ImageId == model.ImageId);
+            ValidateCompany(imageOld.Property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -173,10 +143,10 @@ namespace API.Controllers
                 {"ImageName", model.ImageName },
                 {"Path", model.Path },
                 {"IsMain", model.IsMain },
-                {"PropertyId", model.PropertyId }
+                {"PropertyId", imageOld.PropertyId }
             };
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
+            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);
@@ -192,12 +162,15 @@ namespace API.Controllers
         [HttpDelete("{ImageId}")]
         public async Task<IActionResult> DeleteImages(Int32? ImageId)
         {
+            LoadUserSession();
+            ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
+
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"ImageId", ImageId }
             };
 
-            var result = await business.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
+            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
             if (result.executionError)
             {
                 return new BadRequestObjectResult(result);

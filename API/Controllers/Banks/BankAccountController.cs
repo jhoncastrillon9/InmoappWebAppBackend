@@ -1,32 +1,31 @@
 namespace API.Controllers
 {
+    using Business.Banks;
+    using Commons.DTOs.Banks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using Business.Banks;
-    using Commons.DTOs.Banks;
 
     /// <summary>
     /// Defines the <see cref="BankAccountController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,FinanceUser")]
     [Route("Banks/[controller]")]
     [ApiController]
-    public class BankAccountController: ControllerBase
+    public class BankAccountController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly BankAccountService business;
-        private string spForRead = "Banks.BankAccount_READ";
-        private string spForList = "Banks.BankAccount_LIST";
-        private string spForCreate = "Banks.BankAccount_CREATE";
-        private string spForUpdate = "Banks.BankAccount_UPDATE";
-        private string spForDelete = "Banks.BankAccount_DELETE";
+        private readonly BankAccountService _BankAccountService;
+        private readonly string spForRead = "Banks.BankAccount_READ";
+        private readonly string spForList = "Banks.BankAccount_LIST";
+        private readonly string spForCreate = "Banks.BankAccount_CREATE";
+        private readonly string spForUpdate = "Banks.BankAccount_UPDATE";
+        private readonly string spForDelete = "Banks.BankAccount_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BankAccountController"/> class.
@@ -34,7 +33,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public BankAccountController(BankAccountService bankAccountService)
         {
-            business = bankAccountService;
+            _BankAccountService = bankAccountService;
         }
 
         /// <summary>
@@ -47,20 +46,35 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBankAccount(Int32? BankAccountId, String BankAccountName, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"BankAccountId", BankAccountId },
-				{"BankAccountName", BankAccountName },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"BankAccountId", BankAccountId },
+                    {"BankAccountName", BankAccountName },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -73,20 +87,34 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListBankAccount(Int32? BankAccountId, String BankAccountName, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"BankAccountId", BankAccountId },
-				{"BankAccountName", BankAccountName },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"BankAccountId", BankAccountId },
+                    {"BankAccountName", BankAccountName },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -97,20 +125,34 @@ namespace API.Controllers
         [HttpGet("{BankAccountId}")]
         public async Task<IActionResult> GetBankAccount(Int32 BankAccountId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"BankAccountId", BankAccountId },
-				{"BankAccountName", null },
-				{"CompayId", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"BankAccountId", BankAccountId },
+                    {"BankAccountName", null },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -121,27 +163,34 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostBankAccount(BankAccountDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"BankAccountName", model.BankAccountName },
+                    {"Total", model.Total },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"BankAccountName", model.BankAccountName },
-				{"Total", model.Total },
-				{"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -152,28 +201,37 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutBankAccount(BankAccountDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                ValidateCompany(_BankAccountService.FindById(model.BankAccountId).CompayId);
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"BankAccountId", model.BankAccountId },
+                    {"BankAccountName", model.BankAccountName },
+                    {"Total", model.Total },
+                    {"CompayId", companyIdSession }
+                };
+
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-				{"Option", 1 },
-				{"BankAccountId", model.BankAccountId },
-				{"BankAccountName", model.BankAccountName },
-				{"Total", model.Total },
-				{"CompayId", model.CompayId }
-            };
-
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -184,17 +242,29 @@ namespace API.Controllers
         [HttpDelete("{BankAccountId}")]
         public async Task<IActionResult> DeleteBankAccount(Int32? BankAccountId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"BankAccountId", BankAccountId }
-            };
+                LoadUserSession();
+                ValidateCompany(_BankAccountService.FindById(BankAccountId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"BankAccountId", BankAccountId }
+                };
 
-            var result = await business.ExecStoreProcedure<BankAccountDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForDelete);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
     }

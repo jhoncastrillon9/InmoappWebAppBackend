@@ -12,6 +12,7 @@ namespace Business.Mappings
         public MappingProfiles()
         {
             CreateMap<User, UserDTO>().ReverseMap();      
+            CreateMap<User, AuthenticationResponseDTO>().ReverseMap();      
         }
     }
 }

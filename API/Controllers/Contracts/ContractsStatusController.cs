@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="ContractsStatusController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles ="SuperAdmin")]
     [Route("Contracts/[controller]")]
     [ApiController]
-    public class ContractsStatusController : ControllerBase
+    public class ContractsStatusController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly ContractsStatusService business;
-        private string spForRead = "Contracts.ContractsStatus_READ";
-        private string spForList = "Contracts.ContractsStatus_LIST";
-        private string spForCreate = "Contracts.ContractsStatus_CREATE";
-        private string spForUpdate = "Contracts.ContractsStatus_UPDATE";
-        private string spForDelete = "Contracts.ContractsStatus_DELETE";
+        private readonly ContractsStatusService _ContractsStatusService;
+        private readonly string spForRead = "Contracts.ContractsStatus_READ";
+        private readonly string spForList = "Contracts.ContractsStatus_LIST";
+        private readonly string spForCreate = "Contracts.ContractsStatus_CREATE";
+        private readonly string spForUpdate = "Contracts.ContractsStatus_UPDATE";
+        private readonly string spForDelete = "Contracts.ContractsStatus_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContractsStatusController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public ContractsStatusController(ContractsStatusService contractsStatusService)
         {
-            business = contractsStatusService;
+            _ContractsStatusService = contractsStatusService;
         }
 
         /// <summary>
@@ -47,19 +47,34 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetContractsStatus(Int32? ContractsStatusId, String ContractsStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"ContractsStatusId", ContractsStatusId },
-                {"ContractsStatusName", ContractsStatusName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ContractsStatusId", ContractsStatusId },
+                    {"ContractsStatusName", ContractsStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+
+
         }
 
         /// <summary>
@@ -72,19 +87,33 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListContractsStatus(Int32? ContractsStatusId, String ContractsStatusName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"ContractsStatusId", ContractsStatusId },
-                {"ContractsStatusName", ContractsStatusName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ContractsStatusId", ContractsStatusId },
+                    {"ContractsStatusName", ContractsStatusName }
+                };
 
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForList);
+               
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -95,19 +124,33 @@ namespace API.Controllers
         [HttpGet("{ContractsStatusId}")]
         public async Task<IActionResult> GetContractsStatus(Int32 ContractsStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"ContractsStatusId", ContractsStatusId },
                 {"ContractsStatusName", null }
             };
 
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForRead);
+ 
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -118,25 +161,32 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostContractsStatus(ContractsStatusDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ContractsStatusName", model.ContractsStatusName }
+                };
+
+                response = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ContractsStatusName", model.ContractsStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
         /// <summary>
@@ -147,26 +197,33 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutContractsStatus(ContractsStatusDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ContractsStatusId", model.ContractsStatusId },
+                    {"ContractsStatusName", model.ContractsStatusName }
+                };
+
+                response = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ContractsStatusId", model.ContractsStatusId },
-                {"ContractsStatusName", model.ContractsStatusName }
-            };
-
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
 
 
@@ -178,17 +235,31 @@ namespace API.Controllers
         [HttpDelete("{ContractsStatusId}")]
         public async Task<IActionResult> DeleteContractsStatus(Int32? ContractsStatusId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"ContractsStatusId", ContractsStatusId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"ContractsStatusId", ContractsStatusId }
+                };
 
-            var result = await business.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _ContractsStatusService.ExecStoreProcedure<ContractsStatusDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

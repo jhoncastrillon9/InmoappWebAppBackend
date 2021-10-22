@@ -1,34 +1,32 @@
+using Business.Commons;
+using Commons.DTOs.Commons;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace API.Controllers
 {
-    using Business.Commons;
-    using Commons.DTOs.Commons;
-    using Commons.Enums.Users;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Defines the <see cref="CityController" />.
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     // [AuthorizeAttribute(typeof(AuthorizeRoleAttribute), Arguments = new object[] { 10 })]
     [Route("Commons/[controller]")]
     [ApiController]
-    public class CityController : ControllerBase
+    public class CityController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly CityService business;
-        private string spForRead = "Commons.City_READ";
-        private string spForList = "Commons.City_LIST";
-        private string spForCreate = "Commons.City_CREATE";
-        private string spForUpdate = "Commons.City_UPDATE";
-        private string spForDelete = "Commons.City_DELETE";
+        private readonly CityService _CityService;
+        private readonly string spForRead = "Commons.City_READ";
+        private readonly string spForList = "Commons.City_LIST";
+        private readonly string spForCreate = "Commons.City_CREATE";
+        private readonly string spForUpdate = "Commons.City_UPDATE";
+        private readonly string spForDelete = "Commons.City_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CityController"/> class.
@@ -36,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public CityController(CityService cityService)
         {
-            business = cityService;
+            _CityService = cityService;
         }
 
         /// <summary>
@@ -49,8 +47,10 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCity(Int32? CityId, String CityName, Int32? StateId)
         {
-            var tt = new List<RoleEmun> { RoleEmun.SuperAdmin };
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"CityId", CityId },
@@ -58,12 +58,23 @@ namespace API.Controllers
                 {"StateId", StateId }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForRead);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
+
         }
 
         /// <summary>
@@ -76,7 +87,11 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListCity(Int32? CityId, String CityName, Int32? StateId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"CityId", CityId },
@@ -84,12 +99,22 @@ namespace API.Controllers
                 {"StateId", StateId }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForList);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -100,7 +125,11 @@ namespace API.Controllers
         [HttpGet("{CityId}")]
         public async Task<IActionResult> GetCity(Int32 CityId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"CityId", CityId },
@@ -108,12 +137,22 @@ namespace API.Controllers
                 {"StateId", null }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForRead);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -124,26 +163,32 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostCity(CityDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"CityName", model.CityName },
                 {"StateId", model.StateId }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForCreate);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -154,14 +199,10 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutCity(CityDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
                 {"CityId", model.CityId },
@@ -169,12 +210,22 @@ namespace API.Controllers
                 {"StateId", model.StateId }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForUpdate);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
 
@@ -187,17 +238,30 @@ namespace API.Controllers
         [HttpDelete("{CityId}")]
         public async Task<IActionResult> DeleteCity(Int32? CityId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"CityId", CityId }
             };
 
-            var result = await business.ExecStoreProcedure<CityDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CityService.ExecStoreProcedure<CityDTO>(parameters, spForDelete);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

@@ -1,32 +1,32 @@
+using Business.Banks;
+using Commons.DTOs.Banks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 namespace API.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-    using Business.Banks;
-     using Commons.DTOs.Banks;
-
     /// <summary>
     /// Defines the <see cref="HistoryBankAccountController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin,FinanceUser")]
     [Route("Banks/[controller]")]
     [ApiController]
-    public class HistoryBankAccountController: ControllerBase
+    public class HistoryBankAccountController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly HistoryBankAccountService business;
-        private string spForRead = "Banks.HistoryBankAccount_READ";
-        private string spForList = "Banks.HistoryBankAccount_LIST";
-        private string spForCreate = "Banks.HistoryBankAccount_CREATE";
-        private string spForUpdate = "Banks.HistoryBankAccount_UPDATE";
-        private string spForDelete = "Banks.HistoryBankAccount_DELETE";
+        private readonly HistoryBankAccountService _HistoryBankAccountServie;
+        private readonly string spForRead = "Banks.HistoryBankAccount_READ";
+        private readonly string spForList = "Banks.HistoryBankAccount_LIST";
+        private readonly string spForCreate = "Banks.HistoryBankAccount_CREATE";
+        private readonly string spForUpdate = "Banks.HistoryBankAccount_UPDATE";
+        private readonly string spForDelete = "Banks.HistoryBankAccount_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HistoryBankAccountController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public HistoryBankAccountController(HistoryBankAccountService historyBankAccountService)
         {
-            business = historyBankAccountService;
+            _HistoryBankAccountServie = historyBankAccountService;
         }
 
         /// <summary>
@@ -47,24 +47,38 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetHistoryBankAccount(Int32? HistoryBankAccountId, Int32? PaymentTypeId, Int32? BankAccountId, Int32? AccountsToPayContractsId, Int32? AccountsToReceivableContractsId, String Obervation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"HistoryBankAccountId", HistoryBankAccountId },
-				{"PaymentTypeId", PaymentTypeId },
-				{"BankAccountId", BankAccountId },
-				{"AccountsToPayContractsId", AccountsToPayContractsId },
-				{"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
-				{"Obervation", Obervation },
-				{"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"HistoryBankAccountId", HistoryBankAccountId },
+                    {"PaymentTypeId", PaymentTypeId },
+                    {"BankAccountId", BankAccountId },
+                    {"AccountsToPayContractsId", AccountsToPayContractsId },
+                    {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
+                    {"Obervation", Obervation },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -77,24 +91,38 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListHistoryBankAccount(Int32? HistoryBankAccountId, Int32? PaymentTypeId, Int32? BankAccountId, Int32? AccountsToPayContractsId, Int32? AccountsToReceivableContractsId, String Obervation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"HistoryBankAccountId", HistoryBankAccountId },
-				{"PaymentTypeId", PaymentTypeId },
-				{"BankAccountId", BankAccountId },
-				{"AccountsToPayContractsId", AccountsToPayContractsId },
-				{"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
-				{"Obervation", Obervation },
-				{"CompayId", CompayId }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            {
+                {"Option", 1 },
+                {"HistoryBankAccountId", HistoryBankAccountId },
+                {"PaymentTypeId", PaymentTypeId },
+                {"BankAccountId", BankAccountId },
+                {"AccountsToPayContractsId", AccountsToPayContractsId },
+                {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
+                {"Obervation", Obervation },
+                {"CompayId", companyIdSession }
             };
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForList);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -105,24 +133,38 @@ namespace API.Controllers
         [HttpGet("{HistoryBankAccountId}")]
         public async Task<IActionResult> GetHistoryBankAccount(Int32 HistoryBankAccountId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"Option", 1 },
-				{"HistoryBankAccountId", HistoryBankAccountId },
-				{"PaymentTypeId", null },
-				{"BankAccountId", null },
-				{"AccountsToPayContractsId", null },
-				{"AccountsToReceivableContractsId", null },
-				{"Obervation", null },
-				{"CompayId", null }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            {
+                {"Option", 1 },
+                {"HistoryBankAccountId", HistoryBankAccountId },
+                {"PaymentTypeId", null },
+                {"BankAccountId", null },
+                {"AccountsToPayContractsId", null },
+                {"AccountsToReceivableContractsId", null },
+                {"Obervation", null },
+                {"CompayId", companyIdSession }
             };
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -133,31 +175,39 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostHistoryBankAccount(HistoryBankAccountDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"PaymentTypeId", model.PaymentTypeId },
-				{"Value", model.Value },
-				{"BankAccountId", model.BankAccountId },
-				{"AccountsToPayContractsId", model.AccountsToPayContractsId },
-				{"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
-				{"Obervation", model.Obervation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"PaymentTypeId", model.PaymentTypeId },
+                {"Value", model.Value },
+                {"BankAccountId", model.BankAccountId },
+                {"AccountsToPayContractsId", model.AccountsToPayContractsId },
+                {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
+                {"Obervation", model.Obervation },
+                {"CompayId", companyIdSession }
             };
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForCreate);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -168,32 +218,39 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutHistoryBankAccount(HistoryBankAccountDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                LoadUserSession();
+                ValidateCompany(_HistoryBankAccountServie.FindById(model.HistoryBankAccountId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
-				{"Option", 1 },
-				{"HistoryBankAccountId", model.HistoryBankAccountId },
-				{"PaymentTypeId", model.PaymentTypeId },
-				{"Value", model.Value },
-				{"BankAccountId", model.BankAccountId },
-				{"AccountsToPayContractsId", model.AccountsToPayContractsId },
-				{"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
-				{"Obervation", model.Obervation },
-				{"CompayId", model.CompayId }
+                {"Option", 1 },
+                {"HistoryBankAccountId", model.HistoryBankAccountId },
+                {"PaymentTypeId", model.PaymentTypeId },
+                {"Value", model.Value },
+                {"BankAccountId", model.BankAccountId },
+                {"AccountsToPayContractsId", model.AccountsToPayContractsId },
+                {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
+                {"Obervation", model.Obervation },
+                {"CompayId", companyIdSession }
             };
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -204,17 +261,32 @@ namespace API.Controllers
         [HttpDelete("{HistoryBankAccountId}")]
         public async Task<IActionResult> DeleteHistoryBankAccount(Int32? HistoryBankAccountId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-				{"HistoryBankAccountId", HistoryBankAccountId }
-            };
+                LoadUserSession();
+                ValidateCompany(_HistoryBankAccountServie.FindById(HistoryBankAccountId).CompayId);
 
-            var result = await business.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                    {
+                        {"HistoryBankAccountId", HistoryBankAccountId }
+                    };
+
+                var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(result);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
     }

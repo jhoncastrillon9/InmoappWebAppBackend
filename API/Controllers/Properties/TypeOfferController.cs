@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="TypeOfferController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
-    public class TypeOfferController : ControllerBase
+    public class TypeOfferController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly TypeOfferService business;
-        private string spForRead = "Properties.TypeOffer_READ";
-        private string spForList = "Properties.TypeOffer_LIST";
-        private string spForCreate = "Properties.TypeOffer_CREATE";
-        private string spForUpdate = "Properties.TypeOffers_UPDATE";
-        private string spForDelete = "Properties.TypeOffer_DELETE";
+        private readonly TypeOfferService _TypeOfferService;
+        private readonly string spForRead = "Properties.TypeOffer_READ";
+        private readonly string spForList = "Properties.TypeOffer_LIST";
+        private readonly string spForCreate = "Properties.TypeOffer_CREATE";
+        private readonly string spForUpdate = "Properties.TypeOffers_UPDATE";
+        private readonly string spForDelete = "Properties.TypeOffer_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeOfferController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public TypeOfferController(TypeOfferService typeOfferService)
         {
-            business = typeOfferService;
+            _TypeOfferService = typeOfferService;
         }
 
         /// <summary>
@@ -47,19 +47,32 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTypeOffer(Int32? TypeOfferId, String TypeOfferName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TypeOfferId", TypeOfferId },
-                {"TypeOfferName", TypeOfferName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TypeOfferId", TypeOfferId },
+                    {"TypeOfferName", TypeOfferName }
+                };
 
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+         
         }
 
         /// <summary>
@@ -72,19 +85,32 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListTypeOffer(Int32? TypeOfferId, String TypeOfferName)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TypeOfferId", TypeOfferId },
-                {"TypeOfferName", TypeOfferName }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TypeOfferId", TypeOfferId },
+                    {"TypeOfferName", TypeOfferName }
+                };
 
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -95,19 +121,32 @@ namespace API.Controllers
         [HttpGet("{TypeOfferId}")]
         public async Task<IActionResult> GetTypeOffer(Int32 TypeOfferId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TypeOfferId", TypeOfferId },
-                {"TypeOfferName", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TypeOfferId", TypeOfferId },
+                    {"TypeOfferName", null }
+                };
 
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+
         }
 
         /// <summary>
@@ -118,25 +157,33 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostTypeOffer(TypeOfferDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TypeOfferName", model.TypeOfferName }
+                };
+
+                var response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForCreate);
+              
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"TypeOfferName", model.TypeOfferName }
-            };
-
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
+            
         }
 
         /// <summary>
@@ -147,28 +194,34 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutTypeOffer(TypeOfferDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TypeOfferId", model.TypeOfferId },
+                    {"TypeOfferName", model.TypeOfferName }
+                };
+
+                response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"TypeOfferId", model.TypeOfferId },
-                {"TypeOfferName", model.TypeOfferName }
-            };
 
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
         }
-
 
         /// <summary>
         /// The DeleteTypeOffer.
@@ -178,17 +231,30 @@ namespace API.Controllers
         [HttpDelete("{TypeOfferId}")]
         public async Task<IActionResult> DeleteTypeOffer(Int32? TypeOfferId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"TypeOfferId", TypeOfferId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"TypeOfferId", TypeOfferId }
+                };
 
-            var result = await business.ExecStoreProcedure<TypeOfferDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TypeOfferService.ExecStoreProcedure<TypeOfferDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+          
         }
 
     }

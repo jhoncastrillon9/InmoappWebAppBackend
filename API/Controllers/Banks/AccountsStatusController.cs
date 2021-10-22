@@ -12,7 +12,7 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="AccountsStatusController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles ="SuperAdmin")]
     [Route("Banks/[controller]")]
     [ApiController]
     public class AccountsStatusController : BaseController
@@ -20,12 +20,12 @@ namespace API.Controllers
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly AccountsStatusService business;
-        private string spForRead = "Banks.AccountsStatus_READ";
-        private string spForList = "Banks.AccountsStatus_LIST";
-        private string spForCreate = "Banks.AccountsStatus_CREATE";
-        private string spForUpdate = "Banks.AccountsStatus_UPDATE";
-        private string spForDelete = "Banks.AccountsStatus_DELETE";
+        private readonly AccountsStatusService _AccountsStatusService;
+        private readonly string spForRead = "Banks.AccountsStatus_READ";
+        private readonly string spForList = "Banks.AccountsStatus_LIST";
+        private readonly string spForCreate = "Banks.AccountsStatus_CREATE";
+        private readonly string spForUpdate = "Banks.AccountsStatus_UPDATE";
+        private readonly string spForDelete = "Banks.AccountsStatus_DELETE";
 
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public AccountsStatusController(AccountsStatusService accountsStatusService)
         {
-            business = accountsStatusService;
+            _AccountsStatusService = accountsStatusService;
 
         }
 
@@ -57,7 +57,7 @@ namespace API.Controllers
                     {"AccountsStatusName", AccountsStatusName }
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -95,7 +95,7 @@ namespace API.Controllers
                     {"AccountsStatusName", AccountsStatusName }
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
 
                 return new OkObjectResult(response);
             }
@@ -130,7 +130,7 @@ namespace API.Controllers
                     {"AccountsStatusName", null }
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -163,7 +163,7 @@ namespace API.Controllers
 
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForCreate);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForCreate);
 
                 return new OkObjectResult(response);
             }
@@ -201,7 +201,7 @@ namespace API.Controllers
                     //{"UpdatedBy", userIdSession }
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForUpdate);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForUpdate);
 
                 return new OkObjectResult(response);
             }
@@ -234,7 +234,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId }
                 };
 
-                response = await business.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForDelete);
+                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForDelete);
 
                 return new OkObjectResult(response);
             }

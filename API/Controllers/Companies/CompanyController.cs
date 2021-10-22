@@ -1,6 +1,7 @@
 namespace API.Controllers
 {
     using Business.Companies;
+    using Business.Users;
     using Commons.DTOs.Companies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -12,29 +13,31 @@ namespace API.Controllers
 
     /// <summary>
     /// Defines the <see cref="CompanyController" />.
-    /// </summary>
-    [Authorize]
+    /// </summary>   
+    [Authorize(Roles = "SuperAdmin,CompanyAdmin")]
     [Route("Companies/[controller]")]
     [ApiController]
-    public class CompanyController : ControllerBase
+    public class CompanyController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly CompanyService business;
-        private string spForRead = "Companies.Company_READ";
-        private string spForList = "Companies.Company_LIST";
-        private string spForCreate = "Companies.Company_CREATE";
-        private string spForUpdate = "Companies.Company_UPDATE";
-        private string spForDelete = "Companies.Company_DELETE";
+        private readonly CompanyService _CompanyService;
+        private readonly UserService _Userservice;
+        private readonly string spForRead = "Companies.Company_READ";
+        private readonly string spForList = "Companies.Company_LIST";
+        private readonly string spForCreate = "Companies.Company_CREATE";
+        private readonly string spForUpdate = "Companies.Company_UPDATE";
+        private readonly string spForDelete = "Companies.Company_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompanyController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public CompanyController(CompanyService companyService)
+        public CompanyController(CompanyService companyService, UserService userService)
         {
-            business = companyService;
+            _CompanyService = companyService;
+            _Userservice = userService;
         }
 
         /// <summary>
@@ -47,25 +50,39 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCompany(Int32? CompayId, String CompanyName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"CompayId", CompayId },
-                {"CompanyName", CompanyName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CompayId", companyIdSession },
+                    {"CompanyName", CompanyName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation }
+                };
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -78,25 +95,39 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListCompany(Int32? CompayId, String CompanyName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"CompayId", CompayId },
-                {"CompanyName", CompanyName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CompayId", companyIdSession },
+                    {"CompanyName", CompanyName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation }
+                };
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -107,25 +138,39 @@ namespace API.Controllers
         [HttpGet("{CompayId}")]
         public async Task<IActionResult> GetCompany(Int32 CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"CompayId", CompayId },
-                {"CompanyName", null },
-                {"Document", null },
-                {"Telephone", null },
-                {"Mobile", null },
-                {"Email", null },
-                {"Address", null },
-                {"Observation", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CompayId", companyIdSession },
+                    {"CompanyName", null },
+                    {"Document", null },
+                    {"Telephone", null },
+                    {"Mobile", null },
+                    {"Email", null },
+                    {"Address", null },
+                    {"Observation", null }
+                };
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+
         }
 
         /// <summary>
@@ -133,34 +178,41 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostCompany(CompanyDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CompanyName", model.CompanyName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"CompanyName", model.CompanyName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation }
-            };
+                var result = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForCreate);
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
         }
 
         /// <summary>
@@ -171,32 +223,42 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutCompany(CompanyDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
+                LoadUserSession();
+                ValidateCompany(model.CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"CompayId", companyIdSession },
+                    {"CompanyName", model.CompanyName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation }
+                };
+
+                response = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForUpdate);
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
             }
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"CompayId", model.CompayId },
-                {"CompanyName", model.CompanyName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation }
-            };
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
-            }
-            return new OkObjectResult(result);
+
         }
 
         /// <summary>
@@ -204,20 +266,35 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="CompanyEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles ="SuperAdmin")]
         [HttpDelete("{CompayId}")]
         public async Task<IActionResult> DeleteCompany(Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
+            {
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"CompayId", CompayId }
             };
 
-            var result = await business.ExecStoreProcedure<CompanyDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                var result = await _CompanyService.ExecStoreProcedure<CompanyDTO>(parameters, spForDelete);
+     
+                return new OkObjectResult(result);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+           
         }
 
     }

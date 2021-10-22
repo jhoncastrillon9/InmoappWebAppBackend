@@ -13,20 +13,20 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="TenantController" />.
     /// </summary>
-    [Authorize]
+    [Authorize(Roles = "Superadmin,CompanyAdmin,TennatUser")]
     [Route("Tenants/[controller]")]
     [ApiController]
-    public class TenantController : ControllerBase
+    public class TenantController : BaseController
     {
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly TenantService business;
-        private string spForRead = "Tenants.Tenant_READ";
-        private string spForList = "Tenants.Tenant_LIST";
-        private string spForCreate = "Tenants.Tenant_CREATE";
-        private string spForUpdate = "Tenants.Tenant_UPDATE";
-        private string spForDelete = "Tenants.Tenant_DELETE";
+        private readonly TenantService _TenantService;
+        private readonly string spForRead = "Tenants.Tenant_READ";
+        private readonly string spForList = "Tenants.Tenant_LIST";
+        private readonly string spForCreate = "Tenants.Tenant_CREATE";
+        private readonly string spForUpdate = "Tenants.Tenant_UPDATE";
+        private readonly string spForDelete = "Tenants.Tenant_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantController"/> class.
@@ -34,7 +34,7 @@ namespace API.Controllers
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
         public TenantController(TenantService tenantService)
         {
-            business = tenantService;
+            _TenantService = tenantService;
         }
 
         /// <summary>
@@ -47,26 +47,39 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTenant(Int32? TenantId, String TenantName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TenantId", TenantId },
-                {"TenantName", TenantName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation },
-                {"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TenantId", TenantId },
+                    {"TenantName", TenantName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
         /// <summary>
@@ -79,26 +92,39 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListTenant(Int32? TenantId, String TenantName, String Document, String Telephone, String Mobile, String Email, String Address, String Observation, Int32? CompayId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TenantId", TenantId },
-                {"TenantName", TenantName },
-                {"Document", Document },
-                {"Telephone", Telephone },
-                {"Mobile", Mobile },
-                {"Email", Email },
-                {"Address", Address },
-                {"Observation", Observation },
-                {"CompayId", CompayId }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TenantId", TenantId },
+                    {"TenantName", TenantName },
+                    {"Document", Document },
+                    {"Telephone", Telephone },
+                    {"Mobile", Mobile },
+                    {"Email", Email },
+                    {"Address", Address },
+                    {"Observation", Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForList);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForList);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+           
         }
 
         /// <summary>
@@ -109,26 +135,39 @@ namespace API.Controllers
         [HttpGet("{TenantId}")]
         public async Task<IActionResult> GetTenant(Int32 TenantId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"TenantId", TenantId },
-                {"TenantName", null },
-                {"Document", null },
-                {"Telephone", null },
-                {"Mobile", null },
-                {"Email", null },
-                {"Address", null },
-                {"Observation", null },
-                {"CompayId", null }
-            };
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TenantId", TenantId },
+                    {"TenantName", null },
+                    {"Document", null },
+                    {"Telephone", null },
+                    {"Mobile", null },
+                    {"Email", null },
+                    {"Address", null },
+                    {"Observation", null },
+                    {"CompayId", companyIdSession }
+                };
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
         /// <summary>
@@ -139,32 +178,38 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostTenant(TenantDTO model)
         {
-            Int32 CreatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                CreatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TenantName", model.TenantName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"TenantName", model.TenantName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation },
-                {"CompayId", model.CompayId }
-            };
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForCreate);
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForCreate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                return new OkObjectResult(response);
+
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                base.response.executionError = true;
+                base.response.message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                base.response.executionError = true;
+                return new BadRequestObjectResult(base.response);
+            }           
         }
 
         /// <summary>
@@ -175,33 +220,39 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutTenant(TenantDTO model)
         {
-            Int32 UpdatedBy = 0;
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
+            try
             {
-                UpdatedBy = Int32.Parse(identity.FindFirst("userId").Value);
-            }
+                LoadUserSession();
+                ValidateCompany(_TenantService.FindById(model.TenantId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"TenantId", model.TenantId },
+                    {"TenantName", model.TenantName },
+                    {"Document", model.Document },
+                    {"Telephone", model.Telephone },
+                    {"Mobile", model.Mobile },
+                    {"Email", model.Email },
+                    {"Address", model.Address },
+                    {"Observation", model.Observation },
+                    {"CompayId", companyIdSession }
+                };
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"TenantId", model.TenantId },
-                {"TenantName", model.TenantName },
-                {"Document", model.Document },
-                {"Telephone", model.Telephone },
-                {"Mobile", model.Mobile },
-                {"Email", model.Email },
-                {"Address", model.Address },
-                {"Observation", model.Observation },
-                {"CompayId", model.CompayId }
-            };
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForUpdate);
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForUpdate);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }            
         }
 
 
@@ -213,17 +264,31 @@ namespace API.Controllers
         [HttpDelete("{TenantId}")]
         public async Task<IActionResult> DeleteTenant(Int32? TenantId)
         {
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"TenantId", TenantId }
-            };
+                LoadUserSession();
+                ValidateCompany(_TenantService.FindById(TenantId).CompayId);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"TenantId", TenantId }
+                };
 
-            var result = await business.ExecStoreProcedure<TenantDTO>(parameters, spForDelete);
-            if (result.executionError)
-            {
-                return new BadRequestObjectResult(result);
+                response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForDelete);
+                
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.executionError = true;
+                response.message = ex.Message;
+                return new BadRequestObjectResult(response);
+            }
+            catch (Exception ex)
+            {
+                response.executionError = true;
+                return new BadRequestObjectResult(response);
+            }
+           
         }
 
     }
