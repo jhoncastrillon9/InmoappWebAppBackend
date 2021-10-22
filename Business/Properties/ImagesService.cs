@@ -22,7 +22,7 @@ namespace Business.Properties
 
         public ResponseMDTO GetImagesFilter(int? ImageId, string ImageName, string Path, bool? IsMain, int? PropertyId, int companyIdSession)
         {
-            response.data = GetAllBy(x =>
+            response.Data = GetAllBy(x =>
             (ImageId == null || x.ImageId == ImageId) &&
             (string.IsNullOrEmpty(ImageName) || x.ImageName.ToLower().Contains(ImageName.Trim().ToLower())) &&
             (string.IsNullOrEmpty(Path) || x.Path.ToLower().Contains(Path.Trim().ToLower())) &&

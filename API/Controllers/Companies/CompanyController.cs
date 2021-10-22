@@ -74,13 +74,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -119,13 +119,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -162,13 +162,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -205,13 +205,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
         }
@@ -227,7 +227,7 @@ namespace API.Controllers
             try
             {
                 
-                ValidateCompany(model.CompayId);
+                _CompanyService.ValidateCompany(model.CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -248,13 +248,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -286,13 +286,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
            

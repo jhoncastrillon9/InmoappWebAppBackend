@@ -1,5 +1,4 @@
-﻿using Business.Resources;
-using Commons.DTOs;
+﻿using Commons.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

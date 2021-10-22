@@ -1,7 +1,7 @@
-using Business.Resources;
 using Business.Users;
 using Commons.DTOs;
 using Commons.DTOs.Users;
+using Commons.Resources;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -60,12 +60,12 @@ namespace API.Controllers
                 // DB user validation
                 response = await _AuthenticationServices.Validate(parameters);
 
-                if (response.executionError)
-                    return Ok(new { data = "", executionError = true, message = response.message });
+                if (response.ExecutionError)
+                    return Ok(new { data = "", executionError = true, message = response.Message });
                 else
                 {
                     Byte lAuthenticated = 0;
-                    foreach (var item in response.data)
+                    foreach (var item in response.Data)
                     {
                         lAuthenticated = item.Authenticated;
                     }
@@ -73,23 +73,23 @@ namespace API.Controllers
                     // Unauthorizad response
                     if (lAuthenticated == 0)
                     {
-                        return Ok(new { data = response.data, executionError = false, message = "" });
+                        return Ok(new { data = response.Data, executionError = false, message = "" });
                     }
                     else
                     {
-                        int userId = Convert.ToInt32(response.data[0].UserId.ToString());
-                        string userName = response.data[0].Username.ToString() as string;
+                        int userId = Convert.ToInt32(response.Data[0].UserId.ToString());
+                        string userName = response.Data[0].Username.ToString() as string;
                         GenerateAuthentication(userId, userName, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token);
 
                         // Authentication response
-                        return Ok(new { data = response.data[0], token = tokenHandler.WriteToken(Token), executionError = false, message = "" });
+                        return Ok(new { data = response.Data[0], token = tokenHandler.WriteToken(Token), executionError = false, message = "" });
                     }
                 }
             }
             catch (Exception ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }           
 
@@ -130,14 +130,14 @@ namespace API.Controllers
             try
             {             
                 response = await _AuthenticationServices.Register(newUser);                
-                string token = GenerateAuthentication(response.data.UserId, response.data.Username, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token);
+                string token = GenerateAuthentication(response.Data.UserId, response.Data.Username, out JwtSecurityTokenHandler tokenHandler, out SecurityToken Token);
 
-                return Ok(new { response.data, token, executionError = false, message = Messages.SuccessGeneral });
+                return Ok(new { response.Data, token, executionError = false, message = Messages.SuccessGeneral });
             }
             catch (Exception ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
 

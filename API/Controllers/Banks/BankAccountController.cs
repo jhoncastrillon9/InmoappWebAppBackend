@@ -65,13 +65,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -106,13 +106,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -144,13 +144,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -182,13 +182,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -204,8 +204,8 @@ namespace API.Controllers
         {
             try
             {
-                
-                ValidateCompany(_BankAccountService.FindById(model.BankAccountId).CompayId);
+
+                _BankAccountService.ValidateCompany(_BankAccountService.FindById(model.BankAccountId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -223,13 +223,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -246,7 +246,7 @@ namespace API.Controllers
             try
             {
                 
-                ValidateCompany(_BankAccountService.FindById(BankAccountId).CompayId);
+                _BankAccountService.ValidateCompany(_BankAccountService.FindById(BankAccountId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"BankAccountId", BankAccountId }
@@ -257,13 +257,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
         }

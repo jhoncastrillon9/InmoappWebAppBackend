@@ -71,13 +71,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.executionError = true;
-                base.response.message = ex.Message;
+                base.response.ExecutionError = true;
+                base.response.Message = ex.Message;
                 return new BadRequestObjectResult(base.response);
             }
             catch (Exception ex)
             {
-                base.response.executionError = true;
+                base.response.ExecutionError = true;
                 return new BadRequestObjectResult(base.response);
             }
           
@@ -116,13 +116,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.executionError = true;
-                base.response.message = ex.Message;
+                base.response.ExecutionError = true;
+                base.response.Message = ex.Message;
                 return new BadRequestObjectResult(base.response);
             }
             catch (Exception ex)
             {
-                base.response.executionError = true;
+                base.response.ExecutionError = true;
                 return new BadRequestObjectResult(base.response);
             }
            
@@ -159,13 +159,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.executionError = true;
-                base.response.message = ex.Message;
+                base.response.ExecutionError = true;
+                base.response.Message = ex.Message;
                 return new BadRequestObjectResult(base.response);
             }
             catch (Exception ex)
             {
-                base.response.executionError = true;
+                base.response.ExecutionError = true;
                 return new BadRequestObjectResult(base.response);
             }
           
@@ -202,13 +202,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.executionError = true;
-                base.response.message = ex.Message;
+                base.response.ExecutionError = true;
+                base.response.Message = ex.Message;
                 return new BadRequestObjectResult(base.response);
             }
             catch (Exception ex)
             {
-                base.response.executionError = true;
+                base.response.ExecutionError = true;
                 return new BadRequestObjectResult(base.response);
             }           
         }
@@ -224,7 +224,7 @@ namespace API.Controllers
             try
             {
                 
-                ValidateCompany(_TenantService.FindById(model.TenantId).CompayId);
+                _TenantService.ValidateCompany(_TenantService.FindById(model.TenantId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -245,13 +245,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }            
         }
@@ -267,8 +267,8 @@ namespace API.Controllers
         {
             try
             {
-                
-                ValidateCompany(_TenantService.FindById(TenantId).CompayId);
+
+                _TenantService.ValidateCompany(_TenantService.FindById(TenantId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"TenantId", TenantId }
@@ -280,13 +280,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
            

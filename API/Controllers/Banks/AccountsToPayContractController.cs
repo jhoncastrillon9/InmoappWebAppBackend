@@ -64,13 +64,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -105,13 +105,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -144,13 +144,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -183,13 +183,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -205,7 +205,7 @@ namespace API.Controllers
         {
             try
             {                
-                ValidateCompany(_AccountsToPayContractService.FindById(model.AccountsToPayContractId).CompayId);
+                _AccountsToPayContractService.ValidateCompany(_AccountsToPayContractService.FindById(model.AccountsToPayContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -224,13 +224,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 
@@ -245,8 +245,8 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteAccountsToPayContract(Int32? AccountsToPayContractId)
         {
             try
-            {                
-                ValidateCompany(_AccountsToPayContractService.FindById(AccountsToPayContractId).CompayId);
+            {
+                _AccountsToPayContractService.ValidateCompany(_AccountsToPayContractService.FindById(AccountsToPayContractId).CompayId);
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>(){
                         {"AccountsToPayContractId", AccountsToPayContractId }
@@ -258,13 +258,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.executionError = true;
-                response.message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                response.executionError = true;
+                response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
 

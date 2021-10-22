@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Resources
+namespace Commons.Resources
 {
     public static class Messages
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Business.Resources;
 using Commons.DTOs;
+using Commons.Resources;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -21,7 +21,7 @@ namespace Business
 
         protected ResponseMDTO response = new ResponseMDTO();
         protected BaseModel<TEntity> _BaseModel;
-        protected BaseStoreProcedureModel spModel;
+        protected BaseStoreProcedureModel _SpModel;
         /// <summary>
         /// Claims del usuario
         /// </summary>
@@ -42,15 +42,22 @@ namespace Business
 
         public BaseService(BaseModel<TEntity> baseModel, IMapper mapper, IHttpContextAccessor httpContext, BaseStoreProcedureModel spModel = null)
         {
-            this._BaseModel = baseModel;
-            this.spModel = spModel;
+            _BaseModel = baseModel;
+            _SpModel = spModel;
             _mapper = mapper;
+            //Se acarga contexto e información del usuario
             _HttpContext = httpContext;
-            _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
+            ///Dto generico que se envia al controlador
+            response.Message = Messages.SuccessGeneral;
+            response.ExecutionError = false;
         }
+
+        #region Genericos
 
         public void ValidateCompany(int companyId)
         {
+            LoadClaims();
+
             if (companyId != currentUserCompanyId)
             {
                 throw new Exception(Messages.ErrorEntityNoAutorizate);
@@ -58,18 +65,37 @@ namespace Business
 
         }
 
+        /// <summary>
+        /// Carga los claims del usuario
+        /// </summary>
+        private void LoadClaims()
+        {
+            ///Solamente los carga cuando nunca los ha cargado
+            if (_ClaimsUser==null)
+            {
+                _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
+                currentUserId = int.Parse(_ClaimsUser.FindFirst("userId").Value);
+                currentUserCompanyId = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
+
+            }            
+        }
+
         public void ValidateUserId(int companyId)
         {
+            LoadClaims();
             if (companyId != currentUserId)
             {
                 throw new Exception(Messages.ErrorEntityNoAutorizate);
             }
 
         }
+        #endregion
+
+        #region Repository
 
         public async Task<ResponseMDTO> ExecStoreProcedure<T>(Dictionary<string, dynamic> parameters, string spName)
         {
-            response.data = await spModel.ExecStoreProcedure<T>(parameters, spName);
+            response.Data = await _SpModel.ExecStoreProcedure<T>(parameters, spName);
 
             return response;
         }
@@ -227,5 +253,8 @@ namespace Business
         {
             _BaseModel.SaveChanges();
         }
+        #endregion
+
+
     }
 }

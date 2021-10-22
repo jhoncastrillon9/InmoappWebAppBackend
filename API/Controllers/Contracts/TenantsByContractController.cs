@@ -56,7 +56,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForRead);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -82,7 +82,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForList);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -106,7 +106,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForRead);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -136,7 +136,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForCreate);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -167,7 +167,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForUpdate);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -188,7 +188,7 @@ namespace API.Controllers
             };
 
             var result = await business.ExecStoreProcedure<TenantsByContractDTO>(parameters, spForDelete);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }

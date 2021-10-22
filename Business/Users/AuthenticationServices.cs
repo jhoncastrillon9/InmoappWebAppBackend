@@ -46,15 +46,15 @@ namespace Business.Users
             try
             {
                 var res = await _SpModel.ExecStoreProcedure<AuthenticationResponseDTO>(parameters, "[CodeMono].[User_Authentication]");
-                response.data = res;
-                response.executionError = false;
-                response.message = "";
+                response.Data = res;
+                response.ExecutionError = false;
+                response.Message = "";
             }
             catch (Exception ex)
             {
-                response.data = null;
-                response.executionError = true;
-                response.message = ex.Message;
+                response.Data = null;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
             }
             return response;
         }
@@ -114,7 +114,7 @@ namespace Business.Users
                  
             var userCreated = _mapper.Map<AuthenticationResponseDTO>(_Userservice.Create(newUser));
             userCreated.Authenticated = 1;
-            response.data = userCreated;
+            response.Data = userCreated;
             return response;
 
         }

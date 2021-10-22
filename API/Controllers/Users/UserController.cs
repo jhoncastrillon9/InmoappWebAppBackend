@@ -68,7 +68,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -105,7 +105,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -141,7 +141,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -178,7 +178,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -198,7 +198,7 @@ namespace API.Controllers
             try
             {
                 
-                ValidateUserId(model.UserId);
+                _UserServices.ValidateUserId(model.UserId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"UserId", model.UserId },
@@ -217,7 +217,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -249,7 +249,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -281,7 +281,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
@@ -312,7 +312,7 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                response.message = ex.Message;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
             }
             catch (Exception ex)

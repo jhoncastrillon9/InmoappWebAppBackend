@@ -53,7 +53,7 @@ namespace API.Controllers
             
             var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
 
-            if (result.executionError)        
+            if (result.ExecutionError)        
                 return new BadRequestObjectResult(result);
          
 
@@ -73,7 +73,7 @@ namespace API.Controllers
             
             var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
 
-            if (result.executionError)         
+            if (result.ExecutionError)         
                 return new BadRequestObjectResult(result);
         
             return new OkObjectResult(result);
@@ -91,7 +91,7 @@ namespace API.Controllers
         {
             ResponseMDTO result = new ResponseMDTO
             {
-                data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == currentUserCompanyId)
+                Data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == currentUserCompanyId)
             };
 
             return new OkObjectResult(result);
@@ -107,7 +107,7 @@ namespace API.Controllers
         {
             
             var property = _PropertyService.GetBy(x => x.PropertyId == dto.PropertyId);
-            ValidateCompany(property.CompayId);
+            _PropertyService.ValidateCompany(property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -119,7 +119,7 @@ namespace API.Controllers
             };
 
             var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
-            if (result.executionError)     
+            if (result.ExecutionError)     
                 return new BadRequestObjectResult(result);
        
             return new OkObjectResult(result);
@@ -135,7 +135,7 @@ namespace API.Controllers
         {
             
             var imageOld = _imagesServices.GetBy(x => x.ImageId == model.ImageId);
-            ValidateCompany(imageOld.Property.CompayId);
+            _imagesServices.ValidateCompany(imageOld.Property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -148,7 +148,7 @@ namespace API.Controllers
             };
 
             var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }
@@ -164,7 +164,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteImages(Int32? ImageId)
         {
             
-            ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
+            _imagesServices.ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
 
             Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -172,7 +172,7 @@ namespace API.Controllers
             };
 
             var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
-            if (result.executionError)
+            if (result.ExecutionError)
             {
                 return new BadRequestObjectResult(result);
             }

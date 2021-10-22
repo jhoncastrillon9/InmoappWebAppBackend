@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Commons.Resources;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,22 +7,25 @@ namespace Commons.DTOs
 {
     public class ResponseMDTO
     {
-        public dynamic data { get; set; }
-        public bool executionError { get; set; }
-        public string message { get; set; }
+        public dynamic Data { get; set; }
+        public bool ExecutionError { get; set; }
+        public string Message { get; set; }
 
+        /// <summary>
+        /// DTO generico para responder a branwhite
+        /// </summary>
         public ResponseMDTO()
         {
-            data = null;
-            executionError = false;
-            message = "Proceso finalizado exitosamente";
+            Data = null;
+            ExecutionError = false;
+            Message = Messages.SuccessGeneral;
         }
 
         public ResponseMDTO(dynamic _dynamic, bool _executionError, string _message = "")
         {
-            data = _dynamic;
-            executionError = _executionError;
-            message = _message;
+            Data = _dynamic;
+            ExecutionError = _executionError;
+            Message = _message;
         }
     }
 }
