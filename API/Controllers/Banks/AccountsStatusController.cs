@@ -6,6 +6,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="AccountsStatusController" />.
     /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
+   [Authorize(Roles = "SuperAdmin")]
     [Route("Banks/[controller]")]
     [ApiController]
     public class AccountsStatusController : BaseController
@@ -21,7 +22,8 @@ namespace API.Controllers
         /// <summary>
         /// Defines the business.
         /// </summary>
-        private readonly AccountsStatusService _AccountsStatusService;
+        private readonly AccountsStatusService _accountsStatusService;
+        private readonly ILogger<AccountsStatusController> _logger;
         private readonly string spForRead = "Banks.AccountsStatus_READ";
         private readonly string spForList = "Banks.AccountsStatus_LIST";
         private readonly string spForCreate = "Banks.AccountsStatus_CREATE";
@@ -29,13 +31,15 @@ namespace API.Controllers
         private readonly string spForDelete = "Banks.AccountsStatus_DELETE";
 
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsStatusController(AccountsStatusService accountsStatusService, IHttpContextAccessor httpContext) : base(httpContext)
+        public AccountsStatusController(AccountsStatusService accountsStatusService, ILogger<AccountsStatusController> logger, IHttpContextAccessor httpContext) : base(httpContext)
         {
-            _AccountsStatusService = accountsStatusService;
+            _accountsStatusService = accountsStatusService;
+            _logger = logger;
 
         }
 
@@ -51,7 +55,8 @@ namespace API.Controllers
         {
             try
             {
-                _AccountsStatusService.LoadUserSessionservice();
+                throw new Exception("Hola");
+                _accountsStatusService.LoadUserSessionservice();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -59,7 +64,7 @@ namespace API.Controllers
                     {"AccountsStatusName", AccountsStatusName }
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -71,6 +76,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,ex.Message);
                 response.ExecutionError = true;
                 return new BadRequestObjectResult(response);
             }
@@ -87,7 +93,7 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListAccountsStatus(Int32? AccountsStatusId, String AccountsStatusName)
         {
-            _AccountsStatusService.LoadUserSessionservice();
+            _accountsStatusService.LoadUserSessionservice();
             try
             {
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
@@ -97,7 +103,7 @@ namespace API.Controllers
                     {"AccountsStatusName", AccountsStatusName }
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForList);
 
                 return new OkObjectResult(response);
             }
@@ -132,7 +138,7 @@ namespace API.Controllers
                     {"AccountsStatusName", null }
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForRead);
 
                 return new OkObjectResult(response);
             }
@@ -164,7 +170,7 @@ namespace API.Controllers
 
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForCreate);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForCreate);
 
                 return new OkObjectResult(response);
             }
@@ -201,7 +207,7 @@ namespace API.Controllers
                     //{"UpdatedBy", userIdSession }
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForUpdate);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForUpdate);
 
                 return new OkObjectResult(response);
             }
@@ -234,7 +240,7 @@ namespace API.Controllers
                     {"AccountsStatusId", AccountsStatusId }
                 };
 
-                response = await _AccountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForDelete);
+                response = await _accountsStatusService.ExecStoreProcedure<AccountsStatusDTO>(parameters, spForDelete);
 
                 return new OkObjectResult(response);
             }
