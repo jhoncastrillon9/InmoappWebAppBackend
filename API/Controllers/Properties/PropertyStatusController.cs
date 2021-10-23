@@ -6,6 +6,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PropertyStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PropertyStatusController(PropertyStatusService propertyStatusService, IHttpContextAccessor httpContext) : base(httpContext)
+        public PropertyStatusController(PropertyStatusService propertyStatusService, ILogger<PropertyStatusController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _PropertyStatusService = propertyStatusService;
         }

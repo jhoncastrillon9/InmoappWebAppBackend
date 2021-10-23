@@ -23,7 +23,6 @@ namespace API.Controllers
         /// Defines the business.
         /// </summary>
         private readonly AccountsStatusService _accountsStatusService;
-        private readonly ILogger<AccountsStatusController> _logger;
         private readonly string spForRead = "Banks.AccountsStatus_READ";
         private readonly string spForList = "Banks.AccountsStatus_LIST";
         private readonly string spForCreate = "Banks.AccountsStatus_CREATE";
@@ -36,11 +35,9 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsStatusController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsStatusController(AccountsStatusService accountsStatusService, ILogger<AccountsStatusController> logger, IHttpContextAccessor httpContext) : base(httpContext)
+        public AccountsStatusController(AccountsStatusService accountsStatusService, ILogger<AccountsStatusController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
-            _accountsStatusService = accountsStatusService;
-            _logger = logger;
-
+            _accountsStatusService = accountsStatusService; 
         }
 
         /// <summary>
@@ -54,8 +51,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetAccountsStatus(Int32? AccountsStatusId, String AccountsStatusName)
         {
             try
-            {
-                throw new Exception("Hola");
+            {                
                 _accountsStatusService.LoadUserSessionservice();
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {

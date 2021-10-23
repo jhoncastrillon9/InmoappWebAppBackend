@@ -7,6 +7,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public ImagesController(ImagesService imagesService, PropertyService propertyService, IHttpContextAccessor httpContext) : base(httpContext)
+        public ImagesController(ImagesService imagesService, PropertyService propertyService, ILogger<ImagesController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _imagesServices = imagesService;
             _PropertyService = propertyService;

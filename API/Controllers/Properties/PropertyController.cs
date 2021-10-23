@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PropertyController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PropertyController(PropertyService propertyService, IHttpContextAccessor httpContext) : base(httpContext)
+        public PropertyController(PropertyService propertyService, ILogger<PropertyController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _PropertyService = propertyService;
         }

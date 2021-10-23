@@ -6,6 +6,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Security.Claims;
@@ -33,7 +34,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="TenantController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public TenantController(TenantService tenantService, IHttpContextAccessor httpContext) : base(httpContext)
+        public TenantController(TenantService tenantService, ILogger<TenantController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _TenantService = tenantService;
         }

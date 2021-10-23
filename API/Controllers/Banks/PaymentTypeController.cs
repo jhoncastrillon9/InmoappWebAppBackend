@@ -6,6 +6,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="PaymentTypeController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public PaymentTypeController(PaymentTypeService paymentTypeService, IHttpContextAccessor httpContext) : base(httpContext)
+        public PaymentTypeController(PaymentTypeService paymentTypeService, ILogger<PaymentTypeController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _PaymentTypeService = paymentTypeService;
         }

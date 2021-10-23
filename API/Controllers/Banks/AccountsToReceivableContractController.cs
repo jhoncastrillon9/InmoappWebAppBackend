@@ -6,6 +6,7 @@ namespace API.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="AccountsToReceivableContractController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService, IHttpContextAccessor httpContext) : base(httpContext)
+        public AccountsToReceivableContractController(AccountsToReceivableContractService accountsToReceivableContractService, ILogger<AccountsToReceivableContractController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger)
         {
             _AccountsToReceivableContractService = accountsToReceivableContractService;
         }

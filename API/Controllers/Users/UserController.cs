@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -35,8 +36,8 @@ namespace API.Controllers
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public UserController(UserService userService, IHttpContextAccessor httpContext) : base(httpContext)
-        {
+        public UserController(UserService userService, ILogger<UserController> logger, IHttpContextAccessor httpContext) : base(httpContext, logger) 
+        { 
             _UserServices = userService;
         }
 
