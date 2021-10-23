@@ -71,8 +71,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
 
@@ -111,8 +110,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -148,8 +146,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -179,14 +176,13 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.ExecutionError = true;
-                base.response.Message = ex.Message;
+                response.ExecutionError = true;
+                response.Message = ex.Message;
                 return new BadRequestObjectResult(base.response);
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
 
 
@@ -223,8 +219,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
 
@@ -260,8 +255,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }

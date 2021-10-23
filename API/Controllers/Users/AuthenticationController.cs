@@ -5,6 +5,7 @@ using Commons.Resources;
 using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,18 @@ namespace API.Controllers
         /// </summary>
         private readonly IConfiguration configuration;
         /// <summary>
+        /// Generar Logs en DB
+        /// </summary>
+        protected readonly ILogger _logger;
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationController"/> class.
         /// </summary>
         /// <param name="config">The config<see cref="IConfiguration"/>.</param>
-        public AuthenticationController(IConfiguration config, AuthenticationServices authenticationServices)
+        public AuthenticationController(IConfiguration config, AuthenticationServices authenticationServices, ILogger <AuthenticationController> logger)
         {
             configuration = config;
             _AuthenticationServices = authenticationServices;
+            _logger = logger;
       
         }
 
@@ -88,6 +94,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogCritical(ex, ex.Message);
                 response.ExecutionError = true;
                 response.Message = ex.Message;
                 return new BadRequestObjectResult(response);
@@ -136,6 +143,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogCritical(ex, ex.Message);
                 response.ExecutionError = true;
                 response.Message = ex.Message;
                 return new BadRequestObjectResult(response);

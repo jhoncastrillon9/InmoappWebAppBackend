@@ -54,12 +54,12 @@ namespace API.Controllers
             {
                 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ZoneId", ZoneId },
-                {"ZoneName", ZoneName },
-                {"CityId", CityId }
-            };
+                {
+                    {"Option", 1 },
+                    {"ZoneId", ZoneId },
+                    {"ZoneName", ZoneName },
+                    {"CityId", CityId }
+                };
 
                 var result = await ZoneService.ExecStoreProcedure<ZoneDTO>(parameters, spForRead);
 
@@ -74,8 +74,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -114,8 +113,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -152,8 +150,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -189,8 +186,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
 
@@ -229,8 +225,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
 
@@ -266,8 +261,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }

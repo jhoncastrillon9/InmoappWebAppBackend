@@ -73,8 +73,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
            
         }
@@ -113,8 +112,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
             
         }
@@ -150,8 +148,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
           
         }
@@ -165,9 +162,7 @@ namespace API.Controllers
         public async Task<IActionResult> PostNeighborhood(NeighborhoodDTO model)
         {
             try
-            {
-                
-
+            {  
 
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
@@ -189,8 +184,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
            
         }
@@ -228,8 +222,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
           
         }
@@ -264,8 +257,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }

@@ -9,7 +9,6 @@ namespace API.Controllers
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -51,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -79,10 +78,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
         /// <summary>
@@ -97,7 +95,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -125,10 +123,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
         /// <summary>
@@ -141,7 +138,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -163,16 +160,15 @@ namespace API.Controllers
             }
             catch (ApplicationException ex)
             {
-                base.response.ExecutionError = true;
-                base.response.Message = ex.Message;
-                return new BadRequestObjectResult(base.response);
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
         /// <summary>
@@ -185,7 +181,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -199,23 +195,22 @@ namespace API.Controllers
                     {"CompayId", currentCompanyIdUser }
                 };
 
-                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
+                response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForCreate);
 
                 return new OkObjectResult(response);
 
             }
             catch (ApplicationException ex)
             {
-                base.response.ExecutionError = true;
-                base.response.Message = ex.Message;
-                return new BadRequestObjectResult(base.response);
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
         /// <summary>
@@ -228,7 +223,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 _OwnerService.ValidateCompany(_OwnerService.FindById(model.OwnerId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -245,22 +240,21 @@ namespace API.Controllers
                 };
 
                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForUpdate);
-              
+
                 return new OkObjectResult(response);
 
             }
             catch (ApplicationException ex)
             {
-                base.response.ExecutionError = true;
-                base.response.Message = ex.Message;
-                return new BadRequestObjectResult(base.response);
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
         /// <summary>
@@ -281,22 +275,21 @@ namespace API.Controllers
                 };
 
                 response = await _OwnerService.ExecStoreProcedure<OwnerDTO>(parameters, spForDelete);
-              
+
                 return new OkObjectResult(response);
 
             }
             catch (ApplicationException ex)
             {
-                base.response.ExecutionError = true;
-                base.response.Message = ex.Message;
-                return new BadRequestObjectResult(base.response);
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(response);
             }
             catch (Exception ex)
             {
-                base.response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
-          
+
         }
 
     }

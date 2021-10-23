@@ -22,7 +22,19 @@ namespace API.Controllers
             _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
             currentUserId = int.Parse(_ClaimsUser.FindFirst("userId").Value);
             currentCompanyIdUser = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
-        }  
+        }
+
+        /// <summary>
+        /// Cualquier exepción generica pasa por aca finalmente
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
+        protected IActionResult GenericExceptionHandling(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
+            response.ExecutionError = true;
+            return new BadRequestObjectResult(response);
+        }
 
     }
 }

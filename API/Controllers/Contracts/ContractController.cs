@@ -9,7 +9,6 @@ namespace API.Controllers
     using Microsoft.Extensions.Logging;
     using System;
     using System.Collections.Generic;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -51,7 +50,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -64,7 +63,7 @@ namespace API.Controllers
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
-               
+
                 return new OkObjectResult(response);
 
             }
@@ -76,8 +75,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
 
         }
@@ -94,7 +92,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -107,7 +105,7 @@ namespace API.Controllers
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForList);
-               
+
                 return new OkObjectResult(response);
 
             }
@@ -119,10 +117,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
-            
+
         }
 
         /// <summary>
@@ -135,7 +132,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
             {
                 {"Option", 1 },
@@ -148,7 +145,7 @@ namespace API.Controllers
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
-               
+
                 return new OkObjectResult(response);
 
             }
@@ -160,10 +157,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
- 
+
         }
 
         /// <summary>
@@ -176,7 +172,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
@@ -193,7 +189,7 @@ namespace API.Controllers
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForCreate);
-               
+
                 return new OkObjectResult(response);
 
             }
@@ -205,10 +201,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
-                       
+
         }
 
         /// <summary>
@@ -221,7 +216,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 _ContractService.ValidateCompany(_ContractService.FindById(model.ContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -240,7 +235,7 @@ namespace API.Controllers
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForUpdate);
-              
+
                 return new OkObjectResult(response);
 
             }
@@ -252,10 +247,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
-                     
+
         }
 
         /// <summary>
@@ -268,7 +262,7 @@ namespace API.Controllers
         {
             try
             {
-                
+
                 _ContractService.ValidateCompany(_ContractService.FindById(ContractId).CompayId);
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
@@ -276,7 +270,7 @@ namespace API.Controllers
                 };
 
                 var result = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForDelete);
-              
+
                 return new OkObjectResult(result);
 
             }
@@ -288,10 +282,9 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(response);
+                return GenericExceptionHandling(ex);
             }
-           
+
         }
 
     }
