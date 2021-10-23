@@ -122,8 +122,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
           
         }
@@ -163,8 +162,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                response.ExecutionError = true;
-                return new BadRequestObjectResult(base.response);
+                return GenericExceptionHandling(ex);
             }
 
          
