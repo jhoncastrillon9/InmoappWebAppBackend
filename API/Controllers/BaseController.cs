@@ -12,14 +12,14 @@ namespace API.Controllers
 
         protected ResponseMDTO response = new ResponseMDTO();
         protected int currentUserId;
-        protected int currentUserCompanyId;
+        protected int currentCompanyIdUser;
         protected ClaimsIdentity _ClaimsUser;
 
         public BaseController(IHttpContextAccessor _HttpContext)
         {
             _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
             currentUserId = int.Parse(_ClaimsUser.FindFirst("userId").Value);
-            currentUserCompanyId = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
+            currentCompanyIdUser = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
         }  
 
     }

@@ -57,7 +57,7 @@ namespace API.Controllers
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", currentUserCompanyId },
+                    {"CompayId", currentCompanyIdUser },
                     {"CompanyName", CompanyName },
                     {"Document", Document },
                     {"Telephone", Telephone },
@@ -102,7 +102,7 @@ namespace API.Controllers
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", currentUserCompanyId },
+                    {"CompayId", currentCompanyIdUser },
                     {"CompanyName", CompanyName },
                     {"Document", Document },
                     {"Telephone", Telephone },
@@ -145,7 +145,7 @@ namespace API.Controllers
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", currentUserCompanyId },
+                    {"CompayId", currentCompanyIdUser },
                     {"CompanyName", null },
                     {"Document", null },
                     {"Telephone", null },
@@ -231,7 +231,7 @@ namespace API.Controllers
                 Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
                 {
                     {"Option", 1 },
-                    {"CompayId", currentUserCompanyId },
+                    {"CompayId", currentCompanyIdUser },
                     {"CompanyName", model.CompanyName },
                     {"Document", model.Document },
                     {"Telephone", model.Telephone },

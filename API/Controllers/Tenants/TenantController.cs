@@ -62,7 +62,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -107,7 +107,7 @@ namespace API.Controllers
                     {"Email", Email },
                     {"Address", Address },
                     {"Observation", Observation },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForList);
@@ -150,7 +150,7 @@ namespace API.Controllers
                     {"Email", null },
                     {"Address", null },
                     {"Observation", null },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForRead);
@@ -192,7 +192,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForCreate);
@@ -236,7 +236,7 @@ namespace API.Controllers
                     {"Email", model.Email },
                     {"Address", model.Address },
                     {"Observation", model.Observation },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _TenantService.ExecStoreProcedure<TenantDTO>(parameters, spForUpdate);

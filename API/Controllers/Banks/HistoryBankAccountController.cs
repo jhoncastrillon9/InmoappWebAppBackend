@@ -60,7 +60,7 @@ namespace API.Controllers
                     {"AccountsToPayContractsId", AccountsToPayContractsId },
                     {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
                     {"Obervation", Obervation },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
@@ -104,7 +104,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", AccountsToReceivableContractsId },
                 {"Obervation", Obervation },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForList);
@@ -146,7 +146,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", null },
                 {"AccountsToReceivableContractsId", null },
                 {"Obervation", null },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForRead);
@@ -189,7 +189,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", model.AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
                 {"Obervation", model.Obervation },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForCreate);
@@ -233,7 +233,7 @@ namespace API.Controllers
                 {"AccountsToPayContractsId", model.AccountsToPayContractsId },
                 {"AccountsToReceivableContractsId", model.AccountsToReceivableContractsId },
                 {"Obervation", model.Obervation },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 var result = await _HistoryBankAccountServie.ExecStoreProcedure<HistoryBankAccountDTO>(parameters, spForUpdate);

@@ -29,11 +29,11 @@ namespace Business
         /// <summary>
         /// Id del usuario actual
         /// </summary>
-        protected int currentUserId;
+        private int currentUserId;
         /// <summary>
         /// Id de la compañia del usuario actual
         /// </summary>
-        protected int currentUserCompanyId;
+        private int currentCompanyIdUser;
         /// <summary>
         /// Automapper
         /// </summary>
@@ -58,7 +58,7 @@ namespace Business
         {
             LoadClaims();
 
-            if (companyId != currentUserCompanyId)
+            if (companyId != currentCompanyIdUser)
             {
                 throw new Exception(Messages.ErrorEntityNoAutorizate);
             }
@@ -75,7 +75,7 @@ namespace Business
             {
                 _ClaimsUser = _HttpContext.HttpContext.User.Identity as ClaimsIdentity;
                 currentUserId = int.Parse(_ClaimsUser.FindFirst("userId").Value);
-                currentUserCompanyId = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
+                currentCompanyIdUser = int.Parse(_ClaimsUser.FindFirst("companyId").Value);
 
             }            
         }
@@ -88,6 +88,18 @@ namespace Business
                 throw new Exception(Messages.ErrorEntityNoAutorizate);
             }
 
+        }
+
+        public int GetCurrentUserId()
+        {
+            LoadClaims();
+            return currentUserId;
+        }
+
+        public int GetCurrentCompanyIdUser()
+        {
+            LoadClaims();
+            return currentCompanyIdUser;
         }
         #endregion
 

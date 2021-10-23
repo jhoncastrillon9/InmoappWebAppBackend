@@ -19,8 +19,16 @@ namespace Business.Properties
 
         }
 
-
-        public ResponseMDTO GetImagesFilter(int? ImageId, string ImageName, string Path, bool? IsMain, int? PropertyId, int companyIdSession)
+        /// <summary>
+        /// Filtra las images
+        /// </summary>
+        /// <param name="ImageId"></param>
+        /// <param name="ImageName"></param>
+        /// <param name="Path"></param>
+        /// <param name="IsMain"></param>
+        /// <param name="PropertyId"></param>
+        /// <returns></returns>
+        public ResponseMDTO GetImagesFilter(int? ImageId, string ImageName, string Path, bool? IsMain, int? PropertyId)
         {
             response.Data = GetAllBy(x =>
             (ImageId == null || x.ImageId == ImageId) &&
@@ -28,7 +36,7 @@ namespace Business.Properties
             (string.IsNullOrEmpty(Path) || x.Path.ToLower().Contains(Path.Trim().ToLower())) &&
             (IsMain == null || x.IsMain == IsMain) &&
             (PropertyId == null || x.PropertyId == PropertyId) &&
-            x.Property.CompayId == companyIdSession);
+            x.Property.CompayId == GetCurrentCompanyIdUser());
 
             return response;
         }

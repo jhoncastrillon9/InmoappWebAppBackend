@@ -59,7 +59,7 @@ namespace API.Controllers
                 {"StatusId", StatusId },
                 {"PropertyId", PropertyId },
                 {"TenantId", TenantId },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
@@ -102,7 +102,7 @@ namespace API.Controllers
                     {"StatusId", StatusId },
                     {"PropertyId", PropertyId },
                     {"TenantId", TenantId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForList);
@@ -143,7 +143,7 @@ namespace API.Controllers
                 {"StatusId", null },
                 {"PropertyId", null },
                 {"TenantId", null },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForRead);
@@ -188,7 +188,7 @@ namespace API.Controllers
                     {"StatusId", model.StatusId },
                     {"PropertyId", model.PropertyId },
                     {"TenantId", model.TenantId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _ContractService.ExecStoreProcedure<ContractDTO>(parameters, spForCreate);

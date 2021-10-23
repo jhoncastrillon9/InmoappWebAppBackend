@@ -56,7 +56,7 @@ namespace API.Controllers
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
@@ -95,7 +95,7 @@ namespace API.Controllers
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForList);
@@ -135,7 +135,7 @@ namespace API.Controllers
                     {"AccountsToPayContractId", AccountsToPayContractId },
                     {"AccountsStatusId", null },
                     {"ContractId", null },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForRead);
@@ -175,7 +175,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId",currentUserCompanyId }
+                    {"CompayId",currentCompanyIdUser }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForCreate);
@@ -215,7 +215,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToPayContractService.ExecStoreProcedure<AccountsToPayContractDTO>(parameters, spForUpdate);

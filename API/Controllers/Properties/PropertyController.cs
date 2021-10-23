@@ -129,7 +129,7 @@ namespace API.Controllers
                     {"OwnerId", null },
                     {"PropertyCategoryId", null },
                     {"TypeOfferId", null },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForRead);
@@ -185,7 +185,7 @@ namespace API.Controllers
                     {"OwnerId", model.OwnerId },
                     {"PropertyCategoryId", model.PropertyCategoryId },
                     {"TypeOfferId", model.TypeOfferId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForCreate);
@@ -244,7 +244,7 @@ namespace API.Controllers
                     {"OwnerId", model.OwnerId },
                     {"PropertyCategoryId", model.PropertyCategoryId },
                     {"TypeOfferId", model.TypeOfferId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _PropertyService.ExecStoreProcedure<PropertyDTO>(parameters, spForUpdate);
@@ -323,7 +323,7 @@ namespace API.Controllers
                 {"OwnerId", OwnerId },
                 {"PropertyCategoryId", PropertyCategoryId },
                 {"TypeOfferId", TypeOfferId },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
         }
 

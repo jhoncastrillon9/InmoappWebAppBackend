@@ -55,7 +55,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", BankAccountName },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
@@ -96,7 +96,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", BankAccountName },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForList);
@@ -134,7 +134,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"BankAccountId", BankAccountId },
                     {"BankAccountName", null },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForRead);
@@ -172,7 +172,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"BankAccountName", model.BankAccountName },
                     {"Total", model.Total },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForCreate);
@@ -213,7 +213,7 @@ namespace API.Controllers
                     {"BankAccountId", model.BankAccountId },
                     {"BankAccountName", model.BankAccountName },
                     {"Total", model.Total },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _BankAccountService.ExecStoreProcedure<BankAccountDTO>(parameters, spForUpdate);

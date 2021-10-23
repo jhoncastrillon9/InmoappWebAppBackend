@@ -24,11 +24,9 @@ namespace API.Controllers
         /// </summary>
         private readonly ImagesService _imagesServices;
         private readonly PropertyService _PropertyService;
-        private string spForRead = "Properties.Images_READ";
-        private string spForList = "Properties.Images_LIST";
-        private string spForCreate = "Properties.Images_CREATE";
-        private string spForUpdate = "Properties.Images_UPDATE";
-        private string spForDelete = "Properties.Images_DELETE";
+        private readonly string spForCreate = "Properties.Images_CREATE";
+        private readonly string spForUpdate = "Properties.Images_UPDATE";
+        private readonly string spForDelete = "Properties.Images_DELETE";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagesController"/> class.
@@ -50,14 +48,24 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            
-            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
+            try
+            {
+                response = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId); 
+                return new OkObjectResult(response);
+            }
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
 
-            if (result.ExecutionError)        
-                return new BadRequestObjectResult(result);
-         
-
-            return new OkObjectResult(result);
+          
         }
 
         /// <summary>
@@ -70,16 +78,25 @@ namespace API.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> GetListImages(Int32? ImageId, String ImageName, String Path, Boolean? IsMain, Int32? PropertyId)
         {
-            
-            var result = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId, currentUserCompanyId);
+            try
+            {
+                response = _imagesServices.GetImagesFilter(ImageId, ImageName, Path, IsMain, PropertyId);              
 
-            if (result.ExecutionError)         
-                return new BadRequestObjectResult(result);
-        
-            return new OkObjectResult(result);
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }           
         }
-
-
 
         /// <summary>
         /// The GetImages.
@@ -89,12 +106,27 @@ namespace API.Controllers
         [HttpGet("{ImageId}")]
         public async Task<IActionResult> GetImages(Int32 ImageId)
         {
-            ResponseMDTO result = new ResponseMDTO
+            try
             {
-                Data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == currentUserCompanyId)
-            };
+                ResponseMDTO result = new ResponseMDTO
+                {
+                    Data = _imagesServices.GetBy(x => x.ImageId == ImageId && x.Property.CompayId == currentCompanyIdUser)
+                };
 
-            return new OkObjectResult(result);
+                return new OkObjectResult(result);
+            }
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
         /// <summary>
@@ -105,24 +137,38 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostImages(ImagesDTO dto)
         {
-            
-            var property = _PropertyService.GetBy(x => x.PropertyId == dto.PropertyId);
-            _PropertyService.ValidateCompany(property.CompayId);
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"Option", 1 },
-                {"ImageName", dto.ImageName },
-                {"Path", dto.Path },
-                {"IsMain", dto.IsMain },
-                {"PropertyId", dto.PropertyId }
-            };
+                var property = _PropertyService.GetBy(x => x.PropertyId == dto.PropertyId);
+                _PropertyService.ValidateCompany(property.CompayId);
 
-            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);
-            if (result.ExecutionError)     
-                return new BadRequestObjectResult(result);
-       
-            return new OkObjectResult(result);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ImageName", dto.ImageName },
+                    {"Path", dto.Path },
+                    {"IsMain", dto.IsMain },
+                    {"PropertyId", dto.PropertyId }
+                };
+
+                response = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForCreate);                
+
+                return new OkObjectResult(response);
+
+            }
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+
+         
         }
 
         /// <summary>
@@ -133,26 +179,38 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutImages(ImagesDTO model)
         {
+            try
+            {
+                var imageOld = _imagesServices.GetBy(x => x.ImageId == model.ImageId);
+                _imagesServices.ValidateCompany(imageOld.Property.CompayId);
+
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"Option", 1 },
+                    {"ImageId", model.ImageId },
+                    {"ImageName", model.ImageName },
+                    {"Path", model.Path },
+                    {"IsMain", model.IsMain },
+                    {"PropertyId", imageOld.PropertyId }
+                };
+
+                response = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
             
-            var imageOld = _imagesServices.GetBy(x => x.ImageId == model.ImageId);
-            _imagesServices.ValidateCompany(imageOld.Property.CompayId);
+                return new OkObjectResult(response);
 
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
-            {
-                {"Option", 1 },
-                {"ImageId", model.ImageId },
-                {"ImageName", model.ImageName },
-                {"Path", model.Path },
-                {"IsMain", model.IsMain },
-                {"PropertyId", imageOld.PropertyId }
-            };
-
-            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForUpdate);
-            if (result.ExecutionError)
-            {
-                return new BadRequestObjectResult(result);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
         /// <summary>
@@ -163,20 +221,31 @@ namespace API.Controllers
         [HttpDelete("{ImageId}")]
         public async Task<IActionResult> DeleteImages(Int32? ImageId)
         {
-            
-            _imagesServices.ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
-
-            Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+            try
             {
-                {"ImageId", ImageId }
-            };
+                _imagesServices.ValidateCompany(_imagesServices.GetBy(x => x.ImageId == ImageId).Property.CompayId);
 
-            var result = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
-            if (result.ExecutionError)
-            {
-                return new BadRequestObjectResult(result);
+                Dictionary<string, dynamic> parameters = new Dictionary<string, dynamic>()
+                {
+                    {"ImageId", ImageId }
+                };
+
+                response = await _imagesServices.ExecStoreProcedure<ImagesDTO>(parameters, spForDelete);
+
+                return new OkObjectResult(response);
             }
-            return new OkObjectResult(result);
+            catch (ApplicationException ex)
+            {
+                response.ExecutionError = true;
+                response.Message = ex.Message;
+                return new BadRequestObjectResult(base.response);
+            }
+            catch (Exception ex)
+            {
+                response.ExecutionError = true;
+                return new BadRequestObjectResult(base.response);
+            }
+          
         }
 
     }

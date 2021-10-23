@@ -55,7 +55,7 @@ namespace API.Controllers
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
@@ -96,7 +96,7 @@ namespace API.Controllers
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", AccountsStatusId },
                     {"ContractId", ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForList);
@@ -134,7 +134,7 @@ namespace API.Controllers
                     {"AccountsToReceivableContractId", AccountsToReceivableContractId },
                     {"AccountsStatusId", null },
                     {"ContractId", null },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForRead);
@@ -173,7 +173,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForCreate);
@@ -217,7 +217,7 @@ namespace API.Controllers
                     {"ExpirationDate", model.ExpirationDate },
                     {"AccountsStatusId", model.AccountsStatusId },
                     {"ContractId", model.ContractId },
-                    {"CompayId", currentUserCompanyId}
+                    {"CompayId", currentCompanyIdUser}
                 };
 
                 response = await _AccountsToReceivableContractService.ExecStoreProcedure<AccountsToReceivableContractDTO>(parameters, spForUpdate);

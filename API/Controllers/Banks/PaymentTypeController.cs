@@ -55,7 +55,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"PaymentTypeId", PaymentTypeId },
                     {"PaymentTypeName", PaymentTypeName },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
@@ -94,7 +94,7 @@ namespace API.Controllers
                 {"Option", 1 },
                 {"PaymentTypeId", PaymentTypeId },
                 {"PaymentTypeName", PaymentTypeName },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForList);
@@ -131,7 +131,7 @@ namespace API.Controllers
                 {"Option", 1 },
                 {"PaymentTypeId", PaymentTypeId },
                 {"PaymentTypeName", null },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForRead);
@@ -167,7 +167,7 @@ namespace API.Controllers
             {
                 {"Option", 1 },
                 {"PaymentTypeName", model.PaymentTypeName },
-                {"CompayId", currentUserCompanyId }
+                {"CompayId", currentCompanyIdUser }
             };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForCreate);
@@ -207,7 +207,7 @@ namespace API.Controllers
                     {"Option", 1 },
                     {"PaymentTypeId", model.PaymentTypeId },
                     {"PaymentTypeName", model.PaymentTypeName },
-                    {"CompayId", currentUserCompanyId }
+                    {"CompayId", currentCompanyIdUser }
                 };
 
                 response = await _PaymentTypeService.ExecStoreProcedure<PaymentTypeDTO>(parameters, spForUpdate);
