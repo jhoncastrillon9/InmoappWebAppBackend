@@ -17,7 +17,7 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="TenantsByContractController" />.
     /// </summary>
-    [Authorize(Roles = "Superadmin")]
+    [Authorize(Roles = "SuperAdmin")]
     [Route("Contracts/[controller]")]
     [ApiController]
     public class TenantsByContractController : BaseController

@@ -3,6 +3,7 @@ using Business.Companies;
 using Commons.DTOs;
 using Commons.DTOs.Users;
 using Commons.Enums.Users;
+using Commons.Resources;
 using DataAccess;
 using DataAccess.Data;
 using System;
@@ -43,19 +44,14 @@ namespace Business.Users
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         public async Task<ResponseMDTO> Validate(Dictionary<string, dynamic> parameters)
         {
-            try
-            {
-                var res = await _SpModel.ExecStoreProcedure<AuthenticationResponseDTO>(parameters, "[CodeMono].[User_Authentication]");
-                response.Data = res;
+           
+                var userData = await _SpModel.ExecStoreProcedure<AuthenticationResponseDTO>(parameters, "[CodeMono].[User_Authentication]");
+                userData.FirstOrDefault().Roles = _UserByRoleService.GetAllBy(x => x.UserId == userData.FirstOrDefault().UserId)
+                                                    .Select(x => x.RoleId).ToList();
+                response.Data = userData;
                 response.ExecutionError = false;
-                response.Message = "";
-            }
-            catch (Exception ex)
-            {
-                response.Data = null;
-                response.ExecutionError = true;
-                response.Message = ex.Message;
-            }
+                response.Message = Messages.SuccessGeneral;
+           
             return response;
         }
 

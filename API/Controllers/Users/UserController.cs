@@ -232,7 +232,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [Authorize(Roles ="Superadmin")]
+        [Authorize(Roles ="SuperAdmin")]
         [HttpPut("enable")]
         public async Task<IActionResult> EnableUser(UserDTO model)
         {
@@ -264,7 +264,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut("disable")]
         public async Task<IActionResult> DisableUser(UserDTO model)
         {
@@ -296,7 +296,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="UserModel"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
-        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{UserId}")]
         public async Task<IActionResult> DeleteUser(Int32? UserId)
         {
