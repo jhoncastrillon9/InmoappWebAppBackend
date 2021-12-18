@@ -110,6 +110,8 @@ namespace Business.Users
                  
             var userCreated = _mapper.Map<AuthenticationResponseDTO>(_Userservice.Create(newUser));
             userCreated.Authenticated = 1;
+            userCreated.Roles= _UserByRoleService.GetAllBy(x => x.UserId == userCreated.UserId)
+                                    .Select(x => x.RoleId).ToList();
             response.Data = userCreated;
             return response;
 
