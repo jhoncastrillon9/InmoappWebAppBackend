@@ -14,8 +14,7 @@ namespace API.Controllers
 
     /// <summary>
     /// Defines the <see cref="PropertyCategoryController" />.
-    /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
+    /// </summary>    
     [Route("Properties/[controller]")]
     [ApiController]
     public class PropertyCategoryController : BaseController
@@ -46,6 +45,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> GetPropertyCategory(Int32? PropertyCategoryId, String CategoryName)
         {
@@ -83,6 +83,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListPropertyCategory(Int32? PropertyCategoryId, String CategoryName)
         {
@@ -118,6 +119,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("{PropertyCategoryId}")]
         public async Task<IActionResult> GetPropertyCategory(Int32 PropertyCategoryId)
         {
@@ -153,6 +155,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostPropertyCategory(PropertyCategoryDTO model)
         {
@@ -186,6 +189,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutPropertyCategory(PropertyCategoryDTO model)
         {
@@ -221,6 +225,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyCategoryEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{PropertyCategoryId}")]
         public async Task<IActionResult> DeletePropertyCategory(Int32? PropertyCategoryId)
         {

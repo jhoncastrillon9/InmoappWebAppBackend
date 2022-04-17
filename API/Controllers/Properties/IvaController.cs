@@ -15,7 +15,6 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="IvaController" />.
     /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
     public class IvaController : BaseController
@@ -46,6 +45,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> GetIva(Int32? IvaId)
         {
@@ -114,6 +114,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("{IvaId}")]
         public async Task<IActionResult> GetIva(Int32 IvaId)
         {
@@ -147,6 +148,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostIva(IvaDTO model)
         {
@@ -180,6 +182,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutIva(IvaDTO model)
         {
@@ -215,6 +218,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="IvaEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{IvaId}")]
         public async Task<IActionResult> DeleteIva(Int32? IvaId)
         {

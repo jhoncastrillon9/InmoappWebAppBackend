@@ -14,7 +14,6 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="PropertyStatusController" />.
     /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
     [Route("Properties/[controller]")]
     [ApiController]
     public class PropertyStatusController : BaseController
@@ -45,6 +44,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> GetPropertyStatus(Int32? PropertyStatusId, String PropertyStatusName)
         {
@@ -83,6 +83,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListPropertyStatus(Int32? PropertyStatusId, String PropertyStatusName)
         {
@@ -118,6 +119,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("{PropertyStatusId}")]
         public async Task<IActionResult> GetPropertyStatus(Int32 PropertyStatusId)
         {
@@ -154,6 +156,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostPropertyStatus(PropertyStatusDTO model)
         {
@@ -190,6 +193,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutPropertyStatus(PropertyStatusDTO model)
         {
@@ -227,6 +231,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="PropertyStatusEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{PropertyStatusId}")]
         public async Task<IActionResult> DeletePropertyStatus(Int32? PropertyStatusId)
         {

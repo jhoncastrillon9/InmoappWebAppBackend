@@ -33,6 +33,7 @@ namespace API.Controllers
         {
             _logger.LogError(ex, ex.Message);
             response.ExecutionError = true;
+            response.Message = ex.Message;
             return new BadRequestObjectResult(response);
         }
 

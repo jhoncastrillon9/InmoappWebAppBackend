@@ -14,8 +14,7 @@ namespace API.Controllers
 
     /// <summary>
     /// Defines the <see cref="TypeOfferController" />.
-    /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
+    /// </summary>    
     [Route("Properties/[controller]")]
     [ApiController]
     public class TypeOfferController : BaseController
@@ -46,6 +45,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet]
         public async Task<IActionResult> GetTypeOffer(Int32? TypeOfferId, String TypeOfferName)
         {
@@ -83,6 +83,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListTypeOffer(Int32? TypeOfferId, String TypeOfferName)
         {
@@ -118,6 +119,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpGet("{TypeOfferId}")]
         public async Task<IActionResult> GetTypeOffer(Int32 TypeOfferId)
         {
@@ -153,6 +155,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostTypeOffer(TypeOfferDTO model)
         {
@@ -189,6 +192,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutTypeOffer(TypeOfferDTO model)
         {
@@ -225,6 +229,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="TypeOfferEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{TypeOfferId}")]
         public async Task<IActionResult> DeleteTypeOffer(Int32? TypeOfferId)
         {
