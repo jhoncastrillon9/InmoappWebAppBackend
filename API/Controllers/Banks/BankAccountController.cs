@@ -124,6 +124,7 @@ namespace API.Controllers
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
         [HttpGet("{BankAccountId}")]
         public async Task<IActionResult> GetBankAccount(Int32 BankAccountId)
+        
         {
             try
             {

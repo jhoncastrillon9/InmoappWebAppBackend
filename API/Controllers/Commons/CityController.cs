@@ -14,8 +14,6 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="CityController" />.
     /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
-    // [AuthorizeAttribute(typeof(AuthorizeRoleAttribute), Arguments = new object[] { 10 })]
     [Route("Commons/[controller]")]
     [ApiController]
     public class CityController : BaseController
@@ -46,6 +44,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet]
         public async Task<IActionResult> GetCity(Int32? CityId, String CityName, Int32? StateId)
         {
@@ -85,6 +84,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListCity(Int32? CityId, String CityName, Int32? StateId)
         {
@@ -122,6 +122,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("{CityId}")]
         public async Task<IActionResult> GetCity(Int32 CityId)
         {
@@ -159,6 +160,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="CityEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostCity(CityDTO model)
         {
@@ -194,6 +196,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="CityEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutCity(CityDTO model)
         {
@@ -232,6 +235,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="CityEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{CityId}")]
         public async Task<IActionResult> DeleteCity(Int32? CityId)
         {

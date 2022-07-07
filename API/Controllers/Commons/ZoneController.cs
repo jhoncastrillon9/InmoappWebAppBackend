@@ -14,7 +14,6 @@ namespace API.Controllers
     /// <summary>
     /// Defines the <see cref="ZoneController" />.
     /// </summary>
-    [Authorize(Roles = "SuperAdmin")]
     [Route("Commons/[controller]")]
     [ApiController]
     public class ZoneController : BaseController
@@ -47,6 +46,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet]
         public async Task<IActionResult> GetZone(Int32? ZoneId, String ZoneName, Int32? CityId)
         {
@@ -86,6 +86,7 @@ namespace API.Controllers
         /// <param name="ProjectName">The ProjectName<see cref="string"/>.</param>
         /// <param name="Active">The Activo<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("list")]
         public async Task<IActionResult> GetListZone(Int32? ZoneId, String ZoneName, Int32? CityId)
         {
@@ -123,6 +124,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="id">The ProjectId<see cref="int?"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin,CompanyAdmin,PropertyUser")]
         [HttpGet("{ZoneId}")]
         public async Task<IActionResult> GetZone(Int32 ZoneId)
         {
@@ -160,6 +162,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="ZoneEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost]
         public async Task<IActionResult> PostZone(ZoneDTO model)
         {
@@ -198,6 +201,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="ZoneEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPut]
         public async Task<IActionResult> PutZone(ZoneDTO model)
         {
@@ -237,6 +241,7 @@ namespace API.Controllers
         /// </summary>
         /// <param name="model">The model<see cref="ZoneEntity"/>.</param>
         /// <returns>The <see cref="Task{ResponseModel}"/>.</returns>
+        [Authorize(Roles = "SuperAdmin")]
         [HttpDelete("{ZoneId}")]
         public async Task<IActionResult> DeleteZone(Int32? ZoneId)
         {
